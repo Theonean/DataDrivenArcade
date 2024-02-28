@@ -14,13 +14,13 @@ public class ShapeFactory : MonoBehaviour
 {
     //first Input of player gives the number of sides (has to be a number between 2 and 8)
     //each input after that (until the shape has all sides) adds a line with the corresponding code to the shape
-    public List<CustomShapeBuilder> shapeBuilders = new List<CustomShapeBuilder>();
+    public CustomShapeBuilder shapeBuilder;
 
     //Prefab for Shape
     public GameObject shapePrefab;
     
     [HideInInspector]
-    public int maxAllowedFaces = 2;
+    protected int maxAllowedFaces = 2;
     [HideInInspector]
     public BuildingState state = BuildingState.BUILDING;
 
@@ -31,5 +31,9 @@ public class ShapeFactory : MonoBehaviour
     void Start() {
         gm = GameManager.instance;
         linePlaceSource = GetComponent<AudioSource>();
+    }
+
+    public void SetMaxAllowedFaces(int maxAllowedFaces){
+        this.maxAllowedFaces = maxAllowedFaces;
     }
 }

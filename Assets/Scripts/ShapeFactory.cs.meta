@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - shapePrefab: {fileID: 2377739720529655395, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
-  executionOrder: 200
+  executionOrder: 120
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

@@ -11,11 +11,6 @@ public class PlayerFactory : ShapeFactory
     public ScoreManager scoreManager;
 
     public int playerNum;
-
-    private void Start() {
-        //Create one Shapebuilder as player only needs one shape which they reuse each time
-        shapeBuilders.Add(Instantiate(shapePrefab, this.transform).GetComponent<CustomShapeBuilder>());
-    }
     
     //Update so far only used for Player Input
     private void Update() 
@@ -39,12 +34,12 @@ public class PlayerFactory : ShapeFactory
                     break;
                 case BuildingState.BUILDING:
                 
-                    shapeBuilders[0].InitializeShape(false, 2);
+                    shapeBuilder.InitializeShape(false, 2);
 
                     //Adds a line and checks if shape is finished
-                    if(shapeBuilders[0].AddLine(numbersPressed[0])){
+                    if(shapeBuilder.AddLine(numbersPressed[0])){
                         state = BuildingState.FINISHED;
-                        scoreManager.PlayerFinishedShape(shapeBuilders[0].GetShapecode());
+                        scoreManager.PlayerFinishedShape(shapeBuilder.GetShapecode());
                     };
                     break;
                     //In Finished state do not do anything. this is when the shape is being animated
@@ -62,32 +57,32 @@ public class PlayerFactory : ShapeFactory
         List<int> AmountKeysPressedThisFrame = new List<int>();
         int i = 0;
         
-        if(Input.GetKeyDown("P" + playerNum + "L1")){
+        if(Input.GetButtonDown("P" + playerNum + "L1")){
             AmountKeysPressedThisFrame.Add(0);
             i += 1;
         }
 
-        if(Input.GetKeyDown("P" + playerNum + "L2")){
+        if(Input.GetButtonDown("P" + playerNum + "L2")){
             AmountKeysPressedThisFrame.Add(1);
             i += 1;
         }
 
-        if(Input.GetKeyDown("P" + playerNum + "L3")){
+        if(Input.GetButtonDown("P" + playerNum + "L3")){
             AmountKeysPressedThisFrame.Add(2);
             i += 1;
         }
 
-        if(Input.GetKeyDown("P" + playerNum + "L4")){
+        if(Input.GetButtonDown("P" + playerNum + "L4")){
             AmountKeysPressedThisFrame.Add(3);
             i += 1;
         }
 
-        if(Input.GetKeyDown("P" + playerNum + "L5")){
+        if(Input.GetButtonDown("P" + playerNum + "L5")){
             AmountKeysPressedThisFrame.Add(4);
             i += 1;
         }
 
-        if(Input.GetKeyDown("P" + playerNum + "L6")){
+        if(Input.GetButtonDown("P" + playerNum + "L6")){
             AmountKeysPressedThisFrame.Add(5);
             i += 1;
         }
@@ -112,7 +107,7 @@ public class PlayerFactory : ShapeFactory
 
     //Reset only needed for player, used to be on the shapefactory but moved for safetyreasons (why have it higher when that can only cause trouble?)
     public void ResetFactory(){
-        shapeBuilders[0].ResetShape();
+        shapeBuilder.ResetShape();
         state = BuildingState.BUILDING;
     }
 }

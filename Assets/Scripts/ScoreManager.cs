@@ -20,14 +20,10 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI lastScoreText;
 
     [Description("The Factories this player has access to, INDEX 0 MUST BE PRIVATE FACTORY")]
-    public ChallengeFactory[] challengeFactories;
+    public ChallengeFactory challengeFactory;
 
     private PlayerFactory playerFactory;
-    private int currFactoryIndex = 0;
 
-    private ChallengeFactory challengeFactory;
-    //ChallengeShapes change as when a challenge is "completed" the next one gets selected
-    private CustomShapeBuilder challengeShapeBuilder;
     private string challengeShapeCode;
 
     private int score = 0;
@@ -37,28 +33,18 @@ public class ScoreManager : MonoBehaviour
     private int combo = 1;
     private int comboNeededForMultiplier = 5;
     private int comboMultiplier = 1;
-    //What to do when the player is too quick?
-    private bool noFactoriesSelected = false;
-
-    //Add event for when a factory has added a new challenge shape where factory has pass it's respective priority index
-    public UnityEvent<int> onFactoryAddedChallenge;
 
     private void Awake() {
         print("ScoreManager Start");
         playerFactory = transform.Find("PlayerFactory").GetComponent<PlayerFactory>();
-        challengeFactory = challengeFactories[currFactoryIndex];
         
         playerFactory.scoreManager = this;
-
-        //Connect onFactoryAddedChallenge event to the function FactoryAddedChallenge in this class
-        onFactoryAddedChallenge.AddListener(FactoryAddedChallenge);
-
-        //set the playerData in each factory to point to this class and set their respective "index" ie priority for selecting their challenge
-        for (int i = 0; i < challengeFactories.Length; i++)
-        {
-            challengeFactories[i].playerData.Add((this, i));
-        }
     }
+
+    private void Start() {
+        challengeShapeCode = challengeFactory.CreateChallenge();
+    }
+
     private void Update() {
 
         //Countdown tbhe timer until it reaches 0, then reset clock and save score to previous score
@@ -80,16 +66,9 @@ public class ScoreManager : MonoBehaviour
     }
 
     public void PlayerFinishedShape(string playerShapeCode){
-        //set the current challenge to be done by player
-        //THIS IS CAUSING ISSUES, NEED TO TRACK THE CURRENT CHALLENGE SHAPE IN A DIFFERENT MANNER
-        //
-        challengeFactory.GetCurrentChallenge(out challengeShapeBuilder);
-        challengeShapeCode = challengeShapeBuilder.GetShapecode();
-
-
-        CustomShapeBuilder currChallengeShape = challengeShapeBuilder;
 
         print("Comparing " + playerShapeCode + " to " + challengeShapeCode);
+        bool rightShape = false;
         //TODO Visualize the current combo and Multiplier
         if (playerShapeCode == challengeShapeCode)
         {
@@ -99,9 +78,8 @@ public class ScoreManager : MonoBehaviour
             comboMultiplier = Mathf.RoundToInt(combo / comboNeededForMultiplier) + 1; //+1 to avoid 0 multiplier
 
             //Only the personal factory of a player increases in Combo, find other system for the other factories which are "shared"
-            challengeFactories[0].maxAllowedFaces = comboMultiplier;
-
-            GetNextChallengeFromFactories();
+            challengeFactory.SetMaxAllowedFaces(Mathf.Clamp(comboMultiplier, 2, 10));
+            rightShape = true;
         }
         //When wrong shape is completed, stop combo and reset multiplier
         else
@@ -110,52 +88,13 @@ public class ScoreManager : MonoBehaviour
             comboMultiplier = 1;
         }
 
-        StartCoroutine(MoveShapeToChallenge(currChallengeShape));
-    }
-
-    //Search for a factory which has a challenge until all factories are looked through
-    private bool GetNextChallengeFromFactories(){
-        while(!challengeFactory.GetNextChallenge(out challengeShapeBuilder)){
-            //Loop is only used when the first factory has no challenge
-            currFactoryIndex++;
-            if(currFactoryIndex < challengeFactories.Length)
-            {
-                challengeFactory = challengeFactories[currFactoryIndex];
-            }
-            //If we reach end of possible factories, no possible challenges exist for now
-            else
-            {
-                noFactoriesSelected = true;
-                challengeShapeCode = "";
-                print("We actually have no more challenges bruv");
-                return false;
-            }
-        }
-        
-        challengeShapeCode = challengeShapeBuilder.GetShapecode();
-        return true;
-    }
-
-    //Gets called each time any of the challenge factories connected to this object creates a new shape
-    //Evaluates whether this new shape should be the next challenge for the player
-    public void FactoryAddedChallenge(int factoryIndex){
-        //print("Factory " + factoryIndex + " has added a new challenge shape for scoreManager " + gameObject.name);
-
-        //if there are no current factories selected, set the current factory to the factory which just created a new challenge
-        //Lower factory indeces have higher priority than higher factory indeces and can override the current challenge
-        if(noFactoriesSelected || factoryIndex < currFactoryIndex)
-        {
-            noFactoriesSelected = false;
-            currFactoryIndex = factoryIndex;
-            challengeFactory = challengeFactories[currFactoryIndex];
-            challengeFactory.GetNextChallenge(out challengeShapeBuilder);
-        }
+        StartCoroutine(MoveShapeToChallenge(challengeFactory.shapeBuilder, rightShape));
     }
 
     // Coroutine which moves the shape of the player to the shape of the challenge and when it arrives, the player gets reset
-    public IEnumerator MoveShapeToChallenge(CustomShapeBuilder sb)
+    public IEnumerator MoveShapeToChallenge(CustomShapeBuilder sb, bool rightShape)
     {
-        CustomShapeBuilder playerShapeBuilder = playerFactory.shapeBuilders[0];
+        CustomShapeBuilder playerShapeBuilder = playerFactory.shapeBuilder;
         // Get the player shape and challenge shape positions
         Vector3 playerShapePosition = playerShapeBuilder.transform.position;
         Vector3 challengeShapePosition = sb.transform.position;
@@ -181,6 +120,9 @@ public class ScoreManager : MonoBehaviour
 
         // Reset the player shape and building State
         playerFactory.ResetFactory();
+        if(rightShape){
+            challengeShapeCode = challengeFactory.CreateChallenge();
+        }
     }
 
 //Getter for combo, needed in audiomanager

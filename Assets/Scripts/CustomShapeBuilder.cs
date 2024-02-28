@@ -42,6 +42,7 @@ public class CustomShapeBuilder : MonoBehaviour
 
         //initialize array, otherwise fucky wucky
         corners = new Vector2[numSides];
+        print("Shape generated has " + numSides + " sides");
 
         CreateCorners();
 
