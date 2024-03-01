@@ -10,6 +10,13 @@ public class SelectionManager : MonoBehaviour
     //Gets all the layer Information from the factoriesParent and builds the "locked layers" from it
     public GameObject factoriesParent;
     public GameObject selectionSprite;
+
+    public float timeUntilMoveAgainMax = 1.24f;
+    private float timeUntilMoveAgain;
+    private float timeUntilMoveAgainCounter = 0f;
+    private bool canMove = true;
+    private bool lastUpdatePressed = false;
+
     private Vector2 inputDir;
     private Vector2 factoryIndex;
     private int playerNum;
@@ -18,6 +25,8 @@ public class SelectionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timeUntilMoveAgain = timeUntilMoveAgainMax;
+
         playerNum = playerFactory.playerNum;
         scoreManager = playerFactory.scoreManager;
 
@@ -30,15 +39,36 @@ public class SelectionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Save Input Direction
         inputDir = Vector2.zero;
         inputDir.x = Input.GetAxis("P" + playerNum + "Horizontal");
         inputDir.y = Input.GetAxis("P" + playerNum + "Vertical");
 
-        if (inputDir != Vector2.zero)
+        if(inputDir != Vector2.zero){
+            lastUpdatePressed = true;
+        }
+        else{
+            lastUpdatePressed = false;
+            canMove = true;
+            timeUntilMoveAgain = timeUntilMoveAgainMax;
+        }
+
+        timeUntilMoveAgainCounter -= Time.deltaTime;
+        if (timeUntilMoveAgainCounter <= 0f)
+        {
+            canMove = true;
+        }
+
+        //Cleanup input so it can be used in the factory index
+        inputDir = ParseInput(inputDir);
+
+        if (inputDir != Vector2.zero && canMove)
         {   
-            //Cleanup input so it can be used in the factory index
-            inputDir = ParseInput(inputDir);
+            canMove = false;
+            timeUntilMoveAgain = timeUntilMoveAgain / 2;
+            timeUntilMoveAgainCounter = timeUntilMoveAgain;
+
 
             print("Input: " + inputDir);
 

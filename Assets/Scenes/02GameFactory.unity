@@ -6921,6 +6921,10 @@ PrefabInstance:
       propertyPath: playerFactory
       value: 
       objectReference: {fileID: 1379173314358555708}
+    - target: {fileID: 7295946964827418907, guid: d76ccd6eb99664e4e831bd321ab75905, type: 3}
+      propertyPath: timeUntilMoveAgainMax
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 8128383939438930715, guid: d76ccd6eb99664e4e831bd321ab75905, type: 3}
       propertyPath: m_Name
       value: SelectionManager
