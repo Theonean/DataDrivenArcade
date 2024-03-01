@@ -55,28 +55,6 @@ public class ScoreManager : MonoBehaviour
         playerFactory.shapeBuilder.InitializeShape(false, selectedFactory.GetMaxAllowedFaces());
     }
 
-/* MOVE TO GAME MANAGER
-    private void Update() {
-
-        //Countdown tbhe timer until it reaches 0, then reset clock and save score to previous score
-        remainingTime -= Time.deltaTime;
-
-        //only use whole numbers for the countdown
-        countdownText.text = Mathf.Round(remainingTime).ToString();
-
-
-        if (remainingTime <= 0f)
-        {
-            remainingTime = 0f;
-            lastScoreText.text = score.ToString();
-            scoreText.text = "0";
-            score = 0;
-            remainingTime = 60f;
-            combo = 1;
-        }
-    }
-    */ 
-
     public void PlayerFinishedShape(string playerShapeCode){
 
         print("Comparing " + playerShapeCode + " to " + challengeShapeCode);
@@ -159,13 +137,21 @@ public class ScoreManager : MonoBehaviour
     //Getter for combo, needed in audiomanager
     public int GetCombo(){ return combo; }
 
-    //Properly finish this function to also set UI stuff and properly reset player
     public void ResetPlayer(){
-        //Reset to original position
+        //Iterate over all challenge factores and reset them
+        foreach(ChallengeFactoryList cfl in challengeFactories){
+            foreach (ChallengeFactory cf in cfl.list)
+            {
+                cf.ResetCF();
+            }
+        }
+
+        //Reset to original position, which also resets player factory
         UpdateSelectedFactory(selectedFactoryIndex);
 
         combo = 1;
         comboMultiplier = 1;
-        selectedFactory.CreateChallenge();
+        challengeShapeCode = selectedFactory.CreateChallenge();
+        playerInfoManager.Reset();
     }
 }

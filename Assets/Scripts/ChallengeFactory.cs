@@ -42,6 +42,14 @@ public class ChallengeFactory : ShapeFactory
         UpdateUI();
     }
 
+    public string ResetCF()
+    {
+        localCombo = 0;
+        maxAllowedFaces = maxFacesFloorMIN;
+        UpdateUI();
+        return CreateChallenge();
+    }
+
     private void UpdateUI() {
         localComboText.text = localCombo.ToString();;
     }

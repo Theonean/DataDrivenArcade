@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private float timeLeft;
 
+    public ScoreManager[] players;
+
     void Awake() {
 
         if (instance == null) instance = this;
@@ -38,7 +40,11 @@ public class GameManager : MonoBehaviour
             countdownTimer.text = timeLeft.ToString("F2");
             if (timeLeft < 0) {
                 timeLeft = roundTime;
-                //End Game
+                
+                foreach (ScoreManager player in players)
+                {
+                    player.ResetPlayer();
+                }
             }
         }
     }

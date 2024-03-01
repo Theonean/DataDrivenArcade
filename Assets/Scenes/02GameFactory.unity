@@ -975,6 +975,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: roundTime
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: Player2Colour
       value: 2
       objectReference: {fileID: 0}
@@ -982,6 +986,18 @@ PrefabInstance:
       propertyPath: countdownTimer
       value: 
       objectReference: {fileID: 437577527}
+    - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: players.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: players.Array.data[0]
+      value: 
+      objectReference: {fileID: 8616479002873853274}
+    - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: players.Array.data[1]
+      value: 
+      objectReference: {fileID: 965505961}
     - target: {fileID: 1191605369127970534, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: m_Name
       value: GameManager
