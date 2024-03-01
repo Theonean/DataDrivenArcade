@@ -4,12 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public enum BuildingState{
-    WAITFORNUMBER,
-    BUILDING,
-    FINISHED
-}
-
 public class ShapeFactory : MonoBehaviour
 {
     //first Input of player gives the number of sides (has to be a number between 2 and 8)
@@ -21,8 +15,6 @@ public class ShapeFactory : MonoBehaviour
     
     [HideInInspector]
     protected int maxAllowedFaces = 2;
-    [HideInInspector]
-    public BuildingState state = BuildingState.BUILDING;
 
     private GameManager gm;
 
@@ -35,5 +27,9 @@ public class ShapeFactory : MonoBehaviour
 
     public void SetMaxAllowedFaces(int maxAllowedFaces){
         this.maxAllowedFaces = maxAllowedFaces;
+    }
+
+    public int GetMaxAllowedFaces(){
+        return maxAllowedFaces;
     }
 }
