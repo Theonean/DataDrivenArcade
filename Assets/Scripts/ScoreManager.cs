@@ -127,6 +127,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     public void UpdateSelectedFactory(Vector2 newIndex){
+        
         selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
         challengeShapeCode = selectedFactory.shapeBuilder.GetShapecode();
         
@@ -136,6 +137,7 @@ public class ScoreManager : MonoBehaviour
 
     //Getter for combo, needed in audiomanager
     public int GetCombo(){ return combo; }
+    public int GetScore(){ return score; }
 
     public void ResetPlayer(){
         //Iterate over all challenge factores and reset them

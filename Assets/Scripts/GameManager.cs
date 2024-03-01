@@ -7,7 +7,8 @@ public enum CurrentScene{
     LOGIN,
     GAMESELECTION,
     GAMECLASSIC,
-    GAMEFACTORY
+    GAMEFACTORY,
+    GAMEMEGASHAPE
 }
 
 public class GameManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     public float roundTime = 60f;
     public TextMeshProUGUI countdownTimer;
 
-    private float timeLeft;
+    private float timeLeft = 0f;
 
     public ScoreManager[] players;
 
@@ -31,7 +32,17 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        timeLeft = roundTime;
+        //This won't work on final gamemanager but currently Im not using it as a proper singleton so ya know whateva
+        if (gameState == CurrentScene.GAMECLASSIC || gameState == CurrentScene.GAMEFACTORY) {
+            timeLeft = roundTime;
+        }
+        else
+        {
+            foreach (ScoreManager player in players)
+            {
+                player.playerInfoManager.enabled = false;
+            }
+        }
     }
 
     private void Update() {
@@ -44,6 +55,28 @@ public class GameManager : MonoBehaviour
                 foreach (ScoreManager player in players)
                 {
                     player.ResetPlayer();
+                }
+            }
+        }
+        else if (gameState == CurrentScene.GAMEMEGASHAPE)
+        {
+            timeLeft += Time.deltaTime;
+            countdownTimer.text = timeLeft.ToString("F2");
+
+            //Check if one of the players score is higher than 0, if yes, then we can end the game
+            foreach (ScoreManager player in players)
+            {
+                if (player.GetScore() > 0)
+                {
+                    gameState = CurrentScene.GAMESELECTION;
+                    timeLeft = 0;
+                    countdownTimer.text = timeLeft.ToString("F2");
+
+                    //reset all players
+                    foreach (ScoreManager tempP in players)
+                    {
+                        tempP.ResetPlayer();
+                    }
                 }
             }
         }

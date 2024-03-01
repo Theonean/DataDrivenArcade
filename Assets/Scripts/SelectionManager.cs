@@ -36,15 +36,41 @@ public class SelectionManager : MonoBehaviour
         inputDir.y = Input.GetAxis("P" + playerNum + "Vertical");
 
         if (inputDir != Vector2.zero)
-        {
+        {   
+            //Cleanup input so it can be used in the factory index
+            inputDir = ParseInput(inputDir);
+
+            print("Input: " + inputDir);
+
+            //Safety check on inputdir to make sure it is within the bounds of the factories
+            if (factoryIndex.x + inputDir.x < 0) inputDir.x = 0;
+            else if (factoryIndex.x + inputDir.x >= scoreManager.challengeFactories[(int)factoryIndex.y].list.Count) inputDir.x = 0;
+
+            if (factoryIndex.y + inputDir.y < 0) inputDir.y = 0;
+            else if (factoryIndex.y + inputDir.y >= scoreManager.challengeFactories.Count) inputDir.y = 0;
+
             factoryIndex += inputDir;
 
             scoreManager.UpdateSelectedFactory(factoryIndex);
-            factoryIndex = scoreManager.selectedFactoryIndex;
             
             //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
             selectionSprite.transform.position = scoreManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
     
         }   
+    }
+
+    //set x and y of Input to either -1,0 or 1
+    private Vector2 ParseInput(Vector2 input){
+        Vector2 inputDir = input;
+
+        if (inputDir.x > 0) inputDir.x = 1;
+        else if (inputDir.x < 0) inputDir.x = -1;
+        else inputDir.x = 0;
+
+        if (inputDir.y > 0) inputDir.y = 1;
+        else if (inputDir.y < 0) inputDir.y = -1;
+        else inputDir.y = 0;
+
+        return inputDir;
     }
 }

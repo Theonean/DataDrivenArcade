@@ -10,7 +10,7 @@ InputManager:
     descriptiveName: Player 1 Vertical Axis
     descriptiveNegativeName: 
     negativeButton: s
-    positiveButton: w
+    positiveButton: x
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -25,8 +25,8 @@ InputManager:
     m_Name: P1Horizontal
     descriptiveName: Player 1 Horizontal Axis
     descriptiveNegativeName: 
-    negativeButton: a
-    positiveButton: d
+    negativeButton: y
+    positiveButton: c
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -50,15 +50,15 @@ InputManager:
     sensitivity: 3
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 0
     joyNum: 2
   - serializedVersion: 3
     m_Name: P2Vertical
     descriptiveName: Player 2 Vertical Axis
     descriptiveNegativeName: 
-    negativeButton: down
-    positiveButton: up
+    negativeButton: up
+    positiveButton: down
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
@@ -66,7 +66,7 @@ InputManager:
     sensitivity: 3
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 1
     joyNum: 2
   - serializedVersion: 3
@@ -261,4 +261,4 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 2
-  m_UsePhysicalKeys: 1
+  m_UsePhysicalKeys: 0
