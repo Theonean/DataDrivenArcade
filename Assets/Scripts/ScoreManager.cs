@@ -1,10 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
+using UnityEngine.Scripting.APIUpdating;
+
+[System.Serializable]
+public class ChallengeFactoryList {
+    public List<ChallengeFactory> list = new List<ChallengeFactory>();
+}
+
 
 public class ScoreManager : MonoBehaviour
 {
@@ -13,16 +18,15 @@ public class ScoreManager : MonoBehaviour
 
     //What SHOULDN't this class do?
     //Imma leave this to future robin
-    
 
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI countdownText;
-    public TextMeshProUGUI lastScoreText;
+    public PlayerInfoManager playerInfoManager;
+    public List<ChallengeFactoryList> challengeFactories = new List<ChallengeFactoryList>();
 
-    [Description("The Factories this player has access to, INDEX 0 MUST BE PRIVATE FACTORY")]
-    public ChallengeFactory challengeFactory;
+    [Description("Set Value in Editor determines first Factory that's selected when the game starts")]
+    public Vector2 selectedFactoryIndex = new Vector2(0, 0);
+    private ChallengeFactory selectedFactory;
 
-    private PlayerFactory playerFactory;
+    public PlayerFactory playerFactory;
 
     private string challengeShapeCode;
 
@@ -35,16 +39,23 @@ public class ScoreManager : MonoBehaviour
     private int comboMultiplier = 1;
 
     private void Awake() {
-        print("ScoreManager Start");
-        playerFactory = transform.Find("PlayerFactory").GetComponent<PlayerFactory>();
-        
+        print("ScoreManager Awake");
+
+        selectedFactory = challengeFactories[(int)selectedFactoryIndex.y].list[(int)selectedFactoryIndex.x];
+            
         playerFactory.scoreManager = this;
     }
 
     private void Start() {
-        challengeShapeCode = challengeFactory.CreateChallenge();
+        print("ScoreManager Start");
+        challengeShapeCode = selectedFactory.CreateChallenge();
+
+        //AAAAGH this feels incredulously dirty but whatever
+        playerFactory.SetMaxAllowedFaces(selectedFactory.GetMaxAllowedFaces());
+        playerFactory.shapeBuilder.InitializeShape(false, selectedFactory.GetMaxAllowedFaces());
     }
 
+/* MOVE TO GAME MANAGER
     private void Update() {
 
         //Countdown tbhe timer until it reaches 0, then reset clock and save score to previous score
@@ -64,6 +75,7 @@ public class ScoreManager : MonoBehaviour
             combo = 1;
         }
     }
+    */ 
 
     public void PlayerFinishedShape(string playerShapeCode){
 
@@ -72,23 +84,34 @@ public class ScoreManager : MonoBehaviour
         //TODO Visualize the current combo and Multiplier
         if (playerShapeCode == challengeShapeCode)
         {
-            score += combo * comboMultiplier;
-            scoreText.text = score.ToString();
             combo++;
-            comboMultiplier = Mathf.RoundToInt(combo / comboNeededForMultiplier) + 1; //+1 to avoid 0 multiplier
+            comboMultiplier = Mathf.RoundToInt((selectedFactory.maxFacesFloorMIN + combo) / comboNeededForMultiplier) + 1; //+1 to avoid 0 multiplier
+
+            int facesAdder = selectedFactory.maxFacesFloorMIN - 2;
+            int newAllowedFaces = Mathf.Clamp(comboMultiplier + facesAdder, selectedFactory.maxFacesFloorMIN, 10);
 
             //Only the personal factory of a player increases in Combo, find other system for the other factories which are "shared"
-            challengeFactory.SetMaxAllowedFaces(Mathf.Clamp(comboMultiplier, 2, 10));
+            selectedFactory.SetMaxAllowedFaces(newAllowedFaces);
+            selectedFactory.SuccessfullShape();
+
+            playerFactory.SetMaxAllowedFaces(newAllowedFaces);
+
             rightShape = true;
+
+            //Add score to player
+            score += (newAllowedFaces - 1) * comboMultiplier;
+            playerInfoManager.SetScore(score);
         }
         //When wrong shape is completed, stop combo and reset multiplier
         else
         {
             combo = 1;
             comboMultiplier = 1;
+            selectedFactory.FailedShape();
         }
 
-        StartCoroutine(MoveShapeToChallenge(challengeFactory.shapeBuilder, rightShape));
+        playerInfoManager.SetCombo(combo -1);//Subtract 1 to remove the 1 that was added in the if statement
+        StartCoroutine(MoveShapeToChallenge(selectedFactory.shapeBuilder, rightShape));
     }
 
     // Coroutine which moves the shape of the player to the shape of the challenge and when it arrives, the player gets reset
@@ -121,10 +144,28 @@ public class ScoreManager : MonoBehaviour
         // Reset the player shape and building State
         playerFactory.ResetFactory();
         if(rightShape){
-            challengeShapeCode = challengeFactory.CreateChallenge();
+            challengeShapeCode = selectedFactory.CreateChallenge();
         }
     }
 
-//Getter for combo, needed in audiomanager
+    public void UpdateSelectedFactory(Vector2 newIndex){
+        selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
+        challengeShapeCode = selectedFactory.shapeBuilder.GetShapecode();
+        
+        playerFactory.SetMaxAllowedFaces(selectedFactory.GetMaxAllowedFaces());
+        playerFactory.ResetFactory();
+    }
+
+    //Getter for combo, needed in audiomanager
     public int GetCombo(){ return combo; }
+
+    //Properly finish this function to also set UI stuff and properly reset player
+    public void ResetPlayer(){
+        //Reset to original position
+        UpdateSelectedFactory(selectedFactoryIndex);
+
+        combo = 1;
+        comboMultiplier = 1;
+        selectedFactory.CreateChallenge();
+    }
 }
