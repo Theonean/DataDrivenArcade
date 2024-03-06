@@ -15,11 +15,14 @@ public class ChallengeFactory : ShapeFactory
     [Range(2, 100)]
     public int maxFacesFloorMIN;
 
+    public GameObject selectionHighlightPrefab;
+
+    private bool selected = false;
+
     private void Start() {
         print("Challenge Factory Start");
         maxAllowedFaces = maxFacesFloorMIN;
         localComboText.enabled = showLocalCombo;
-        CreateChallenge();
     }
 
     //Returns code of shape created by challenge
@@ -29,7 +32,14 @@ public class ChallengeFactory : ShapeFactory
         //Used so that Factory Gamemode can use "Layers" which have increasing difficulty but also higher reward
         maxAllowedFaces = maxAllowedFaces <= maxFacesFloorMIN ? maxFacesFloorMIN : maxAllowedFaces;
 
-        return shapeBuilder.InitializeShape(true, maxAllowedFaces);
+        string shapeCode = shapeBuilder.InitializeShape(true, maxAllowedFaces);
+
+        if(selected){
+            print("Challenge Factory CreateChallenge and is selected");
+            Selected();
+        }
+
+        return shapeCode;
     }
 
     public void SuccessfullShape(){
@@ -38,8 +48,16 @@ public class ChallengeFactory : ShapeFactory
     }
 
     public void FailedShape(){
-        localCombo = 1;
+        localCombo = 0;
         UpdateUI();
+    }
+
+    //When CF is Selected initiate the highlight of the first line of the customshapebuilder
+    //Default value highlights the first line of the shape
+    public void Selected(int lineIndex = 0, bool isHighlighted = true){
+        print("Challenge Factory Selected line " + lineIndex + " isHighlighted " + isHighlighted);
+        shapeBuilder.SetLineHighlight(lineIndex, isHighlighted);
+        selected = isHighlighted;
     }
 
     public string ResetCF()
@@ -47,9 +65,12 @@ public class ChallengeFactory : ShapeFactory
         localCombo = 0;
         maxAllowedFaces = maxFacesFloorMIN;
         UpdateUI();
-        return CreateChallenge();
+        string shapeCode = CreateChallenge();
+        if(selected){
+            Selected();
+        }
+        return shapeCode;
     }
-
     private void UpdateUI() {
         localComboText.text = localCombo.ToString();;
     }

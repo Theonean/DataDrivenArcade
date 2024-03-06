@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public CurrentScene gameState;
+    public bool arcadeMode = false;
+    public string p1Name;
+    public string p2Name;
 
     public float roundTime = 60f;
     public TextMeshProUGUI countdownTimer;
@@ -43,6 +46,10 @@ public class GameManager : MonoBehaviour
                 player.playerInfoManager.enabled = false;
             }
         }
+    }
+
+    public void SetState(CurrentScene newState) {
+        gameState = newState;
     }
 
     private void Update() {
@@ -79,6 +86,53 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    //Returns the number Input pressed by the player (out int) and how many inputs there were (normal function return)
+    public int[] GetInputNumber(int playerNum){
+        List<int> AmountKeysPressedThisFrame = new List<int>();
+        int i = 0;
+        
+        if(Input.GetButtonDown("P" + playerNum + "L1")){
+            AmountKeysPressedThisFrame.Add(0);
+            i += 1;
+        }
+
+        if(Input.GetButtonDown("P" + playerNum + "L2")){
+            AmountKeysPressedThisFrame.Add(1);
+            i += 1;
+        }
+
+        if(Input.GetButtonDown("P" + playerNum + "L3")){
+            AmountKeysPressedThisFrame.Add(2);
+            i += 1;
+        }
+
+        if(Input.GetButtonDown("P" + playerNum + "L4")){
+            AmountKeysPressedThisFrame.Add(3);
+            i += 1;
+        }
+
+        if(Input.GetButtonDown("P" + playerNum + "L5")){
+            AmountKeysPressedThisFrame.Add(4);
+            i += 1;
+        }
+
+        if(Input.GetButtonDown("P" + playerNum + "L6")){
+            AmountKeysPressedThisFrame.Add(5);
+            i += 1;
+        }
+
+        return AmountKeysPressedThisFrame.ToArray();
+    }
+
+    public string GetPlayerName(int playerNum){
+        if (playerNum == 1) return p1Name;
+        else if (playerNum == 2) return p2Name;
+        else{
+            Debug.Log("Error in GetPlayerName");
+            return "Error";
         }
     }
 

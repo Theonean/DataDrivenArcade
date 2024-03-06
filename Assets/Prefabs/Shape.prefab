@@ -46,11 +46,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomSidesNum: 0
   radius: 0.4
-  texturesPlayer:
+  lineTextures:
   - {fileID: 21300000, guid: 69233faf19578b8488d0118f0c623d12, type: 3}
   - {fileID: 21300000, guid: 011719fa79b92cd45be59bc19e450821, type: 3}
   - {fileID: 21300000, guid: 7db973a8a4c0ebe46938308191d50ea0, type: 3}
   - {fileID: 21300000, guid: 2e8c1eebcd6058049a0d7f08b567ba02, type: 3}
   - {fileID: 21300000, guid: ad6fa224bab599f4da3abf0e1b5f8f28, type: 3}
   - {fileID: 21300000, guid: abab71d42267f73409496d8c7047c2c8, type: 3}
+  highlightLineTextures:
+  - {fileID: 21300000, guid: f5d257ac409f34a4a9d87cca1cec740a, type: 3}
+  - {fileID: 21300000, guid: 494d1bd10f276de4283c5f5de4ea02f4, type: 3}
+  - {fileID: 21300000, guid: df3f1a6899acd894b805d216d48cb939, type: 3}
+  - {fileID: 21300000, guid: dda7b5fef1fbfc3449b32bcbdb23fb96, type: 3}
+  - {fileID: 21300000, guid: 5c4e91ee86d76b24e82947f5c407fc5e, type: 3}
+  - {fileID: 21300000, guid: 673da608abdd1514abf0594c421cf2f2, type: 3}
   currNodePathID: 0

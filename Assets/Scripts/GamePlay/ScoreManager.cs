@@ -10,7 +10,6 @@ public class ChallengeFactoryList {
     public List<ChallengeFactory> list = new List<ChallengeFactory>();
 }
 
-
 public class ScoreManager : MonoBehaviour
 {
     //What does this class do?
@@ -53,12 +52,27 @@ public class ScoreManager : MonoBehaviour
         //AAAAGH this feels incredulously dirty but whatever
         playerFactory.SetMaxAllowedFaces(selectedFactory.GetMaxAllowedFaces());
         playerFactory.shapeBuilder.InitializeShape(false, selectedFactory.GetMaxAllowedFaces());
+
+        //Select first line in the challenge shape
+        selectedFactory.Selected();
+
+        //Iterate over all challenge factories and create a challenge shape if it is not selected
+        for (int i = 0; i < challengeFactories.Count; i++)
+        {
+            for (int j = 0; j < challengeFactories[i].list.Count; j++)
+            {
+                if (i != selectedFactoryIndex.y || j != selectedFactoryIndex.x)
+                {
+                    challengeFactories[i].list[j].CreateChallenge();
+                }
+            }
+        }
     }
 
     public void PlayerFinishedShape(string playerShapeCode){
 
         print("Comparing " + playerShapeCode + " to " + challengeShapeCode);
-        bool rightShape = false;
+        bool isCorrectShape = false;
         //TODO Visualize the current combo and Multiplier
         if (playerShapeCode == challengeShapeCode)
         {
@@ -74,7 +88,7 @@ public class ScoreManager : MonoBehaviour
 
             playerFactory.SetMaxAllowedFaces(newAllowedFaces);
 
-            rightShape = true;
+            isCorrectShape = true;
 
             //Add score to player
             score += (newAllowedFaces - 1) * comboMultiplier;
@@ -89,11 +103,11 @@ public class ScoreManager : MonoBehaviour
         }
 
         playerInfoManager.SetCombo(combo -1);//Subtract 1 to remove the 1 that was added in the if statement
-        StartCoroutine(MoveShapeToChallenge(selectedFactory.shapeBuilder, rightShape));
+        StartCoroutine(MoveShapeToChallenge(selectedFactory.shapeBuilder, isCorrectShape));
     }
 
     // Coroutine which moves the shape of the player to the shape of the challenge and when it arrives, the player gets reset
-    public IEnumerator MoveShapeToChallenge(CustomShapeBuilder sb, bool rightShape)
+    public IEnumerator MoveShapeToChallenge(CustomShapeBuilder sb, bool isCorrectShape)
     {
         CustomShapeBuilder playerShapeBuilder = playerFactory.shapeBuilder;
         // Get the player shape and challenge shape positions
@@ -119,9 +133,9 @@ public class ScoreManager : MonoBehaviour
         //reset the player shape position to the original position
         playerShapeBuilder.transform.position = playerShapePosition;
 
-        // Reset the player shape and building State
+        // Reset the player shape and building State only at end of movement
         playerFactory.ResetFactory();
-        if(rightShape){
+        if(isCorrectShape){
             challengeShapeCode = selectedFactory.CreateChallenge();
         }
     }
@@ -140,7 +154,7 @@ public class ScoreManager : MonoBehaviour
     public int GetScore(){ return score; }
 
     public void ResetPlayer(){
-        //Iterate over all challenge factores and reset them
+        //Iterate over all challenge factories and reset them
         foreach(ChallengeFactoryList cfl in challengeFactories){
             foreach (ChallengeFactory cf in cfl.list)
             {
@@ -154,6 +168,7 @@ public class ScoreManager : MonoBehaviour
         combo = 1;
         comboMultiplier = 1;
         challengeShapeCode = selectedFactory.CreateChallenge();
+        selectedFactory.Selected();
         playerInfoManager.Reset();
     }
 }

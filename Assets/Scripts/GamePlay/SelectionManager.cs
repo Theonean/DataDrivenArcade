@@ -31,7 +31,7 @@ public class SelectionManager : MonoBehaviour
         scoreManager = playerFactory.scoreManager;
 
         factoryIndex = scoreManager.selectedFactoryIndex;
-        
+
         //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
         selectionSprite.transform.position = scoreManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
     }
@@ -45,10 +45,12 @@ public class SelectionManager : MonoBehaviour
         inputDir.x = Input.GetAxis("P" + playerNum + "Horizontal");
         inputDir.y = Input.GetAxis("P" + playerNum + "Vertical");
 
-        if(inputDir != Vector2.zero){
+        if (inputDir != Vector2.zero)
+        {
             lastUpdatePressed = true;
         }
-        else{
+        else
+        {
             lastUpdatePressed = false;
             canMove = true;
             timeUntilMoveAgain = timeUntilMoveAgainMax;
@@ -64,7 +66,7 @@ public class SelectionManager : MonoBehaviour
         inputDir = ParseInput(inputDir);
 
         if (inputDir != Vector2.zero && canMove)
-        {   
+        {
             canMove = false;
             timeUntilMoveAgain = timeUntilMoveAgain / 2;
             timeUntilMoveAgainCounter = timeUntilMoveAgain;
@@ -82,15 +84,16 @@ public class SelectionManager : MonoBehaviour
             factoryIndex += inputDir;
 
             scoreManager.UpdateSelectedFactory(factoryIndex);
-            
+
             //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
             selectionSprite.transform.position = scoreManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
-    
-        }   
+
+        }
     }
 
     //set x and y of Input to either -1,0 or 1
-    private Vector2 ParseInput(Vector2 input){
+    private Vector2 ParseInput(Vector2 input)
+    {
         Vector2 inputDir = input;
 
         if (inputDir.x > 0) inputDir.x = 1;

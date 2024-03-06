@@ -7,7 +7,7 @@ InputManager:
   m_Axes:
   - serializedVersion: 3
     m_Name: P1Vertical
-    descriptiveName: Player 1 Vertical Axis
+    descriptiveName: Player 1 Vertical Axis Keyboard
     descriptiveNegativeName: 
     negativeButton: s
     positiveButton: x
@@ -22,8 +22,24 @@ InputManager:
     axis: 0
     joyNum: 1
   - serializedVersion: 3
+    m_Name: P1Vertical
+    descriptiveName: Player 1 Vertical Axis Joystick
+    descriptiveNegativeName: 
+    negativeButton: s
+    positiveButton: x
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.1
+    sensitivity: 1000
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 1
+  - serializedVersion: 3
     m_Name: P1Horizontal
-    descriptiveName: Player 1 Horizontal Axis
+    descriptiveName: Player 1 Horizontal Axis Keyboard
     descriptiveNegativeName: 
     negativeButton: y
     positiveButton: c
@@ -38,8 +54,24 @@ InputManager:
     axis: 1
     joyNum: 1
   - serializedVersion: 3
+    m_Name: P1Horizontal
+    descriptiveName: Player 1 Horizontal Axis Joystick
+    descriptiveNegativeName: 
+    negativeButton: y
+    positiveButton: c
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.1
+    sensitivity: 1000
+    snap: 1
+    invert: 0
+    type: 2
+    axis: 1
+    joyNum: 1
+  - serializedVersion: 3
     m_Name: P2Horizontal
-    descriptiveName: Player 2 Horizontal Axis
+    descriptiveName: Player 2 Horizontal Axis Keyboard
     descriptiveNegativeName: 
     negativeButton: left
     positiveButton: right
@@ -54,8 +86,24 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
+    m_Name: P2Horizontal
+    descriptiveName: Player 2 Horizontal Axis Joystick
+    descriptiveNegativeName: 
+    negativeButton: left
+    positiveButton: right
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.1
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
     m_Name: P2Vertical
-    descriptiveName: Player 2 Vertical Axis
+    descriptiveName: Player 2 Vertical Axis Keyboard
     descriptiveNegativeName: 
     negativeButton: up
     positiveButton: down
@@ -67,6 +115,22 @@ InputManager:
     snap: 0
     invert: 0
     type: 0
+    axis: 1
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: P2Vertical
+    descriptiveName: Player 2 Vertical Axis Joystick
+    descriptiveNegativeName: 
+    negativeButton: up
+    positiveButton: down
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.1
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 2
     axis: 1
     joyNum: 2
   - serializedVersion: 3
@@ -261,4 +325,38 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 2
+  - serializedVersion: 3
+    m_Name: InsertCoinArcade
+    descriptiveName: Insert Coin on Main Menu / Pause game - used to determine if
+      in arcade mode or not
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 2 button 4
+    altNegativeButton: 
+    altPositiveButton: joystick 1 button 4
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: InsertCoinKeyboard
+    descriptiveName: Insert Coin on Main Menu / Pause game - used to determine if
+      in arcade mode or not
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: space
+    altNegativeButton: 
+    altPositiveButton: enter
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
   m_UsePhysicalKeys: 0

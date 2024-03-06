@@ -16,7 +16,7 @@ public class ShapeFactory : MonoBehaviour
     [HideInInspector]
     protected int maxAllowedFaces = 2;
 
-    private GameManager gm;
+    protected GameManager gm;
 
     protected AudioSource linePlaceSource;
 
