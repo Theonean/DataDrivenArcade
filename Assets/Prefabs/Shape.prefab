@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8185694493848597380}
   - component: {fileID: 1909240480748762008}
+  - component: {fileID: 3268517464024973446}
   m_Layer: 0
   m_Name: Shape
   m_TagString: Untagged
@@ -45,7 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSidesNum: 0
+  selectState: 0
   radius: 0.4
+  playerNum: 0
   lineTextures:
   - {fileID: 21300000, guid: 69233faf19578b8488d0118f0c623d12, type: 3}
   - {fileID: 21300000, guid: 011719fa79b92cd45be59bc19e450821, type: 3}
@@ -61,3 +64,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5c4e91ee86d76b24e82947f5c407fc5e, type: 3}
   - {fileID: 21300000, guid: 673da608abdd1514abf0594c421cf2f2, type: 3}
   currNodePathID: 0
+  sap: {fileID: 0}
+--- !u!114 &3268517464024973446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377739720529655395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7703b59dd7a6b840a8376312760ab3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineClips:
+  - {fileID: 8300000, guid: bddb3e070a0cce343a1170c7d57bd603, type: 3}
+  - {fileID: 8300000, guid: ff074d8146e01a24eab13a3eed842b40, type: 3}
+  - {fileID: 8300000, guid: f25b416aa79eb1049b4d11e9ccc053cb, type: 3}
+  - {fileID: 8300000, guid: c98f10f819252fd4195fed617da9b526, type: 3}
+  - {fileID: 8300000, guid: 33fc755bd3f60a2498e49abd759339ba, type: 3}
+  - {fileID: 8300000, guid: 24007e63088b5734bb65cb55a44dbf5e, type: 3}
+  shapeRight: {fileID: 8300000, guid: 52aab59bdd8c2474fbcec247f741d08c, type: 3}
+  shapeWrong: {fileID: 8300000, guid: 2b0520fdd96cc684ba9ce7b1038fef1d, type: 3}

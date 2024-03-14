@@ -14,7 +14,7 @@ public class PlayerFactory : ShapeFactory
 
     //NOW OBSOLETE 
 
-    public ScoreManager scoreManager;
+    public PlayerManager playerManager;
 
     private int playerNum;
     public bool beingAnimated;

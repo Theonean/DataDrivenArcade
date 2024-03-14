@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Text;
+using System.Security.Policy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public enum LoginScreenPlayerState
 
 public class MainMenuSelectionHandler : MonoBehaviour
 {
+    private GameManager gm;
     private MainMenu mainMenu;
     [HideInInspector]
     public bool insertedCoin = false;
@@ -38,6 +40,9 @@ public class MainMenuSelectionHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gm = GameManager.instance;
+        gm.LineInputEvent.AddListener(TryEnterNameInput);
+
         mainMenu = GetComponent<MainMenu>();
         mainMenu.SetSelectionHandler(this, playerNum);
         cooldownTimer = inputCooldown;
@@ -78,24 +83,6 @@ public class MainMenuSelectionHandler : MonoBehaviour
                 }
             }
 
-            //Player enter into name selection when textfield is selected and line button pressed, also same way to get out of it
-            if (GameManager.instance.GetInputNumber(playerNum).Length > 0)
-            {
-                if (loginState == LoginScreenPlayerState.NAME_SELECTED)
-                {
-                    loginState = LoginScreenPlayerState.NAME_INPUTTING;
-                    nameCreator.SetSelected(true, playerNum);
-                    print("Inputting name for player " + playerNum);
-                }
-                else if (loginState == LoginScreenPlayerState.NAME_INPUTTING)
-                {
-                    loginState = LoginScreenPlayerState.NAME_SELECTED;
-                    nameCreator.SetSelected(false, playerNum);
-                    print("Canceled Inputting name for player " + playerNum);
-                }
-                cooldownTimer = inputCooldown;
-            }
-
             //When the player has confirm selected, lerp the texts scale towards 0 and when it reaches there, colour the button green
             if (loginState == LoginScreenPlayerState.CONFIRM_SELECTED)
             {
@@ -107,11 +94,32 @@ public class MainMenuSelectionHandler : MonoBehaviour
                     print("Ready to play for player " + playerNum);
                 }
             }
-            else if(confirmText.transform.localScale != confirmTxtOriginalScale && loginState != LoginScreenPlayerState.READYTOPLAY)
+            else if (confirmText.transform.localScale != confirmTxtOriginalScale && loginState != LoginScreenPlayerState.READYTOPLAY)
             {
                 confirmText.transform.localScale = Vector3.Lerp(confirmText.transform.localScale, confirmTxtOriginalScale, 0.1f);
                 confirmButton.color = Color.white;
             }
+        }
+    }
+
+    //Connected to Line Input Event
+    private void TryEnterNameInput(InputData iData)
+    {
+        if (iData.playerNum == playerNum)
+        {
+            if (loginState == LoginScreenPlayerState.NAME_SELECTED)
+            {
+                loginState = LoginScreenPlayerState.NAME_INPUTTING;
+                nameCreator.SetSelected(true, playerNum);
+                print("Inputting name for player " + playerNum);
+            }
+            else if (loginState == LoginScreenPlayerState.NAME_INPUTTING)
+            {
+                loginState = LoginScreenPlayerState.NAME_SELECTED;
+                nameCreator.SetSelected(false, playerNum);
+                print("Canceled Inputting name for player " + playerNum);
+            }
+            cooldownTimer = inputCooldown;
         }
     }
 

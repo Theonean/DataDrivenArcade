@@ -42,8 +42,7 @@ public class MainMenu : MonoBehaviour
 
         if(p1SelectionHandler.ReadyToPlay() && p2SelectionHandler.ReadyToPlay())
         {
-            gm.SetState(CurrentScene.GAMESELECTION);
-            SceneManager.LoadScene("01GameSelection");
+            gm.SwitchScene(CurrentScene.GAMECLASSIC);
         }
     }
 

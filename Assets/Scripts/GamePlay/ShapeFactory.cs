@@ -20,7 +20,7 @@ public class ShapeFactory : MonoBehaviour
 
     protected AudioSource linePlaceSource;
 
-    void Start() {
+    void Awake() {
         gm = GameManager.instance;
         linePlaceSource = GetComponent<AudioSource>();
     }

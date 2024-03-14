@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Audiomanager : MonoBehaviour
 {
-    public ScoreManager p1ScoreManager;
-    public ScoreManager p2ScoreManager;
+    public PlayerManager p1Manager;
+    public PlayerManager p2Manager;
     public AudioSource backgroundSource;
     public AudioSource comboSource;
     public AudioClip[] comboClips;
@@ -15,8 +15,8 @@ public class Audiomanager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int p1Combo = p1ScoreManager.GetCombo();
-        int p2Combo = p2ScoreManager.GetCombo();
+        int p1Combo = p1Manager.GetCombo();
+        int p2Combo = p2Manager.GetCombo();
 
         //the higher the combo, the more intense the sound becomes
         int CombinedCombo = Mathf.Clamp(p1Combo + p2Combo, 0, comboClips.Length);
