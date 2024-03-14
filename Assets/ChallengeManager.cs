@@ -11,13 +11,15 @@ public class ChallengeManager : MonoBehaviour
     private Vector2 topLeft = new Vector2(-9, 5);
     private Vector2 bottomRight = new Vector2(9, -2);
     private float boundaryPadding = 1f;
+    private float spaceInbetweenChallenges = 0.2f;
+    private float challengeFactorySideLength = 1.25f;
 
     //Variables for Factory Gamemode
     private Vector2 gridSize = new Vector2(3, 3);
 
     //Variables for CLASSIC Gamemode
-    private Vector2 p1ChallengePos = new Vector2(-5, 3);
-    private Vector2 p2ChallengePos = new Vector2(5, 3);
+    private Vector2 p1ChallengePos = new Vector2(-5, 2.25f);
+    private Vector2 p2ChallengePos = new Vector2(5, 2.25f);
     private Vector2 challengeScale = new Vector2(2, 2);
 
     // Update is called once per frame
@@ -35,22 +37,26 @@ public class ChallengeManager : MonoBehaviour
         List<ChallengeFactoryList> challengeFactories = new List<ChallengeFactoryList>();
         if (createClassic)
         {
+            print("Creating Classic Gamemode Layout");
             ChallengeFactoryList factoryList = new ChallengeFactoryList();
 
             //Add Player 1 Challenge
             GameObject p1Challenge = Instantiate(challengePrefab, p1ChallengePos, Quaternion.identity);
             p1Challenge.transform.localScale = new Vector3(challengeScale.x, challengeScale.y, 1);
-            p1Challenge.GetComponent<ChallengeFactory>().SetMaxAllowedFaces(2);
+            p1Challenge.GetComponent<ChallengeFactory>().maxFacesFloorMIN = 2;
             factoryList.list.Add(p1Challenge.GetComponent<ChallengeFactory>());
 
             //Add Player 2 Challenge
             GameObject p2Challenge = Instantiate(challengePrefab, p2ChallengePos, Quaternion.identity);
             p2Challenge.transform.localScale = new Vector3(challengeScale.x, challengeScale.y, 1);
-            p2Challenge.GetComponent<ChallengeFactory>().SetMaxAllowedFaces(2);
+            p2Challenge.GetComponent<ChallengeFactory>().maxFacesFloorMIN = 2;
             factoryList.list.Add(p2Challenge.GetComponent<ChallengeFactory>());
 
             challengeFactories.Add(factoryList);
-
+        }
+        else
+        {
+            Vector2 startPosition = new Vector2(topLeft.x + boundaryPadding, topLeft.y + boundaryPadding);
         }
 
         return challengeFactories;

@@ -12,9 +12,6 @@ public class ShapeFactory : MonoBehaviour
 
     //Prefab for Shape
     public GameObject shapePrefab;
-    
-    [HideInInspector]
-    protected int maxAllowedFaces = 2;
 
     protected GameManager gm;
 
@@ -23,13 +20,5 @@ public class ShapeFactory : MonoBehaviour
     void Awake() {
         gm = GameManager.instance;
         linePlaceSource = GetComponent<AudioSource>();
-    }
-
-    public void SetMaxAllowedFaces(int maxAllowedFaces){
-        this.maxAllowedFaces = maxAllowedFaces;
-    }
-
-    public int GetMaxAllowedFaces(){
-        return maxAllowedFaces;
     }
 }

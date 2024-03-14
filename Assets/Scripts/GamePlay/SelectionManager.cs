@@ -23,8 +23,8 @@ public class SelectionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Check if playerManager has more than 1 challenge factory
-        if (playerManager.challengeFactories.Count < 1)
+        //Check if playerManager has  1 challenge factory
+        if (playerManager.challengeFactories.Count == 1)
         {
             //Hide selector and disable movement input, because theres only one factory to select anyway
             selectionSprite.SetActive(false);

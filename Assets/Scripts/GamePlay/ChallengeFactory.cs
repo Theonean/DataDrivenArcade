@@ -15,12 +15,13 @@ public class ChallengeFactory : ShapeFactory
     [Range(2, 100)]
     public int maxFacesFloorMIN;
 
+    public int shapeNumSides;
+
     private GameObject movingShape;
 
     private void Start()
     {
         print("Challenge Factory Start");
-        maxAllowedFaces = maxFacesFloorMIN;
         localComboText.enabled = showLocalCombo;
     }
 
@@ -29,9 +30,9 @@ public class ChallengeFactory : ShapeFactory
     {
         //If maxFacesFloorMIN is greater than maxAllowedFaces, set maxAllowedFaces to maxFacesFloorMIN
         //Used so that Factory Gamemode can use "Layers" which have increasing difficulty but also higher reward
-        maxAllowedFaces = maxAllowedFaces <= maxFacesFloorMIN ? maxFacesFloorMIN : maxAllowedFaces;
+        shapeNumSides = shapeNumSides <= maxFacesFloorMIN ? maxFacesFloorMIN : shapeNumSides;
 
-        shapeBuilder.InitializeShape(true, maxAllowedFaces);
+        shapeBuilder.InitializeShape(true, shapeNumSides);
     }
 
     public void SuccessfullShape()
@@ -53,7 +54,7 @@ public class ChallengeFactory : ShapeFactory
 
 
         localCombo = 0;
-        maxAllowedFaces = maxFacesFloorMIN;
+        shapeNumSides = maxFacesFloorMIN;
         UpdateUI();
         CreateChallenge();
     }

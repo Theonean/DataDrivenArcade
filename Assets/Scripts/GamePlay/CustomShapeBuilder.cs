@@ -73,11 +73,11 @@ public class CustomShapeBuilder : MonoBehaviour
         //if randomSides is true, then randomize the number of sides
         numSides = randomSidesNum ? Random.Range(2, 8) : numberOfSides;
         lineSprites = new SpriteRenderer[numSides];
-        //print("Inizializing shape which is selected" + selectState.ToString() + " with shapecode" + preShapeCode + " with " + numSides + " sides");
+        print("Inizializing shape which is selected" + selectState.ToString() + " with shapecode" + preShapeCode + " with " + numSides + " sides");
 
         //initialize array, otherwise fucky wucky
         corners = new Vector2[numSides];
-        //sprint("Shape generated has " + numSides + " sides");
+        print("Shape generated has " + numSides + " sides");
 
         CreateCorners();
 
@@ -94,11 +94,12 @@ public class CustomShapeBuilder : MonoBehaviour
                 AddLine(lineCode);
             }
 
-            if (IsSelected())
-            {
-                //print("Initialization highlight at index " + highlightedLineIndex);
-                SetLineHighlight(0, true);
-            }
+        }
+
+        if (IsSelected())
+        {
+            //print("Initialization highlight at index " + highlightedLineIndex);
+            SetLineHighlight(0, true);
         }
 
         return shapeCode;
@@ -249,12 +250,12 @@ public class CustomShapeBuilder : MonoBehaviour
         if (isHighlight)
         {
             //print full debug information for highlighted line
-            //print("Highlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString() + " which translates to " + int.Parse(shapeCode[lineIndex].ToString()) + " in the array");
+            print("Highlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString() + " which translates to " + int.Parse(shapeCode[lineIndex].ToString()) + " in the array");
             lineSprites[lineIndex].sprite = highlightLineTextures[int.Parse(shapeCode[lineIndex].ToString())];
         }
         else
         {
-            //print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
+            print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
             lineSprites[lineIndex].sprite = lineTextures[int.Parse(shapeCode[lineIndex].ToString())];
         }
     }

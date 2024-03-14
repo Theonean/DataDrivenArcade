@@ -28,20 +28,22 @@ public class GameModeManager : MonoBehaviour
 
         if (constructClassic)
         {
-            p1.challengeFactories = new List<ChallengeFactoryList>
+            List<ChallengeFactoryList> p1ChallengeList = new List<ChallengeFactoryList>
             {
                 new ChallengeFactoryList(challengeFactories[0].list[0])
             };
+            p1.SetPlayerReady(p1ChallengeList);
             
-            p2.challengeFactories = new List<ChallengeFactoryList>
+            List<ChallengeFactoryList> p2ChallengeList = new List<ChallengeFactoryList>
             {
                 new ChallengeFactoryList(challengeFactories[0].list[1])
             };
+            p2.SetPlayerReady(p2ChallengeList);
         }
         else
         {
-            p1.challengeFactories = challengeFactories;
-            p2.challengeFactories = challengeFactories;
+            p1.SetPlayerReady(challengeFactories);
+            p2.SetPlayerReady(challengeFactories);
         }
     }
 }

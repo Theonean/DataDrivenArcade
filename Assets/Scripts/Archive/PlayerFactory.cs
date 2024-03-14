@@ -18,6 +18,9 @@ public class PlayerFactory : ShapeFactory
 
     private int playerNum;
     public bool beingAnimated;
+    private void Start() {
+        Debug.LogError("PlayerFactory is obsolete, WHY ARE YOU RUNNING");
+    }
 
     //Reset only needed for player, used to be on the shapefactory but moved for safetyreasons (why have it higher when that can only cause trouble?)
     public void ResetFactory(InputData iData)
@@ -32,7 +35,9 @@ public class PlayerFactory : ShapeFactory
     public void ResetFactory()
     {
         //print("Reseting playerfactory with faces: " + maxAllowedFaces);
-        shapeBuilder.InitializeShape(false, maxAllowedFaces);
+        //shapeBuilder.InitializeShape(false, maxAllowedFaces); GUGUUUUUS, 
+        //maxAllowedFaces is a misnomer variable that was used once but changed to shapeNumSides, this script is archived ANYWAY so I just commented it out
+        
         shapeBuilder.DestroyLines();
         beingAnimated = false;
 

@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
         print("ScoreManager Start");
         selectedFactory.CreateChallenge();
 
-        shapeSidesNum = selectedFactory.GetMaxAllowedFaces();
+        shapeSidesNum = selectedFactory.shapeNumSides;
         playerShape.InitializeShape(false, shapeSidesNum);
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
@@ -111,7 +111,7 @@ public class PlayerManager : MonoBehaviour
             int newAllowedFaces = Mathf.Clamp(comboMultiplier + facesAdder, selectedFactory.maxFacesFloorMIN, 10);
 
             //Only the personal factory of a player increases in Combo, find other system for the other factories which are "shared"
-            selectedFactory.SetMaxAllowedFaces(newAllowedFaces);
+            selectedFactory.shapeNumSides = newAllowedFaces;
             selectedFactory.SuccessfullShape();
 
             shapeSidesNum = newAllowedFaces;
@@ -164,7 +164,7 @@ public class PlayerManager : MonoBehaviour
         //Select and highlight new factory / shape
         selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
 
-        shapeSidesNum = selectedFactory.GetMaxAllowedFaces();
+        shapeSidesNum = selectedFactory.shapeNumSides;
 
         //Reset player shape with the currently set lines
         playerShape.InitializeShape(true, shapeSidesNum, playerShape.GetShapecode());
