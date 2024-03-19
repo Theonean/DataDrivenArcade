@@ -34,27 +34,38 @@ public class PlayerManager : MonoBehaviour
 
     public int playerNum;
     public GameModeManager gameModeManager;
+    public ChallengeManager challengeManager;
 
     public PlayerInfoManager playerInfoManager;
+    public SelectionManager selectionManager;
     public List<ChallengeFactoryList> challengeFactories = new List<ChallengeFactoryList>();
 
     [Description("Set Value in Editor determines first Factory that's selected when the game starts")]
-    public Vector2 selectedFactoryStartIndex = new Vector2(0, 0);
+    private Vector2 selectedFactoryStartIndex = new Vector2(0, 0);
     private ChallengeFactory selectedFactory;
 
     public CustomShapeBuilder playerShape;
-    private int shapeSidesNum;
     private GameManager gm;
 
     //SCORE MANAGEMENT
+    //SIMPLIFY THIS, MULTIPLY SIDES OF FACE WITH COMBO
+    //WHAT IF SCORE IS LITERALLY HOW MANY LINES ARE PRESENT IN THE SHAPE
+    //MAYBE DEDUCT POINTS FOR EACH LINE THAT'S WRONG IN THE SENT SHAPE?
     private int score = 0;
     private int combo = 0;
-    private int comboNeededForMultiplier = 2;
-    private int comboMultiplier = 0;
 
     public void SetPlayerReady(List<ChallengeFactoryList> challengeFactories)
     {
         this.challengeFactories = challengeFactories;
+
+        if (playerNum == 1)
+        {
+            selectedFactoryStartIndex = new Vector2(0, 0);
+        }
+        else
+        {
+            selectedFactoryStartIndex = new Vector2(challengeFactories[0].list.Count - 1, 0);
+        }
 
         gm = GameManager.instance;
 
@@ -63,17 +74,20 @@ public class PlayerManager : MonoBehaviour
         gm.LineInputEvent.AddListener(TryAddLine);
         gm.DoubleLineInputEvent.AddListener(ReinitializePlayer);
 
-        
+
         print("ScoreManager Start");
         selectedFactory.CreateChallenge();
-
-        shapeSidesNum = selectedFactory.shapeNumSides;
-        playerShape.InitializeShape(false, shapeSidesNum);
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
         selectedFactory.shapeBuilder.selectState = SelectState.SELECTED;
 
         playerInfoManager.SetName(gm.GetPlayerName(playerNum));
+        playerInfoManager.SetScore(score);
+        playerInfoManager.SetCombo(combo);
+
+        //activate the selection manager and pass it the starting index of the selected factory
+        GetComponentInChildren<SelectionManager>().Activate(selectedFactoryStartIndex);
     }
 
     private void TryAddLine(InputData iData)
@@ -98,40 +112,34 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
         string playerShapeCode = playerShape.GetShapecode();
 
-        //print("Comparing " + playerShapeCode + " to " + challengeShapeCode);
+        print("Comparing " + playerShapeCode + " to " + selectedFactory.shapeBuilder.GetShapecode());
         bool isCorrectShape = false;
 
         //Score and Combo Calculation
         if (playerShapeCode == selectedFactory.shapeBuilder.GetShapecode())
         {
             combo++;
-            comboMultiplier = Mathf.RoundToInt((selectedFactory.maxFacesFloorMIN + combo) / comboNeededForMultiplier) + 1; //+1 to avoid 0 multiplier
-
-            int facesAdder = selectedFactory.maxFacesFloorMIN - 2;
-            int newAllowedFaces = Mathf.Clamp(comboMultiplier + facesAdder, selectedFactory.maxFacesFloorMIN, 10);
 
             //Only the personal factory of a player increases in Combo, find other system for the other factories which are "shared"
-            selectedFactory.shapeNumSides = newAllowedFaces;
             selectedFactory.SuccessfullShape();
-
-            shapeSidesNum = newAllowedFaces;
 
             isCorrectShape = true;
 
             //Add score to player
-            score += (newAllowedFaces - 1) * comboMultiplier;
+            score += selectedFactory.shapeNumSides * combo;
             playerInfoManager.SetScore(score);
+
+            //Inform challengemanager to reduce Lock Number on challenges below this one
+            challengeManager.ReduceShapeLockNum(selectedFactory);
         }
         //When wrong shape is completed, stop combo and reset multiplier
         else
         {
             combo = 0;
-            comboMultiplier = 0;
-            shapeSidesNum = selectedFactory.maxFacesFloorMIN;
             selectedFactory.FailedShape();
         }
 
-        playerShape.InitializeShape(false, shapeSidesNum);
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         playerInfoManager.SetCombo(combo);//Subtract 1 to remove the 1 that was added in the if statement
         StartCoroutine(selectedFactory.MoveShapeToChallenge(playerShape, isCorrectShape));
@@ -145,7 +153,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (iData.playerNum == playerNum)
         {
-            playerShape.InitializeShape(false, shapeSidesNum);
+            playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
             selectedFactory.shapeBuilder.EndLineHighlight();
             selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
         }
@@ -164,11 +172,8 @@ public class PlayerManager : MonoBehaviour
         //Select and highlight new factory / shape
         selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
 
-        shapeSidesNum = selectedFactory.shapeNumSides;
-
         //Reset player shape with the currently set lines
-        playerShape.InitializeShape(true, shapeSidesNum, playerShape.GetShapecode());
-
+        playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
 
         //Check if the new playershape is as long as the challenge shape
         if (playerShape.GetShapecode().Length == selectedFactory.shapeBuilder.GetShapecode().Length)
@@ -192,24 +197,16 @@ public class PlayerManager : MonoBehaviour
     /// //TODO: Create Proper Score Manager and move this to there (Score Manager should manage score of both player and handle game resets and the like)
     public void ResetPlayer()
     {
-        playerShape.InitializeShape(false, shapeSidesNum);
-
-        print("Resetting GULL GAME ACTUALLY");
-        //Iterate over all challenge factories and reset them
-        foreach (ChallengeFactoryList cfl in challengeFactories)
-        {
-            foreach (ChallengeFactory cf in cfl.list)
-            {
-                cf.ResetCF();
-            }
-        }
+        print("Resetting PLAYER " + playerNum);
 
         //Reset to original position, which also resets player factory
         UpdateSelectedFactory(selectedFactoryStartIndex);
+        selectionManager.ResetSelection(selectedFactoryStartIndex);
+
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         score = 0;
         combo = 0;
-        comboMultiplier = 0;
         playerInfoManager.Reset();
     }
 }

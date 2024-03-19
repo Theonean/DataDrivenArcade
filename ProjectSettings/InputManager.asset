@@ -9,15 +9,15 @@ InputManager:
     m_Name: P1Vertical
     descriptiveName: Player 1 Vertical Axis Keyboard
     descriptiveNegativeName: 
-    negativeButton: s
-    positiveButton: x
+    negativeButton: x
+    positiveButton: s
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
+    dead: 0.2
+    sensitivity: 10
     snap: 1
-    invert: 0
+    invert: 1
     type: 0
     axis: 0
     joyNum: 1
@@ -25,15 +25,15 @@ InputManager:
     m_Name: P1Vertical
     descriptiveName: Player 1 Vertical Axis Joystick
     descriptiveNegativeName: 
-    negativeButton: s
-    positiveButton: x
+    negativeButton: x
+    positiveButton: s
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
+    dead: 0.2
+    sensitivity: 10
     snap: 1
-    invert: 0
+    invert: 1
     type: 2
     axis: 0
     joyNum: 1
@@ -46,8 +46,8 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
+    dead: 0.2
+    sensitivity: 10
     snap: 1
     invert: 0
     type: 0
@@ -62,8 +62,8 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
+    dead: 0.2
+    sensitivity: 10
     snap: 1
     invert: 0
     type: 2
@@ -78,12 +78,12 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
-    snap: 0
+    dead: 0.2
+    sensitivity: 10
+    snap: 1
     invert: 0
     type: 0
-    axis: 0
+    axis: 1
     joyNum: 2
   - serializedVersion: 3
     m_Name: P2Horizontal
@@ -94,44 +94,44 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
-    snap: 0
+    dead: 0.2
+    sensitivity: 10
+    snap: 1
     invert: 0
     type: 2
-    axis: 0
+    axis: 1
     joyNum: 2
   - serializedVersion: 3
     m_Name: P2Vertical
     descriptiveName: Player 2 Vertical Axis Keyboard
     descriptiveNegativeName: 
-    negativeButton: up
-    positiveButton: down
+    negativeButton: down
+    positiveButton: up
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
-    snap: 0
-    invert: 0
+    dead: 0.2
+    sensitivity: 10
+    snap: 1
+    invert: 1
     type: 0
-    axis: 1
+    axis: 0
     joyNum: 2
   - serializedVersion: 3
     m_Name: P2Vertical
     descriptiveName: Player 2 Vertical Axis Joystick
     descriptiveNegativeName: 
-    negativeButton: up
-    positiveButton: down
+    negativeButton: down
+    positiveButton: up
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
-    dead: 0.1
-    sensitivity: 1000
-    snap: 0
-    invert: 0
+    dead: 0.2
+    sensitivity: 10
+    snap: 1
+    invert: 1
     type: 2
-    axis: 1
+    axis: 0
     joyNum: 2
   - serializedVersion: 3
     m_Name: P1L1

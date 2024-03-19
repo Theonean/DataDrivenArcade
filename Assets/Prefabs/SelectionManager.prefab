@@ -233,5 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ed562fc047a784c84896c248f2a1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFactory: {fileID: 0}
+  playerShape: {fileID: 0}
+  inputDebugText: {fileID: 0}
   selectionSprite: {fileID: 3631484259744155789}
+  timeUntilMoveAgainMax: 1.24
+  playerManager: {fileID: 0}

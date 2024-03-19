@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class JoystickInputLogger : MonoBehaviour
@@ -33,11 +34,13 @@ public class JoystickInputLogger : MonoBehaviour
             }
         }
 
-        if(Input.GetButtonDown("P1L1")){
+        if (Input.GetButtonDown("P1L1"))
+        {
             Debug.Log("Place Line 1 for Player 1");
         }
 
-        if(Input.GetButtonDown("P2L1")){
+        if (Input.GetButtonDown("P2L1"))
+        {
             Debug.Log("Place Line 1 for Player 2");
         }
     }

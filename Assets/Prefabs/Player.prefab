@@ -50,11 +50,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNum: 2
   gameModeManager: {fileID: 0}
+  challengeManager: {fileID: 0}
   playerInfoManager: {fileID: 1917069119590960041}
+  selectionManager: {fileID: 4505977446744585500}
   challengeFactories:
   - list:
     - {fileID: 0}
-  selectedFactoryStartIndex: {x: 0, y: 0}
   playerShape: {fileID: 574873076463414285}
 --- !u!1 &5387200722195269601
 GameObject:
@@ -279,6 +280,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76ccd6eb99664e4e831bd321ab75905, type: 3}
+--- !u!114 &4505977446744585500 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7295946964827418907, guid: d76ccd6eb99664e4e831bd321ab75905, type: 3}
+  m_PrefabInstance: {fileID: 6613566318715159559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ed562fc047a784c84896c248f2a1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6395297737935662222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 218621319263217801, guid: d76ccd6eb99664e4e831bd321ab75905, type: 3}

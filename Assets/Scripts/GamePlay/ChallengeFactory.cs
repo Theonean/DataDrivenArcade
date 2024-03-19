@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using TMPro;
 using UnityEngine;
 
@@ -7,23 +9,24 @@ public class ChallengeFactory : ShapeFactory
 {
     public string factoryName;
     public bool showLocalCombo;
+    [Description("Drag all objects in here which are part of the visual \"locking\" of a challenge")]
+    public GameObject[] visualChallengeLocks;
     public TextMeshProUGUI localComboText;
+    public TextMeshProUGUI shapesNeededForUnlockText;
 
     [HideInInspector]
     public int localCombo = 1;
+    public int shapesNeededForUnlockStart = 3;
+    public int shapesNeededForUnlock;
+    public Vector2 gridPosition;
 
     [Range(2, 100)]
     public int maxFacesFloorMIN;
 
     public int shapeNumSides;
+    public int shapeNumSidesScaling = 3;
 
     private GameObject movingShape;
-
-    private void Start()
-    {
-        print("Challenge Factory Start");
-        localComboText.enabled = showLocalCombo;
-    }
 
     //Returns code of shape created by challenge
     public void CreateChallenge()
@@ -38,12 +41,14 @@ public class ChallengeFactory : ShapeFactory
     public void SuccessfullShape()
     {
         localCombo += 1;
+        shapeNumSides = maxFacesFloorMIN + (int)Math.Floor(localCombo / (float)shapeNumSidesScaling);
         UpdateUI();
     }
 
     public void FailedShape()
     {
         localCombo = 0;
+        shapeNumSides = maxFacesFloorMIN;
 
         UpdateUI();
     }
@@ -52,11 +57,78 @@ public class ChallengeFactory : ShapeFactory
     {
         Destroy(movingShape);
 
-
         localCombo = 0;
         shapeNumSides = maxFacesFloorMIN;
+
+        bool showLockNumber = gridPosition.y == 1 ? true : false;
+        shapesNeededForUnlock = shapesNeededForUnlockStart;
+        SetSelectableState(false, showLockNumber);
+
         UpdateUI();
         CreateChallenge();
+    }
+
+    /// <summary>
+    /// Reduces the number of shapes needed to unlock the challenge by 1.
+    /// </summary>
+    /// <returns> returns whether this shape was unlocked </returns>
+    public bool ReduceNeededShapesUntilUnlock()
+    {
+        shapesNeededForUnlock -= 1;
+        if (shapesNeededForUnlock <= 0)
+        {
+            SetSelectableState(true);
+            return true;
+        }
+        UpdateUI();
+        return false;
+    }
+
+    /// <summary>
+    /// Sets the selectable state of the challenge factory. toggling the visibility of the lock and other relevant UI elements.
+    /// </summary>
+    /// <param name="selectable">Sets whether the Shape should be made selectable</param>
+    /// <param name="hideLockNumber">default(true) shows the lock number, false hides the number needed until lock dissolves</param>
+    public void SetSelectableState(bool selectable, bool hideLockNumber = true)
+    {
+        if (selectable || gridPosition.y == 0)
+        {
+            shapeBuilder.selectState = shapeBuilder.selectState == SelectState.SELECTED ? SelectState.SELECTED : SelectState.UNSELECTED;
+            localComboText.enabled = showLocalCombo;
+            shapesNeededForUnlockText.enabled = false;
+
+            //Hide all visual lock objects
+            foreach (GameObject lockObject in visualChallengeLocks)
+            {
+                lockObject.SetActive(false);
+            }
+        }
+        else
+        {
+            //Set shape to unselectable
+            if (gridPosition.y != 0)
+            {
+                shapeBuilder.selectState = SelectState.UNSELECTABLE;
+            }
+            else if (gridPosition.y == 0)
+            {
+                shapeBuilder.selectState = SelectState.UNSELECTED;
+            }
+            else
+            {
+                Debug.LogError("Error in ChallengeFactory.cs: SetSelectableState() with gridPosition.y = " + gridPosition.y);
+            }
+
+            //hide local combo and show shapes needed for unlock
+            localComboText.enabled = false;
+            shapesNeededForUnlockText.enabled = hideLockNumber;
+
+            //Unhide all visual lock objects
+            foreach (GameObject lockObject in visualChallengeLocks)
+            {
+                lockObject.SetActive(true);
+            }
+        }
     }
 
     //Clones a shape and moves that to the challenge shape
@@ -77,7 +149,7 @@ public class ChallengeFactory : ShapeFactory
         float distance = Vector3.Distance(playerShapePosition, challengeShapePosition);
 
         // Move the player shape towards the challenge shape
-        while (distance > 0.1f)
+        while (distance > 0.1f && flyingShape != null)
         {
             flyingShape.transform.position += direction * Time.deltaTime * 5f;
             distance = Vector3.Distance(flyingShape.transform.position, challengeShapePosition);
@@ -85,8 +157,12 @@ public class ChallengeFactory : ShapeFactory
             yield return null;
         }
 
-        //Destroy cloned shape when it arrives
-        Destroy(flyingShape.gameObject);
+        if (flyingShape != null)
+        {
+            //Destroy cloned shape when it arrives (and not destroyed yet by game reset)
+            Destroy(flyingShape.gameObject);
+        }
+
         shapeBuilder.sap.playShapeFinished(isCorrectShape);
 
         //If the shape is wrong, jiggle it left and right
@@ -104,6 +180,16 @@ public class ChallengeFactory : ShapeFactory
             shapeBuilder.transform.position = originalPos;
         }
 
+        //Update shape selection status
+        if (shapeBuilder.selectState == SelectState.LOCKED)
+        {
+            shapeBuilder.selectState = SelectState.UNSELECTED;
+        }
+        else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
+        {
+            shapeBuilder.selectState = SelectState.SELECTED;
+        }
+
         //Create new challenge if code was correct
         if (isCorrectShape)
         {
@@ -116,19 +202,11 @@ public class ChallengeFactory : ShapeFactory
                 shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
             }
         }
-
-        if (shapeBuilder.selectState == SelectState.LOCKED)
-        {
-            shapeBuilder.selectState = SelectState.UNSELECTED;
-        }
-        else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
-        {
-            shapeBuilder.selectState = SelectState.SELECTED;
-        }
     }
 
     private void UpdateUI()
     {
-        localComboText.text = localCombo.ToString(); ;
+        localComboText.text = localCombo.ToString();
+        shapesNeededForUnlockText.text = shapesNeededForUnlock.ToString();
     }
 }

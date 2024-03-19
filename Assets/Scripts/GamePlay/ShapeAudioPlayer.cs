@@ -19,7 +19,7 @@ public class ShapeAudioPlayer : MonoBehaviour
     {
         while (playingShapeFinished)
         {
-            print("Waiting for audio to finish");
+            //print("Waiting for audio to finish");
             yield return new WaitForEndOfFrame();
         }
 
@@ -37,7 +37,7 @@ public class ShapeAudioPlayer : MonoBehaviour
     public void playShapeFinished(bool isCorrect)
     {
         playingShapeFinished = true;
-        print("Locked audio");
+        //print("Locked audio");
         if (isCorrect)
         {
             AudioSource.PlayClipAtPoint(shapeRight, Vector3.zero);
@@ -58,9 +58,9 @@ public class ShapeAudioPlayer : MonoBehaviour
 
     private IEnumerator UnloadAudio(float waitTime)
     {
-        print("Waiting for amount: " + waitTime);
+        //print("Waiting for amount: " + waitTime);
         yield return new WaitForSeconds(waitTime);
         playingShapeFinished = false;
-        print("Unlocked audio");
+        //print("Unlocked audio");
     }
 }

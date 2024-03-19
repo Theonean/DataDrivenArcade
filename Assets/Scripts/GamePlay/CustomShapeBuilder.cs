@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum SelectState
 {
+    UNSELECTABLE,
     UNSELECTED,
     SELECTED,
     LOCKED,
@@ -14,7 +15,7 @@ public class CustomShapeBuilder : MonoBehaviour
     [Header("Randomization")]
     public bool randomSidesNum;
     //Getter and setter for state
-    public SelectState selectState = SelectState.UNSELECTED;
+    public SelectState selectState = SelectState.UNSELECTABLE;
     public SelectState SelectState
     {
         get { return selectState; }
@@ -55,11 +56,6 @@ public class CustomShapeBuilder : MonoBehaviour
 
     public ShapeAudioPlayer sap;
 
-    private void Start()
-    {
-        sap = GetComponent<ShapeAudioPlayer>();
-    }
-
     #region Shape Creation
     #region Shape Initialization
     //builds a shape based on the shapeCode, each shape has a different number of sides
@@ -73,11 +69,11 @@ public class CustomShapeBuilder : MonoBehaviour
         //if randomSides is true, then randomize the number of sides
         numSides = randomSidesNum ? Random.Range(2, 8) : numberOfSides;
         lineSprites = new SpriteRenderer[numSides];
-        print("Inizializing shape which is selected" + selectState.ToString() + " with shapecode" + preShapeCode + " with " + numSides + " sides");
+        //print("Inizializing shape which is selected" + selectState.ToString() + " with shapecode" + preShapeCode + " with " + numSides + " sides");
 
         //initialize array, otherwise fucky wucky
         corners = new Vector2[numSides];
-        print("Shape generated has " + numSides + " sides");
+        //print("Shape generated has " + numSides + " sides");
 
         CreateCorners();
 
@@ -250,12 +246,12 @@ public class CustomShapeBuilder : MonoBehaviour
         if (isHighlight)
         {
             //print full debug information for highlighted line
-            print("Highlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString() + " which translates to " + int.Parse(shapeCode[lineIndex].ToString()) + " in the array");
+            //print("Highlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString() + " which translates to " + int.Parse(shapeCode[lineIndex].ToString()) + " in the array");
             lineSprites[lineIndex].sprite = highlightLineTextures[int.Parse(shapeCode[lineIndex].ToString())];
         }
         else
         {
-            print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
+            //print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
             lineSprites[lineIndex].sprite = lineTextures[int.Parse(shapeCode[lineIndex].ToString())];
         }
     }
@@ -267,6 +263,8 @@ public class CustomShapeBuilder : MonoBehaviour
         selectState = selectState == SelectState.LOCKED ? SelectState.LOCKEDSELECTED : SelectState.SELECTED;
         this.playerNum = playerNum;
         SetLineHighlight(highlightedLineIndex, true);
+
+        StartCoroutine(sap.PlayShapeCode(shapeCode));
 
         //Subscribe to the event
         GameManager.instance.LineInputEvent.AddListener(HighlightNextLine);
@@ -280,7 +278,7 @@ public class CustomShapeBuilder : MonoBehaviour
         {
             selectState = SelectState.LOCKED;
         }
-        else if (selectState == SelectState.LOCKED)
+        else if (selectState == SelectState.LOCKED || selectState == SelectState.SELECTED)
         {
             selectState = SelectState.UNSELECTED;
         }

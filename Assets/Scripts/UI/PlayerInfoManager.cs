@@ -48,6 +48,7 @@ public class PlayerInfoManager : MonoBehaviour
 
     public void Reset()
     {
+        print("Resetting score: " + scoreText.text + " last score: " + lastScoreText.text);
         lastScoreText.text = int.Parse(scoreText.text) > int.Parse(lastScoreText.text) ? scoreText.text : lastScoreText.text;
         scoreText.text = "00";
         comboText.text = "00";

@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: roundTime
-      value: 60
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: Player2Colour
@@ -580,6 +580,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8b56f2d8876f8740b9aae99b29ca8ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &642283903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+  m_PrefabInstance: {fileID: 2629274124335921840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a0b9c29d96f48459670160bb601643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &903490406 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+  m_PrefabInstance: {fileID: 2629274124335921840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df0637d370690d4b8b53dfc3f740e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1621621156 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3294314551684321705, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
@@ -660,11 +682,39 @@ PrefabInstance:
       value: TimeCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: roundTime
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: countdownTimer
       value: 
       objectReference: {fileID: 1621621156}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: constructClassic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: challengeGridSize.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: challengeGridSize.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: playerNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: gameModeManager
+      value: 
+      objectReference: {fileID: 903490406}
+    - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: challengeManager
+      value: 
+      objectReference: {fileID: 642283903}
+    - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: selectedFactoryStartIndex.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
@@ -675,6 +725,14 @@ PrefabInstance:
       propertyPath: challengeFactories.Array.data[0].list.Array.data[0]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8276424491176050316, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: playerNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276424491176050316, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: challengeManager
+      value: 
+      objectReference: {fileID: 642283903}
     - target: {fileID: 8276424491176050316, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: challengeFactories.Array.size
       value: 0
