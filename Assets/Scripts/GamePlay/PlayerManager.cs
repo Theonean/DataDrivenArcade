@@ -199,6 +199,9 @@ public class PlayerManager : MonoBehaviour
     {
         print("Resetting PLAYER " + playerNum);
 
+        //Reset playe shape to 2 sides
+        playerShape.InitializeShape(false, 2);
+
         //Reset to original position, which also resets player factory
         UpdateSelectedFactory(selectedFactoryStartIndex);
         selectionManager.ResetSelection(selectedFactoryStartIndex);

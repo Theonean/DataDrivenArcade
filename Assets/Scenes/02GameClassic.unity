@@ -695,11 +695,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: challengeGridSize.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: challengeGridSize.y
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7744428559518254713, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: playerNum

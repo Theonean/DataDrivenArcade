@@ -20,7 +20,7 @@ public class ChallengeManager : MonoBehaviour
     private float challengeFactorySideLength = 1.25f;
 
     //Variables for Factory Gamemode
-    private Vector2 gridSize = new Vector2(3, 3);
+    public Vector2 gridSize = new Vector2(3, 3);
 
     //Variables for CLASSIC Gamemode
     private Vector2 p1ChallengePos = new Vector2(-5, 2.25f);
@@ -144,13 +144,14 @@ public class ChallengeManager : MonoBehaviour
     public void ReduceShapeLockNum(ChallengeFactory challengeFactory)
     {
         Vector2 gridPos = challengeFactory.gridPosition;
-        print("Trying to reduce shape lock num at " + gridPos);
+        print("Trying to reduce shape lock num at " + gridPos + " with gridsize " + gridSize);
         //First check if the next y level is still within bounds
-        if (gridPos.y < gridSize.y)
+        if (gridPos.y + 1 < gridSize.y)
         {
             //get the grid position of the challenge factory
-            for (int y = (int)gridPos.y + 1; y <= gridSize.y - 1; y++)
+            for (int y = (int)gridPos.y + 1; y < gridSize.y; y++)
             {
+                print("Y: " + y);
                 //get the challenge factory at the given grid position
                 ChallengeFactory cf = challengeFactories[y].list[(int)gridPos.x];
 

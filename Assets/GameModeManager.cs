@@ -29,6 +29,7 @@ public class GameModeManager : MonoBehaviour
 
     private void Start()
     {
+        challengeManager.gridSize = challengeGridSize;
         if (constructClassic)
         {
             challengeFactories = challengeManager.ConstructChallengeLayout();
