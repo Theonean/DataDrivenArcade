@@ -50,6 +50,8 @@ public class SelectionManager : MonoBehaviour
             //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
             selectionSprite.SetActive(true);
             selectionSprite.transform.position = playerManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
+            selectionSprite.transform.position = new Vector3(selectionSprite.transform.position.x, selectionSprite.transform.position.y, -0.001f);
+
             isClassic = false;
         }
 
@@ -188,6 +190,7 @@ public class SelectionManager : MonoBehaviour
 
         //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
         selectionSprite.transform.position = playerManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
+        selectionSprite.transform.position = new Vector3(selectionSprite.transform.position.x, selectionSprite.transform.position.y, -0.001f);
     }
 
     private bool CheckMoveValidity(Vector2 gridPosition)
