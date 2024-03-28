@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -21,12 +22,12 @@ public class SelectionManager : MonoBehaviour
     private int playerNum;
     public PlayerManager playerManager;
     bool isClassic = true;
+    bool active = false;
 
-    // Start is called before the first frame update
     public void Activate(Vector2 startIndex)
     {
         //Check if playerManager has  1 challenge factory
-        if (playerManager.challengeFactories.Count == 1)
+        if (playerManager.challengeFactories.Count == 1 && playerManager.challengeFactories[0].list.Count == 2)
         {
             //Hide selector and disable movement input, because theres only one factory to select anyway
             selectionSprite.SetActive(false);
@@ -47,9 +48,20 @@ public class SelectionManager : MonoBehaviour
             factoryIndex = startIndex;
 
             //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
+            selectionSprite.SetActive(true);
             selectionSprite.transform.position = playerManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
             isClassic = false;
         }
+
+        active = true;
+    }
+
+    public void Deactivate()
+    {
+        active = false;
+        //Hide selector
+        selectionSprite.SetActive(false);
+        print("Deactivating SelectionManager");
     }
 
     public void ResetSelection(Vector2 startIndex)
@@ -61,12 +73,14 @@ public class SelectionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isClassic)
+        if (!isClassic && active)
         {
             //Save Input Direction
             inputDir = Vector2.zero;
             inputDir.x = Input.GetAxis("P" + playerNum + "Horizontal");
             inputDir.y = Input.GetAxis("P" + playerNum + "Vertical");
+
+            //Debug.LogWarning("Kolleg, mach da event scheise und so wie jetz grad, deactivate und active isch quasi für nüt, arschloch");
 
             //Reset when no input received so player can move again
             if (inputDir == Vector2.zero)
@@ -100,30 +114,69 @@ public class SelectionManager : MonoBehaviour
                 //Final check if inputDir is still 0,0 as we do not want the updateselectedfactory function to be called when theres no movement (inefficient)
 
                 Vector2 tempFactoryIndex = factoryIndex + inputDir;
-                if (PositionWithingGridBounds(tempFactoryIndex))
+                if (CheckMoveValidity(tempFactoryIndex))
                 {
-                    ChallengeFactory newSelectedFactory = playerManager.challengeFactories[(int)tempFactoryIndex.y].list[(int)tempFactoryIndex.x];
-
-                    //Check if the new factory CAN be selected
-                    if (FactorySelectable(newSelectedFactory))
+                    MoveSelection(tempFactoryIndex);
+                }
+                else
+                {
+                    //If the next factory is unselectable, try and jump one and check if that is selectable, if yes, move there
+                    tempFactoryIndex += inputDir;
+                    if (CheckMoveValidity(tempFactoryIndex))
                     {
                         MoveSelection(tempFactoryIndex);
                     }
                     else
                     {
-                        //If the next factory is unselectable, try and jump one and check if that is selectable, if yes, move there
-                        tempFactoryIndex += inputDir;
-                        if (PositionWithingGridBounds(tempFactoryIndex))
+                        //If that still doesn't work, look at the direction (if going horizontal, try up), if going up, try left and right
+                        tempFactoryIndex -= inputDir;
+
+                        //If were on a horizontal move and we're blocked
+                        if (inputDir.x != 0)
                         {
-                            newSelectedFactory = playerManager.challengeFactories[(int)tempFactoryIndex.y].list[(int)tempFactoryIndex.x];
-                            if (FactorySelectable(newSelectedFactory))
+                            //Try going up
+                            tempFactoryIndex.y -= 1;
+                            if (CheckMoveValidity(tempFactoryIndex))
                             {
                                 MoveSelection(tempFactoryIndex);
+                            }
+                            else
+                            {
+                                //Try going down
+                                tempFactoryIndex.y += 2;
+                                if (CheckMoveValidity(tempFactoryIndex))
+                                {
+                                    MoveSelection(tempFactoryIndex);
+                                }
+                                else
+                                {
+                                    //print("We tried it all (Horizontally), but we still can't move");
+                                }
+                            }
+                        }
+                        //If we're on a vertical move try going right and then try left
+                        else if (inputDir.y != 0)
+                        {
+                            tempFactoryIndex.x += 1;
+                            if (CheckMoveValidity(tempFactoryIndex))
+                            {
+                                MoveSelection(tempFactoryIndex);
+                            }
+                            else
+                            {
+                                tempFactoryIndex.x -= 2;
+                                if (CheckMoveValidity(tempFactoryIndex))
+                                {
+                                    MoveSelection(tempFactoryIndex);
+                                }
+                                else
+                                {
+                                    //print("We tried it all (vertically), but we still can't move");
+                                }
                             }
                         }
                     }
                 }
-
             }
         }
     }
@@ -137,11 +190,16 @@ public class SelectionManager : MonoBehaviour
         selectionSprite.transform.position = playerManager.challengeFactories[(int)factoryIndex.y].list[(int)factoryIndex.x].transform.position;
     }
 
-    private bool PositionWithingGridBounds(Vector2 input)
+    private bool CheckMoveValidity(Vector2 gridPosition)
+    {
+        return PositionWithingGridBounds(gridPosition) && FactorySelectable(gridPosition);
+    }
+
+    private bool PositionWithingGridBounds(Vector2 gridPosition)
     {
         //print("Input x " + input.x + " y " + input.y);
-        if (input.y < 0 || input.y >= playerManager.challengeFactories.Count) return false;
-        if (input.x < 0 || input.x >= playerManager.challengeFactories[(int)input.y].list.Count) return false;
+        if (gridPosition.y < 0 || gridPosition.y >= playerManager.challengeFactories.Count) return false;
+        if (gridPosition.x < 0 || gridPosition.x >= playerManager.challengeFactories[(int)gridPosition.y].list.Count) return false;
 
 
         return true;
@@ -153,6 +211,12 @@ public class SelectionManager : MonoBehaviour
         if (challengeFactory.shapeBuilder.IsSelected()) return false;
 
         return true;
+    }
+
+    private bool FactorySelectable(Vector2 gridPosition)
+    {
+        ChallengeFactory cf = playerManager.challengeFactories[(int)gridPosition.y].list[(int)gridPosition.x];
+        return FactorySelectable(cf);
     }
 
     //set x and y of Input to either -1,0 or 1

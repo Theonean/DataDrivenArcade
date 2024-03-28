@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChallengeFactory : ShapeFactory
@@ -28,34 +29,11 @@ public class ChallengeFactory : ShapeFactory
 
     private GameObject movingShape;
 
-    //Returns code of shape created by challenge
-    public void CreateChallenge()
-    {
-        //If maxFacesFloorMIN is greater than maxAllowedFaces, set maxAllowedFaces to maxFacesFloorMIN
-        //Used so that Factory Gamemode can use "Layers" which have increasing difficulty but also higher reward
-        shapeNumSides = shapeNumSides <= maxFacesFloorMIN ? maxFacesFloorMIN : shapeNumSides;
-
-        shapeBuilder.InitializeShape(true, shapeNumSides);
-    }
-
-    public void SuccessfullShape()
-    {
-        localCombo += 1;
-        shapeNumSides = maxFacesFloorMIN + (int)Math.Floor(localCombo / (float)shapeNumSidesScaling);
-        UpdateUI();
-    }
-
-    public void FailedShape()
-    {
-        localCombo = 0;
-        shapeNumSides = maxFacesFloorMIN;
-
-        UpdateUI();
-    }
-
     public void ResetCF()
     {
         Destroy(movingShape);
+        //#UNITYBUG Stopcoroutine has to be called on the object it was started on
+        if (!shapeBuilder.flashingRoutine.IsUnityNull()) shapeBuilder.StopCoroutine(shapeBuilder.flashingRoutine);
 
         localCombo = 0;
         shapeNumSides = maxFacesFloorMIN;
@@ -65,7 +43,8 @@ public class ChallengeFactory : ShapeFactory
         SetSelectableState(false, showLockNumber);
 
         UpdateUI();
-        CreateChallenge();
+
+        shapeBuilder.InitializeShape(true, shapeNumSides);
     }
 
     /// <summary>
@@ -132,10 +111,14 @@ public class ChallengeFactory : ShapeFactory
     }
 
     //Clones a shape and moves that to the challenge shape
-    public IEnumerator MoveShapeToChallenge(CustomShapeBuilder shapeToClone, bool isCorrectShape)
+    public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode)
     {
+        print("Moving shape to challenge");
         //Clone player shape
-        CustomShapeBuilder flyingShape = Instantiate(shapeToClone, shapeToClone.transform.position, shapeToClone.transform.rotation);
+        GameObject playerShapeObject = player.playerShape.gameObject;
+        CustomShapeBuilder flyingShape = Instantiate(shapePrefab, playerShapeObject.transform.position, playerShapeObject.transform.rotation).GetComponent<CustomShapeBuilder>();
+        flyingShape.InitializeShape(true, shapeNumSides, playerShapeCode);
+
         flyingShape.transform.localScale = new Vector3(1.7f, 1.7f, 1);
 
         movingShape = flyingShape.gameObject;
@@ -148,10 +131,12 @@ public class ChallengeFactory : ShapeFactory
         Vector3 direction = (challengeShapePosition - playerShapePosition).normalized;
         float distance = Vector3.Distance(playerShapePosition, challengeShapePosition);
 
+        float flySpeed = 5f / shapeBuilder.GetShapecode().Length;
+
         // Move the player shape towards the challenge shape
         while (distance > 0.1f && flyingShape != null)
         {
-            flyingShape.transform.position += direction * Time.deltaTime * 5f;
+            flyingShape.transform.position += direction * Time.deltaTime * flySpeed;
             distance = Vector3.Distance(flyingShape.transform.position, challengeShapePosition);
             //print(distance);
             yield return null;
@@ -161,46 +146,60 @@ public class ChallengeFactory : ShapeFactory
         {
             //Destroy cloned shape when it arrives (and not destroyed yet by game reset)
             Destroy(flyingShape.gameObject);
-        }
 
-        shapeBuilder.sap.playShapeFinished(isCorrectShape);
+            bool isCorrectShape = playerShapeCode == shapeBuilder.GetShapecode();
+            print("Shape arrived and code is correct: " + isCorrectShape + " after comparing codes: " + playerShapeCode + " to " + shapeBuilder.GetShapecode());
 
-        //If the shape is wrong, jiggle it left and right
-        if (!isCorrectShape)
-        {
-            float time = 0.5f;
-            float counter = 0f;
-            Vector3 originalPos = shapeBuilder.transform.position;
-            while (counter < time)
+            //Create new challenge if code was correct
+            if (isCorrectShape)
             {
-                counter += Time.deltaTime;
-                shapeBuilder.transform.position = originalPos + new Vector3(Mathf.Sin(counter * 20f) * 0.2f, 0, 0);
-                yield return null;
+                localCombo += 1;
+                shapeNumSides = maxFacesFloorMIN + (int)Math.Floor(localCombo / (float)shapeNumSidesScaling);
+
+                shapeBuilder.InitializeShape(true, shapeNumSides);
             }
-            shapeBuilder.transform.position = originalPos;
-        }
-
-        //Update shape selection status
-        if (shapeBuilder.selectState == SelectState.LOCKED)
-        {
-            shapeBuilder.selectState = SelectState.UNSELECTED;
-        }
-        else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
-        {
-            shapeBuilder.selectState = SelectState.SELECTED;
-        }
-
-        //Create new challenge if code was correct
-        if (isCorrectShape)
-        {
-            CreateChallenge();
-        }
-        else
-        {
-            if (shapeBuilder.GetShapecode().Length > maxFacesFloorMIN)
+            else
             {
-                shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
+                //If shapecode is longer than the number of sides, reset shapecode to maxFacesFloorMIN
+                if (shapeBuilder.GetShapecode().Length > maxFacesFloorMIN)
+                {
+                    shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
+                }
+
+                localCombo = 0;
+                shapeNumSides = maxFacesFloorMIN;
             }
+
+            UpdateUI();
+            shapeBuilder.sap.playShapeFinished(isCorrectShape);
+
+            //If the shape is wrong, jiggle it left and right
+            if (!isCorrectShape)
+            {
+                float time = 0.5f;
+                float counter = 0f;
+                Vector3 originalPos = shapeBuilder.transform.position;
+                while (counter < time)
+                {
+                    counter += Time.deltaTime;
+                    shapeBuilder.transform.position = originalPos + new Vector3(Mathf.Sin(counter * 20f) * 0.2f, 0, 0);
+                    yield return null;
+                }
+                shapeBuilder.transform.position = originalPos;
+            }
+
+            player.ShapeArrived(isCorrectShape, this);
+
+            //Update shape selection status
+            if (shapeBuilder.selectState == SelectState.LOCKED)
+            {
+                shapeBuilder.selectState = SelectState.UNSELECTED;
+            }
+            else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
+            {
+                shapeBuilder.selectState = SelectState.SELECTED;
+            }
+
         }
     }
 

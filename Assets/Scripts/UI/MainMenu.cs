@@ -12,7 +12,8 @@ public class MainMenu : MonoBehaviour
     private MainMenuSelectionHandler p1SelectionHandler;
     private MainMenuSelectionHandler p2SelectionHandler;
 
-    public TextMeshProUGUI insertCoinText;
+    public TextMeshProUGUI[] insertCoinTexts;
+    private bool coinInserted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,24 +24,26 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("InsertCoinArcade"))
+        if (Input.GetButtonDown("InsertCoinArcade") && !coinInserted)
         {
             p1SelectionHandler.CoinInserted();
             p2SelectionHandler.CoinInserted();
             gm.arcadeMode = true;
-            insertCoinText.enabled = false;
+            coinInserted = true;
+            foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
             print("Arcade mode active");
         }
-        else if (Input.GetButtonDown("InsertCoinKeyboard"))
+        else if (Input.GetButtonDown("InsertCoinKeyboard") && !coinInserted)
         {
             p1SelectionHandler.CoinInserted();
             p2SelectionHandler.CoinInserted();
             gm.arcadeMode = false;
-            insertCoinText.enabled = false;
+            coinInserted = true;
+            foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
             print("Keyboard mode active");
         }
 
-        if(p1SelectionHandler.ReadyToPlay() && p2SelectionHandler.ReadyToPlay())
+        if (p1SelectionHandler.ReadyToPlay() && p2SelectionHandler.ReadyToPlay())
         {
             gm.SwitchScene(CurrentScene.GAMECLASSIC);
         }

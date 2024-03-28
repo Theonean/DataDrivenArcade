@@ -6,11 +6,13 @@ using UnityEngine;
 public class RotateWiggler : MonoBehaviour
 {
     [Header("Rotation")]
+    public bool rotate = true;
     public float rotationSpeed;
     public Vector2 rotationRange;
     public AnimationCurve rotationEasingCurve;
 
     [Header("Scaling")]
+    public bool scale = true;
     public float scaleSpeed;
     public Vector2 scaleRange;
     public AnimationCurve scaleEasingCurve;
@@ -20,6 +22,7 @@ public class RotateWiggler : MonoBehaviour
     private float scaleTime;
 
     [Header("FontGradient")]
+    public bool colorChange = true;
     public TextMeshProUGUI textComponent;
     public float colorChangeInterval;
     private float colorChangeTimer;
@@ -32,11 +35,11 @@ public class RotateWiggler : MonoBehaviour
     void Start()
     {
         // Initialize middle values
-        transform.localEulerAngles = new Vector3(0, 0, (rotationRange.x + rotationRange.y) / 2);
-        transform.localScale = Vector3.one * (scaleRange.x + scaleRange.y) / 2;
+        if (rotate) transform.localEulerAngles = new Vector3(0, 0, (rotationRange.x + rotationRange.y) / 2);
+        if (scale) transform.localScale = Vector3.one * (scaleRange.x + scaleRange.y) / 2;
 
         // Initialize colors
-        if (textComponent != null)
+        if (textComponent != null && colorChange)
         {
             targetTopLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
             targetTopRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
@@ -49,19 +52,25 @@ public class RotateWiggler : MonoBehaviour
     void Update()
     {
         // Handle rotation
-        rotationTime += Time.deltaTime * rotationSpeed;
-        float rotationPingPong = Mathf.PingPong(rotationTime, 1); // Oscillates between 0 and 1
-        float rotationValue = Mathf.Lerp(rotationRange.x, rotationRange.y, rotationEasingCurve.Evaluate(rotationPingPong));
-        transform.localEulerAngles = new Vector3(0, 0, rotationValue);
+        if (rotate)
+        {
+            rotationTime += Time.deltaTime * rotationSpeed;
+            float rotationPingPong = Mathf.PingPong(rotationTime, 1); // Oscillates between 0 and 1
+            float rotationValue = Mathf.Lerp(rotationRange.x, rotationRange.y, rotationEasingCurve.Evaluate(rotationPingPong));
+            transform.localEulerAngles = new Vector3(0, 0, rotationValue);
+        }
 
         // Handle scaling
-        scaleTime += Time.deltaTime * scaleSpeed;
-        float scalePingPong = Mathf.PingPong(scaleTime, 1); // Oscillates between 0 and 1
-        float scaleValue = Mathf.Lerp(scaleRange.x, scaleRange.y, scaleEasingCurve.Evaluate(scalePingPong));
-        transform.localScale = Vector3.one * scaleValue;
+        if (scale)
+        {
+            scaleTime += Time.deltaTime * scaleSpeed;
+            float scalePingPong = Mathf.PingPong(scaleTime, 1); // Oscillates between 0 and 1
+            float scaleValue = Mathf.Lerp(scaleRange.x, scaleRange.y, scaleEasingCurve.Evaluate(scalePingPong));
+            transform.localScale = Vector3.one * scaleValue;
+        }
 
         //Slowly change the gradient colors on the text over time, pick a random gradient corner each update and slowly change that
-        if (textComponent != null)
+        if (textComponent != null && colorChange)
         {
             colorChangeTimer += Time.deltaTime;
 

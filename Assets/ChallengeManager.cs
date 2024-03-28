@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChallengeManager : MonoBehaviour
 {
     public GameObject challengePrefab;
+    public int faceMultiplierPerLevel;
+    public int faceStartValue;
 
     //Variables to determine the needed amount of shapes to unlock a challenge and its scaling
     private int shapesNeededForUnlockStart = 3;
@@ -19,47 +22,10 @@ public class ChallengeManager : MonoBehaviour
     private float spaceInbetweenChallenges = 0.2f;
     private float challengeFactorySideLength = 1.25f;
 
-    //Variables for Factory Gamemode
-    public Vector2 gridSize = new Vector2(3, 3);
-
-    //Variables for CLASSIC Gamemode
-    private Vector2 p1ChallengePos = new Vector2(-5, 2.25f);
-    private Vector2 p2ChallengePos = new Vector2(5, 2.25f);
-    private Vector2 challengeScale = new Vector2(2, 2);
+    [Description("The size of the grid that the challenges will be placed in, X MUST be min. of 2")]
+    public Vector2 gridSize;
 
     List<ChallengeFactoryList> challengeFactories;
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    /// <summary>
-    /// Constructs Game Mode Challenges for classic gamemode
-    /// /// </summary>
-    /// <returns> returns the created grid of challenge factories </returns>
-    public List<ChallengeFactoryList> ConstructChallengeLayout()
-    {
-        List<ChallengeFactoryList> challengeFactories = new List<ChallengeFactoryList>();
-        print("Creating Classic Gamemode Layout");
-        ChallengeFactoryList factoryList = new ChallengeFactoryList();
-
-        //Add Player 1 Challenge
-        ChallengeFactory p1ChallengeFactory = CreateChallengeFactory(p1ChallengePos, 2, challengeScale);
-        p1ChallengeFactory.SetSelectableState(true);
-        factoryList.list.Add(p1ChallengeFactory);
-
-        //Add Player 2 Challenge
-        ChallengeFactory p2ChallengeFactory = CreateChallengeFactory(p2ChallengePos, 2, challengeScale);
-        p2ChallengeFactory.SetSelectableState(true);
-        factoryList.list.Add(p2ChallengeFactory);
-
-        challengeFactories.Add(factoryList);
-        this.challengeFactories = challengeFactories;
-
-        return challengeFactories;
-    }
 
     public List<ChallengeFactoryList> ConstructChallengeLayout(Vector2 gridSize)
     {
@@ -99,7 +65,7 @@ public class ChallengeManager : MonoBehaviour
                     spawnChallengePosStart.x + x * (challengeFactorySideLength * scaleX + spaceInbetweenChallenges),
                     spawnChallengePosStart.y - y * (challengeFactorySideLength * scaleY + spaceInbetweenChallenges));
 
-                int challengeFactoryFacesFloorMIN = y + 2;
+                int challengeFactoryFacesFloorMIN = y * faceMultiplierPerLevel + faceStartValue;
                 ChallengeFactory challengeFactory = CreateChallengeFactory(
                     currentPos,
                     challengeFactoryFacesFloorMIN,
@@ -144,21 +110,20 @@ public class ChallengeManager : MonoBehaviour
     public void ReduceShapeLockNum(ChallengeFactory challengeFactory)
     {
         Vector2 gridPos = challengeFactory.gridPosition;
-        print("Trying to reduce shape lock num at " + gridPos + " with gridsize " + gridSize);
+        //print("Trying to reduce shape lock num at " + gridPos + " with gridsize " + gridSize);
         //First check if the next y level is still within bounds
         if (gridPos.y + 1 < gridSize.y)
         {
             //get the grid position of the challenge factory
             for (int y = (int)gridPos.y + 1; y < gridSize.y; y++)
             {
-                print("Y: " + y);
                 //get the challenge factory at the given grid position
                 ChallengeFactory cf = challengeFactories[y].list[(int)gridPos.x];
 
                 //Skip unlocked challenge factories
                 if (cf.shapeBuilder.selectState != SelectState.UNSELECTABLE)
                 {
-                    print("Skipping unlocked challenge factory at grid position: " + cf.gridPosition);
+                    //print("Skipping unlocked challenge factory at grid position: " + cf.gridPosition);
                     continue;
                 }
 
@@ -166,16 +131,16 @@ public class ChallengeManager : MonoBehaviour
                 if (cf.ReduceNeededShapesUntilUnlock() && y + 1 < gridSize.y)
                 {
                     challengeFactories[y + 1].list[(int)gridPos.x].SetSelectableState(false, true);
-                    print("Showing lock number for next level");
+                    //print("Showing lock number for next level");
                 }
 
-                print("Reduced Shape Lock Count to: " + cf.shapesNeededForUnlock + " at grid position: " + cf.gridPosition);
+                //print("Reduced Shape Lock Count to: " + cf.shapesNeededForUnlock + " at grid position: " + cf.gridPosition);
 
             }
         }
         else
         {
-            print("Next position for unlocking would be out of bounds, not doing ANYTHING!");
+            //print("Next position for unlocking would be out of bounds, not doing ANYTHING!");
         }
     }
 

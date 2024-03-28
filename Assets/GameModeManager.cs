@@ -14,61 +14,45 @@ public class GameModeManager : MonoBehaviour
 {
     //This class should handle the game mode logic
     //Initiates the game and tells the challengemanager to create the correct number / grid of challenge
-    public TextMeshProUGUI countdownTimer;
+    public TextMeshProUGUI countdownRoundTimer;
+    private GameManager gm;
 
     public float roundTime = 60f;
 
-    private float timeLeft = 0f;
+    private float timeLeftRound = 0f;
+    public TextMeshProUGUI countdownStartTime;
+    public float countdownStart = 3;
+    private float timeLeftStart = 0f;
     public ChallengeManager challengeManager;
-    public bool constructClassic;
     public Vector2 challengeGridSize;
     public PlayerManager p1;
     public PlayerManager p2;
     private List<ChallengeFactoryList> challengeFactories;
-    private GameModeState gameModeState = GameModeState.RUNNING;
+    private GameModeState gameModeState = GameModeState.COUNTDOWN;
 
     private void Start()
     {
+        gm = GameManager.instance;
+
+        timeLeftRound = roundTime;
+        timeLeftStart = countdownStart;
+
         challengeManager.gridSize = challengeGridSize;
-        if (constructClassic)
-        {
-            challengeFactories = challengeManager.ConstructChallengeLayout();
-        }
-        else
-        {
-            challengeFactories = challengeManager.ConstructChallengeLayout(challengeGridSize);
-        }
+        challengeFactories = challengeManager.ConstructChallengeLayout(challengeGridSize);
+
 
         //Iterate over all challenge factories and create a challenge shape if it is not selected
         for (int i = 0; i < challengeFactories.Count; i++)
         {
             for (int j = 0; j < challengeFactories[i].list.Count; j++)
             {
-                challengeFactories[i].list[j].ResetCF();
+                ChallengeFactory cf = challengeFactories[i].list[j];
+                cf.ResetCF();
             }
         }
 
-        if (constructClassic)
-        {
-            print("Getting player ready for classic gamemode");
-            List<ChallengeFactoryList> p1ChallengeList = new List<ChallengeFactoryList>
-            {
-                new ChallengeFactoryList(challengeFactories[0].list[0])
-            };
-            p1.SetPlayerReady(p1ChallengeList);
-
-            List<ChallengeFactoryList> p2ChallengeList = new List<ChallengeFactoryList>
-            {
-                new ChallengeFactoryList(challengeFactories[0].list[1])
-            };
-            p2.SetPlayerReady(p2ChallengeList);
-        }
-        else
-        {
-            print("Getting Player ready for Factory Gamemode");
-            p1.SetPlayerReady(challengeFactories);
-            p2.SetPlayerReady(challengeFactories);
-        }
+        p1.playerInfoManager.SetName(gm.GetPlayerName(1));
+        p2.playerInfoManager.SetName(gm.GetPlayerName(2));
     }
 
 
@@ -77,11 +61,18 @@ public class GameModeManager : MonoBehaviour
 
         if (gameModeState == GameModeState.RUNNING)
         {
-            timeLeft -= Time.deltaTime;
-            countdownTimer.text = timeLeft.ToString("F2");
-            if (timeLeft < 0)
+            timeLeftRound -= Time.deltaTime;
+            countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
+
+            //Round Finished
+            if (timeLeftRound < 0)
             {
-                timeLeft = roundTime;
+                timeLeftRound = roundTime;
+
+                //Reset both players
+                p1.UnreadyPlayer();
+                p2.UnreadyPlayer();
+
                 //Iterate over all challenge factories and reset them
                 foreach (ChallengeFactoryList cfl in challengeFactories)
                 {
@@ -91,9 +82,23 @@ public class GameModeManager : MonoBehaviour
                     }
                 }
 
-                //Reset both players
-                p1.ResetPlayer();
-                p2.ResetPlayer();
+                gameModeState = GameModeState.COUNTDOWN;
+                countdownStartTime.enabled = true;
+                timeLeftStart = countdownStart;
+            }
+        }
+        else if (gameModeState == GameModeState.COUNTDOWN)
+        {
+            timeLeftStart -= Time.deltaTime;
+            countdownStartTime.text = Mathf.RoundToInt(timeLeftStart).ToString();
+            if (timeLeftStart < 0)
+            {
+                countdownStartTime.enabled = false;
+                gameModeState = GameModeState.RUNNING;
+                timeLeftRound = roundTime;
+
+                p1.ReadyPlayer(challengeFactories);
+                p2.ReadyPlayer(challengeFactories);
             }
         }
     }

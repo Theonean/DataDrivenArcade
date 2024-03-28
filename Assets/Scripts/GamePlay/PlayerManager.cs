@@ -54,7 +54,7 @@ public class PlayerManager : MonoBehaviour
     private int score = 0;
     private int combo = 0;
 
-    public void SetPlayerReady(List<ChallengeFactoryList> challengeFactories)
+    public void ReadyPlayer(List<ChallengeFactoryList> challengeFactories)
     {
         this.challengeFactories = challengeFactories;
 
@@ -76,18 +76,27 @@ public class PlayerManager : MonoBehaviour
 
 
         print("ScoreManager Start");
-        selectedFactory.CreateChallenge();
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
         selectedFactory.shapeBuilder.selectState = SelectState.SELECTED;
 
-        playerInfoManager.SetName(gm.GetPlayerName(playerNum));
         playerInfoManager.SetScore(score);
         playerInfoManager.SetCombo(combo);
 
         //activate the selection manager and pass it the starting index of the selected factory
         GetComponentInChildren<SelectionManager>().Activate(selectedFactoryStartIndex);
+    }
+
+    public void UnreadyPlayer()
+    {
+        gm.LineInputEvent.RemoveListener(TryAddLine);
+        gm.DoubleLineInputEvent.RemoveListener(ReinitializePlayer);
+
+        ResetPlayer();
+        selectedFactory.shapeBuilder.EndLineHighlight();
+
+        GetComponentInChildren<SelectionManager>().Deactivate();
     }
 
     private void TryAddLine(InputData iData)
@@ -110,39 +119,11 @@ public class PlayerManager : MonoBehaviour
     {
         selectedFactory.shapeBuilder.HighlightNextLine(new InputData(playerNum));
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
-        string playerShapeCode = playerShape.GetShapecode();
 
-        print("Comparing " + playerShapeCode + " to " + selectedFactory.shapeBuilder.GetShapecode());
-        bool isCorrectShape = false;
-
-        //Score and Combo Calculation
-        if (playerShapeCode == selectedFactory.shapeBuilder.GetShapecode())
-        {
-            combo++;
-
-            //Only the personal factory of a player increases in Combo, find other system for the other factories which are "shared"
-            selectedFactory.SuccessfullShape();
-
-            isCorrectShape = true;
-
-            //Add score to player
-            score += selectedFactory.shapeNumSides * combo;
-            playerInfoManager.SetScore(score);
-
-            //Inform challengemanager to reduce Lock Number on challenges below this one
-            challengeManager.ReduceShapeLockNum(selectedFactory);
-        }
-        //When wrong shape is completed, stop combo and reset multiplier
-        else
-        {
-            combo = 0;
-            selectedFactory.FailedShape();
-        }
+        StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode()));
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
-        playerInfoManager.SetCombo(combo);//Subtract 1 to remove the 1 that was added in the if statement
-        StartCoroutine(selectedFactory.MoveShapeToChallenge(playerShape, isCorrectShape));
     }
 
     /// <summary>
@@ -166,25 +147,59 @@ public class PlayerManager : MonoBehaviour
         //Deselect old Shape
         selectedFactory.shapeBuilder.EndLineHighlight();
 
-        //Set old factory to locked (without selection) if it was selected
+        //Set old factory to locked (without selection) 
         if (selectedFactory.shapeBuilder.IsLocked()) selectedFactory.shapeBuilder.selectState = SelectState.LOCKED;
 
         //Select and highlight new factory / shape
         selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
 
-        //Reset player shape with the currently set lines
-        playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
-
-        //Check if the new playershape is as long as the challenge shape
-        if (playerShape.GetShapecode().Length == selectedFactory.shapeBuilder.GetShapecode().Length)
+        //If player shape is longer than new factory, don't reset it
+        if (playerShape.GetShapecode().Length <= selectedFactory.shapeNumSides)
         {
-            FinishedShape();
+            //Reset player shape with the currently set lines
+            playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
+
+            //Check if the new playershape is as long as the challenge shape
+            bool sameLengthShape = playerShape.GetShapecode().Length == selectedFactory.shapeBuilder.GetShapecode().Length;
+
+            if (selectedFactory.shapeBuilder.IsLocked() && sameLengthShape)
+            {
+                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
+            }
+            else if (sameLengthShape)
+            {
+                FinishedShape();
+            }
+            else
+            {
+                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
+            }
         }
+
+    }
+
+    public void ShapeArrived(bool correctShape, ChallengeFactory cf)
+    {
+        playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
+        //Score and Combo Calculation
+        if (correctShape)
+        {
+            combo++;
+
+            //Add score to player
+            score += selectedFactory.shapeNumSides * combo;
+            playerInfoManager.SetScore(score);
+
+            //Inform challengemanager to reduce Lock Number on challenges below this one
+            challengeManager.ReduceShapeLockNum(cf);
+        }
+        //When wrong shape is completed, stop combo and reset multiplier
         else
         {
-            selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
+            combo = 0;
         }
 
+        playerInfoManager.SetCombo(combo);
     }
 
     //Getter for combo, needed in audiomanager

@@ -67,17 +67,17 @@ public class MainMenuSelectionHandler : MonoBehaviour
                 //Player Selection Management only possible when not inputting Name or looking at leaderboard (leaderboard is not implemented yet)
                 if (playerInput != Vector2.zero)
                 {
-                    if (playerInput.y == -1)
+                    if (playerInput.y < 0 && loginState != LoginScreenPlayerState.NAME_SELECTED)
                     {
                         loginState = LoginScreenPlayerState.NAME_SELECTED;
                         currentSelectedBG.transform.position = nameCreator.transform.position;
-                        print("Name selected");
+                        //print("Name selected");
                     }
-                    else if (playerInput.y == 1)
+                    else if (playerInput.y > 0 && loginState != LoginScreenPlayerState.CONFIRM_SELECTED)
                     {
                         loginState = LoginScreenPlayerState.CONFIRM_SELECTED;
                         currentSelectedBG.transform.position = confirmText.transform.position;
-                        print(nameCreator.GetName());
+                        //print(nameCreator.GetName());
                     }
                     cooldownTimer = inputCooldown;
                 }
@@ -91,6 +91,7 @@ public class MainMenuSelectionHandler : MonoBehaviour
                 {
                     confirmButton.color = Color.green;
                     loginState = LoginScreenPlayerState.READYTOPLAY;
+                    gm.SetPlayerName(playerNum, nameCreator.GetName());
                     print("Ready to play for player " + playerNum);
                 }
             }

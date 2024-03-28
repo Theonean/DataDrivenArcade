@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum SelectState
@@ -55,12 +57,23 @@ public class CustomShapeBuilder : MonoBehaviour
     }
 
     public ShapeAudioPlayer sap;
+    public Coroutine flashingRoutine;
+    private float lineZDepthModifier = 0.002f;
 
     #region Shape Creation
     #region Shape Initialization
     //builds a shape based on the shapeCode, each shape has a different number of sides
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="generateShapeLines">Whether initialization should add lines (random code)</param>
+    /// <param name="numberOfSides">Number of corners the shape will have</param>
+    /// <param name="preShapeCode">(optional) adds lines according to the string</param>
+    /// <returns></returns>
     public string InitializeShape(bool generateShapeLines, int numberOfSides, string preShapeCode = "X")
     {
+
         DestroyLines();
 
         //calculate the height of the texture in unity units, needed for proper scaling
@@ -104,13 +117,21 @@ public class CustomShapeBuilder : MonoBehaviour
     //calculates the positions for the corners of this shape based on the number of sides
     private void CreateCorners()
     {
-        for (int i = 0; i < numSides; i++)
+        if (numSides == 1)
         {
-            float angle = (360 / numSides) * i;
-
-            Vector2 pos = new Vector3(Mathf.Sin(angle * Mathf.PI / 180) * radius, Mathf.Cos(angle * Mathf.PI / 180) * radius);
-
-            corners[i] = pos;
+            // For a single-sided shape, define two corners to represent the ends of the line
+            corners = new Vector2[2]; // Adjusted to ensure space for two points
+            corners[0] = new Vector2(-radius, 0); // Start at one side of the radius
+            corners[1] = new Vector2(radius, 0);  // End at the other side of the radius
+        }
+        else
+        {
+            for (int i = 0; i < numSides; i++)
+            {
+                float angle = (360 / numSides) * i;
+                Vector2 pos = new Vector2(Mathf.Sin(angle * Mathf.PI / 180) * radius, Mathf.Cos(angle * Mathf.PI / 180) * radius);
+                corners[i] = pos;
+            }
         }
     }
     #endregion
@@ -119,6 +140,7 @@ public class CustomShapeBuilder : MonoBehaviour
 
     public void DestroyLines()
     {
+
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
@@ -165,10 +187,10 @@ public class CustomShapeBuilder : MonoBehaviour
 
         //get nodes based on current and next node numbers
         int currentNodeNum = linesPlaced;
-        int nextNodeNum = linesPlaced == numSides - 1 ? 0 : currentNodeNum + 1;
+        int nextNodeNum = linesPlaced == numSides - 1 ? 0 : currentNodeNum + 1; //select the first corner for last line
 
         Vector2 currCorner = corners[currentNodeNum];
-        Vector2 nextCorner = corners[nextNodeNum];
+        Vector2 nextCorner = numSides == 1 ? corners[1] : corners[nextNodeNum]; //override for single sided shapes
 
         //add gameobject under node with texture2d corresponding to code
         GameObject textureObject = new();
@@ -189,6 +211,12 @@ public class CustomShapeBuilder : MonoBehaviour
                 textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * -0.5f, 0, 0);
             }
         }
+
+        // Offset each line slightly downwards so they their Z-Layer corresponds to the order of creating the lines
+        textureObject.transform.localPosition = new Vector3(
+            textureObject.transform.localPosition.x,
+            textureObject.transform.localPosition.y,
+            (-corners.Length + linesPlaced) * lineZDepthModifier);
 
         //rotate textureObject to face the correct direction
         Vector2 nodeDir = nextCorner - currCorner;
@@ -243,17 +271,29 @@ public class CustomShapeBuilder : MonoBehaviour
 
     private void SetLineHighlight(int lineIndex, bool isHighlight)
     {
+        SpriteRenderer line = lineSprites[lineIndex];
         if (isHighlight)
         {
             //print full debug information for highlighted line
             //print("Highlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString() + " which translates to " + int.Parse(shapeCode[lineIndex].ToString()) + " in the array");
-            lineSprites[lineIndex].sprite = highlightLineTextures[int.Parse(shapeCode[lineIndex].ToString())];
+            line.sprite = highlightLineTextures[int.Parse(shapeCode[lineIndex].ToString())];
         }
         else
         {
             //print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
-            lineSprites[lineIndex].sprite = lineTextures[int.Parse(shapeCode[lineIndex].ToString())];
+            line.sprite = lineTextures[int.Parse(shapeCode[lineIndex].ToString())];
+
         }
+    }
+
+    private void ModifyLineZDepth(bool bringToForeground, int lineIndex)
+    {
+        float zOffset = bringToForeground ? -lineZDepthModifier : lineZDepthModifier;
+        SpriteRenderer line = lineSprites[lineIndex];
+        line.transform.localPosition = new Vector3(
+            line.transform.localPosition.x,
+            line.transform.localPosition.y,
+            line.transform.localPosition.z + zOffset * lineIndex);
     }
 
     public void StartLineHighlight(int playerNum, int lineIndex)
@@ -263,8 +303,10 @@ public class CustomShapeBuilder : MonoBehaviour
         selectState = selectState == SelectState.LOCKED ? SelectState.LOCKEDSELECTED : SelectState.SELECTED;
         this.playerNum = playerNum;
         SetLineHighlight(highlightedLineIndex, true);
+        ModifyLineZDepth(true, highlightedLineIndex);
 
         StartCoroutine(sap.PlayShapeCode(shapeCode));
+        flashingRoutine = StartCoroutine(FlashHighlight());
 
         //Subscribe to the event
         GameManager.instance.LineInputEvent.AddListener(HighlightNextLine);
@@ -273,6 +315,7 @@ public class CustomShapeBuilder : MonoBehaviour
     public void EndLineHighlight()
     {
         //print("Dehighlighting line " + highlightedLineIndex + " with code: " + shapeCode[highlightedLineIndex].ToString() + " for player: " + selectState.ToString() + " at index: " + highlightedLineIndex);
+        if (!flashingRoutine.IsUnityNull()) StopCoroutine(flashingRoutine);
 
         if (selectState == SelectState.LOCKEDSELECTED)
         {
@@ -287,7 +330,32 @@ public class CustomShapeBuilder : MonoBehaviour
 
         SetLineHighlight(highlightedLineIndex, false);
 
+        //Reset Z-Layers
+        int iZ = 0;
+        foreach (SpriteRenderer line in lineSprites)
+        {
+            // Offset each line slightly downwards so they their Z-Layer corresponds to the order of creating the lines
+            line.transform.localPosition = new Vector3(
+                line.transform.localPosition.x,
+                line.transform.localPosition.y,
+                (-corners.Length + iZ) * lineZDepthModifier);
+
+            iZ++;
+        }
+
         GameManager.instance.LineInputEvent.RemoveListener(HighlightNextLine);
+    }
+
+    //Flash the highlighted line on and off
+    private IEnumerator FlashHighlight()
+    {
+        while (true)
+        {
+            SetLineHighlight(highlightedLineIndex, false);
+            yield return new WaitForSeconds(0.25f);
+            SetLineHighlight(highlightedLineIndex, true);
+            yield return new WaitForSeconds(0.25f);
+        }
     }
 
     public bool IsLocked()
@@ -308,8 +376,10 @@ public class CustomShapeBuilder : MonoBehaviour
             {
                 //print("Highlighting next line for player: " + iData.playerNum + " at index: " + highlightedLineIndex + " with sides: " + numSides + " and code: " + shapeCode);
                 SetLineHighlight(highlightedLineIndex, false);
+                ModifyLineZDepth(false, highlightedLineIndex);
                 highlightedLineIndex = highlightedLineIndex == numSides - 1 ? 0 : highlightedLineIndex + 1;
                 SetLineHighlight(highlightedLineIndex, true);
+                ModifyLineZDepth(true, highlightedLineIndex);
             }
         }
     }

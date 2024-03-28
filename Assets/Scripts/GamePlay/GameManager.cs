@@ -48,12 +48,10 @@ public class GameManager : MonoBehaviour
             case CurrentScene.GAMECLASSIC:
                 gameState = CurrentScene.WAITFORSCENELOAD;
                 SceneManager.LoadScene("02GameClassic");
-                StartCoroutine(PopulateVariables(newState));
                 break;
             case CurrentScene.GAMEFACTORY:
                 gameState = CurrentScene.WAITFORSCENELOAD;
                 SceneManager.LoadScene("03GameFactory");
-                StartCoroutine(PopulateVariables(newState));
                 break;
             case CurrentScene.GAMEMEGASHAPE:
                 break;
@@ -63,19 +61,6 @@ public class GameManager : MonoBehaviour
 
         gameState = newState;
     }
-
-    private IEnumerator PopulateVariables(CurrentScene targetState)
-    {
-        //Wait for the game to load
-        yield return new WaitForSeconds(2f);
-
-        players = new PlayerManager[2];
-        players[0] = GameObject.Find("Player1").GetComponent<PlayerManager>();
-        players[1] = GameObject.Find("Player2").GetComponent<PlayerManager>();
-        gameModeManager = players[0].gameModeManager;
-        gameState = targetState;
-    }
-
     private void Update()
     {
         //Check if the player has pressed a button and call relevant events
@@ -86,12 +71,12 @@ public class GameManager : MonoBehaviour
             //Add a line when one input was given this frame
             if (numbersPressed.Length == 1)
             {
-                LineInputEvent.Invoke(new InputData(numbersPressed[0], i));
+                LineInputEvent?.Invoke(new InputData(numbersPressed[0], i));
             }
             //Reset the shape when two buttons or more are pressed simultaneously
             else if (numbersPressed.Length > 1)
             {
-                DoubleLineInputEvent.Invoke(new InputData(i));
+                DoubleLineInputEvent?.Invoke(new InputData(i));
             }
         }
     }
@@ -153,6 +138,18 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Error in GetPlayerName");
             return "Error";
+        }
+    }
+
+    public void SetPlayerName(int playernum, string playerName)
+    {
+        if (playernum == 1)
+        {
+            p1Name = playerName;
+        }
+        else if (playernum == 2)
+        {
+            p2Name = playerName;
         }
     }
 

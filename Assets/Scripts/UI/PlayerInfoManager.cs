@@ -43,7 +43,7 @@ public class PlayerInfoManager : MonoBehaviour
 
     public void SetName(string name)
     {
-        scoreText.text = name;
+        nameText.text = name;
     }
 
     public void Reset()
