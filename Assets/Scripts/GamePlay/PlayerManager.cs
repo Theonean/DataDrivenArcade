@@ -138,15 +138,23 @@ public class PlayerManager : MonoBehaviour
     {
         if (iData.playerNum == playerNum)
         {
-            playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
+            //Destroy the moving shape to stop other player from getting points
             if (selectedFactory.shapeBuilder.IsLocked())
             {
                 Destroy(selectedFactory.movingShape);
                 selectedFactory.shapeBuilder.sap.playShapeFinished(false, combo);
+
+                //remove visual lock objects
+                foreach (SpriteRenderer lockObject in lockObjects)
+                {
+                    lockObject.enabled = false;
+                }
             }
+            //Normal reset of player factory and with proper reset on highlighting
             else
             {
+                playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
                 selectedFactory.shapeBuilder.EndLineHighlight();
                 selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
             }
