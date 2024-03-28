@@ -27,7 +27,7 @@ public class CustomShapeBuilder : MonoBehaviour
     //Variables used for shape generation
     [Header("Shape")]
     public float radius;
-    private int numSides; //Determined upon initialization
+    public int numSides; //Determined upon initialization
     private string shapeCode = ""; //Determined during runtime (by player) or during initialization (random, by code)
     [HideInInspector]
     public int playerNum;

@@ -762,7 +762,15 @@ PrefabInstance:
       objectReference: {fileID: 5666017759957841742, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
     - target: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: faceMultiplierPerLevel
-      value: 4
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4672053197967205114, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4672053197967205114, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.483
       objectReference: {fileID: 0}
     - target: {fileID: 5797034799349996480, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_Name
@@ -806,7 +814,7 @@ PrefabInstance:
       objectReference: {fileID: 894330639}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: challengeGridSize.x
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: challengeGridSize.y
@@ -907,6 +915,10 @@ PrefabInstance:
     - target: {fileID: 8685254758215800792, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1.865
+      objectReference: {fileID: 0}
+    - target: {fileID: 9027612563772016910, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -27,11 +27,12 @@ public class ChallengeFactory : ShapeFactory
     public int shapeNumSides;
     public int shapeNumSidesScaling = 3;
 
-    private GameObject movingShape;
+    public GameObject movingShape;
 
     public void ResetCF()
     {
         Destroy(movingShape);
+
         //#UNITYBUG Stopcoroutine has to be called on the object it was started on
         if (!shapeBuilder.flashingRoutine.IsUnityNull()) shapeBuilder.StopCoroutine(shapeBuilder.flashingRoutine);
 
@@ -171,7 +172,8 @@ public class ChallengeFactory : ShapeFactory
             }
 
             UpdateUI();
-            shapeBuilder.sap.playShapeFinished(isCorrectShape);
+
+            shapeBuilder.sap.playShapeFinished(isCorrectShape, player.GetCombo());
 
             //If the shape is wrong, jiggle it left and right
             if (!isCorrectShape)
@@ -189,17 +191,16 @@ public class ChallengeFactory : ShapeFactory
             }
 
             player.ShapeArrived(isCorrectShape, this);
+        }
 
-            //Update shape selection status
-            if (shapeBuilder.selectState == SelectState.LOCKED)
-            {
-                shapeBuilder.selectState = SelectState.UNSELECTED;
-            }
-            else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
-            {
-                shapeBuilder.selectState = SelectState.SELECTED;
-            }
-
+        //Update shape selection status
+        if (shapeBuilder.selectState == SelectState.LOCKED)
+        {
+            shapeBuilder.selectState = SelectState.UNSELECTED;
+        }
+        else if (shapeBuilder.selectState == SelectState.LOCKEDSELECTED)
+        {
+            shapeBuilder.selectState = SelectState.SELECTED;
         }
     }
 

@@ -24,7 +24,7 @@ public class ShapeAudioPlayer : MonoBehaviour
         }
 
         //Wait for a fraction of a second so sounds aren't played too fast
-            yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.3f);
 
         //Iterate through shapeCode and play the corresponding lineClip when the previous line clip has ended
         //This is done to prevent the audio from playing too fast
@@ -34,20 +34,30 @@ public class ShapeAudioPlayer : MonoBehaviour
         }
     }
 
-    public void playShapeFinished(bool isCorrect)
+    /// <summary>
+    /// Plays the line clip for the given index after a delay with pitch corresponding to the combo
+    /// </summary>
+    /// <param name="isCorrect"></param>
+    /// <param name="combo"></param>
+    public void playShapeFinished(bool isCorrect, int combo)
     {
         playingShapeFinished = true;
         //print("Locked audio");
         if (isCorrect)
         {
             AudioSource.PlayClipAtPoint(shapeRight, Vector3.zero);
-            StartCoroutine(UnloadAudio(shapeRight.length));
+            StartCoroutine(UnlockAudio(shapeRight.length));
         }
         else
         {
             AudioSource.PlayClipAtPoint(shapeWrong, Vector3.zero);
-            StartCoroutine(UnloadAudio(shapeWrong.length));
+            StartCoroutine(UnlockAudio(shapeWrong.length));
         }
+    }
+
+    public void StopAllSounds()
+    {
+        Debug.LogWarning("Tried to stop sounds but StopAllSounds is not implemented");
     }
 
     private IEnumerator PlayLineAfterDelay(int lineIndex, string shapeCode)
@@ -56,7 +66,7 @@ public class ShapeAudioPlayer : MonoBehaviour
         AudioSource.PlayClipAtPoint(lineClips[int.Parse(shapeCode[lineIndex].ToString())], Vector3.zero);
     }
 
-    private IEnumerator UnloadAudio(float waitTime)
+    private IEnumerator UnlockAudio(float waitTime)
     {
         //print("Waiting for amount: " + waitTime);
         yield return new WaitForSeconds(waitTime);

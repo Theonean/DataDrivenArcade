@@ -44,6 +44,7 @@ public class PlayerManager : MonoBehaviour
 
     public CustomShapeBuilder playerShape;
     private GameManager gm;
+    public SpriteRenderer[] lockObjects;
 
     //SCORE MANAGEMENT
     //SIMPLIFY THIS, MULTIPLY SIDES OF FACE WITH COMBO
@@ -122,6 +123,11 @@ public class PlayerManager : MonoBehaviour
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
+        //Show player input is blocked while this shape is selected
+        foreach (SpriteRenderer lockObject in lockObjects)
+        {
+            lockObject.enabled = true;
+        }
     }
 
     /// <summary>
@@ -133,8 +139,17 @@ public class PlayerManager : MonoBehaviour
         if (iData.playerNum == playerNum)
         {
             playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-            selectedFactory.shapeBuilder.EndLineHighlight();
-            selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
+
+            if (selectedFactory.shapeBuilder.IsLocked())
+            {
+                Destroy(selectedFactory.movingShape);
+                selectedFactory.shapeBuilder.sap.playShapeFinished(false, combo);
+            }
+            else
+            {
+                selectedFactory.shapeBuilder.EndLineHighlight();
+                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
+            }
         }
     }
 
@@ -142,8 +157,9 @@ public class PlayerManager : MonoBehaviour
     {
         print("Updating Selected Factory by Player");
 
-        //Deselect old Shape
+        //Deselect old Shape and stop audio
         selectedFactory.shapeBuilder.EndLineHighlight();
+        selectedFactory.shapeBuilder.sap.StopAllSounds();
 
         //Set old factory to locked (without selection) 
         if (selectedFactory.shapeBuilder.IsLocked()) selectedFactory.shapeBuilder.selectState = SelectState.LOCKED;
@@ -151,34 +167,20 @@ public class PlayerManager : MonoBehaviour
         //Select and highlight new factory / shape
         selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
 
-        //If player shape is longer than new factory, don't reset it
-        if (playerShape.GetShapecode().Length <= selectedFactory.shapeNumSides)
+        //Reset player shape to the selected factory
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
+
+        selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
+
+        //Show player input is blocked while this shape is selected
+        foreach (SpriteRenderer lockObject in lockObjects)
         {
-            //Reset player shape with the currently set lines
-            playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
-
-            //Check if the new playershape is as long as the challenge shape
-            bool sameLengthShape = playerShape.GetShapecode().Length == selectedFactory.shapeBuilder.GetShapecode().Length;
-
-            if (selectedFactory.shapeBuilder.IsLocked() && sameLengthShape)
-            {
-                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
-            }
-            else if (sameLengthShape)
-            {
-                FinishedShape();
-            }
-            else
-            {
-                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
-            }
+            lockObject.enabled = selectedFactory.shapeBuilder.IsLocked();
         }
-
     }
 
     public void ShapeArrived(bool correctShape, ChallengeFactory cf)
     {
-        playerShape.InitializeShape(true, selectedFactory.shapeNumSides, playerShape.GetShapecode());
         //Score and Combo Calculation
         if (correctShape)
         {
@@ -198,6 +200,15 @@ public class PlayerManager : MonoBehaviour
         }
 
         playerInfoManager.SetCombo(combo);
+
+        if (cf.Equals(selectedFactory))
+        {
+            //Show player input is blocked while this shape is selected
+            foreach (SpriteRenderer lockObject in lockObjects)
+            {
+                lockObject.enabled = false;
+            }
+        }
     }
 
     //Getter for combo, needed in audiomanager
