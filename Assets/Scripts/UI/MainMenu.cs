@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     private MainMenuSelectionHandler p2SelectionHandler;
 
     public TextMeshProUGUI[] insertCoinTexts;
+    public TextMeshProUGUI waitingForPlayerText;
     private bool coinInserted = false;
 
     // Start is called before the first frame update
@@ -46,6 +47,14 @@ public class MainMenu : MonoBehaviour
         if (p1SelectionHandler.ReadyToPlay() && p2SelectionHandler.ReadyToPlay())
         {
             gm.SwitchScene(CurrentScene.GAMECLASSIC);
+        }
+        else if (p1SelectionHandler.ReadyToPlay() || p2SelectionHandler.ReadyToPlay())
+        {
+            waitingForPlayerText.enabled = true;
+        }
+        else
+        {
+            waitingForPlayerText.enabled = false;
         }
     }
 
