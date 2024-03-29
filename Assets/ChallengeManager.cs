@@ -16,8 +16,8 @@ public class ChallengeManager : MonoBehaviour
     private int ShapesNeededForUnlockScalePerLevel = 2;
 
     //Variables for boundary of "game area" where challenges can be created
-    private Vector2 topLeft = new Vector2(-9, 5);
-    private Vector2 bottomRight = new Vector2(9, -2);
+    private Vector2 topLeft = new Vector2(-8, 4);
+    private Vector2 bottomRight = new Vector2(8, -3);
     private float boundaryPadding = 1f;
     private float spaceInbetweenChallenges = 0.2f;
     private float challengeFactorySideLength = 1.25f;
