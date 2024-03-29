@@ -25,7 +25,7 @@ public class ChallengeFactory : ShapeFactory
     public int maxFacesFloorMIN;
 
     public int shapeNumSides;
-    public int shapeNumSidesScaling = 3;
+    public int shapeNumSidesScaling = 1;
 
     public GameObject movingShape;
 
@@ -155,7 +155,7 @@ public class ChallengeFactory : ShapeFactory
             if (isCorrectShape)
             {
                 localCombo += 1;
-                shapeNumSides = maxFacesFloorMIN + (int)Math.Floor(localCombo / (float)shapeNumSidesScaling);
+                shapeNumSides = maxFacesFloorMIN + localCombo;
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
             }
