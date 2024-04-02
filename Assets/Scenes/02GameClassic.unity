@@ -591,17 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a0b9c29d96f48459670160bb601643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &894330639 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2579742493818178317, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-  m_PrefabInstance: {fileID: 2629274124335921840}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &903490406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
@@ -732,9 +721,17 @@ PrefabInstance:
       propertyPath: m_Creator
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3425898416861761429, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: playernum
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3871234193008492878, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 1.625
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902726359021238112, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: playernum
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3930852664498774386, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_Creator
@@ -788,22 +785,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: gridSize.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: faceStartValue
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: challengePrefab
-      value: 
-      objectReference: {fileID: 5666017759957841742, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
-    - target: {fileID: 4638301194858104089, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: faceMultiplierPerLevel
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4672053197967205114, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.144
@@ -832,13 +813,9 @@ PrefabInstance:
       propertyPath: rotationEasingCurve.m_Curve.Array.data[0].outSlope
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: roundTime
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: countdownStart
-      value: 3.5
+    - target: {fileID: 6154614488400682703, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.4
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: countdownTimer
@@ -848,22 +825,6 @@ PrefabInstance:
       propertyPath: constructClassic
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: countdownStartTime
-      value: 
-      objectReference: {fileID: 894330639}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: challengeGridSize.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: challengeGridSize.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
-      propertyPath: countdownRoundTimer
-      value: 
-      objectReference: {fileID: 1621621156}
     - target: {fileID: 7001480764665933613, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.39999974
