@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a0b9c29d96f48459670160bb601643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  challengePrefab: {fileID: 0}
-  gridSize: {x: 3, y: 3}
+  challengePrefab: {fileID: 5666017759957841742, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
+  faceMultiplierPerLevel: 0
+  faceStartValue: 1
+  gridSize: {x: 4, y: 3}
 --- !u!1 &792687002875593374
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118b2e275c33b2341b16a1b8cb812abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotate: 1
   rotationSpeed: 1
   rotationRange: {x: -20, y: 20}
   rotationEasingCurve:
@@ -219,6 +222,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  scale: 1
   scaleSpeed: 2
   scaleRange: {x: 0.011, y: 0.013}
   scaleEasingCurve:
@@ -245,6 +249,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  colorChange: 1
   textComponent: {fileID: 2579742493818178317}
   colorChangeInterval: 6
 --- !u!1 &3288775450395593495
@@ -296,11 +301,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df0637d370690d4b8b53dfc3f740e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownTimer: {fileID: 0}
-  roundTime: 60
+  countdownRoundTimer: {fileID: 3294314551684321705}
+  roundTime: 120
+  countdownStartTime: {fileID: 2579742493818178317}
+  countdownStart: 3.5
   challengeManager: {fileID: 4638301194858104089}
-  constructClassic: 0
-  challengeGridSize: {x: 0, y: 0}
+  challengeGridSize: {x: 4, y: 3}
   p1: {fileID: 8276424491176050316}
   p2: {fileID: 7744428559518254713}
 --- !u!1 &4562541905108311430
