@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 [System.Serializable]
@@ -16,8 +17,10 @@ public class ChallengeFactoryList
 
     public ChallengeFactoryList(ChallengeFactory challengeFactory)
     {
-        list = new List<ChallengeFactory>();
-        list.Add(challengeFactory);
+        list = new List<ChallengeFactory>
+        {
+            challengeFactory
+        };
     }
 }
 
@@ -53,6 +56,11 @@ public class PlayerManager : MonoBehaviour
     private int score = 0;
     private int combo = 0;
 
+    public void ReadyPlayer()
+    {
+        ReadyPlayer(new List<ChallengeFactoryList> { new ChallengeFactoryList(selectedFactory) });
+    }
+    
     public void ReadyPlayer(List<ChallengeFactoryList> challengeFactories)
     {
         this.challengeFactories = challengeFactories;
@@ -85,6 +93,7 @@ public class PlayerManager : MonoBehaviour
 
         //activate the selection manager and pass it the starting index of the selected factory
         GetComponentInChildren<SelectionManager>().Activate(selectedFactoryStartIndex);
+        GetComponentInChildren<InputVisualizer>().ToggleActive(true);
     }
 
     public void UnreadyPlayer()
@@ -96,6 +105,7 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.EndLineHighlight();
 
         GetComponentInChildren<SelectionManager>().Deactivate();
+        GetComponentInChildren<InputVisualizer>().ToggleActive(true);
     }
 
     private void TryAddLine(InputData iData)
@@ -189,6 +199,7 @@ public class PlayerManager : MonoBehaviour
 
     public void ShapeArrived(bool correctShape, ChallengeFactory cf)
     {
+
         //Score and Combo Calculation
         if (correctShape)
         {
@@ -216,6 +227,8 @@ public class PlayerManager : MonoBehaviour
             {
                 lockObject.enabled = false;
             }
+
+            playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
         }
     }
 
