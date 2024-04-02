@@ -12,11 +12,6 @@ public class SelectionManager : MonoBehaviour
     public CustomShapeBuilder playerShape;
     public GameObject selectionSprite;
 
-    public float timeUntilMoveAgainMax = 1.24f;
-    private float timeUntilMoveAgain;
-    private float timeUntilMoveAgainCounter = 0f;
-    private bool canMove = true;
-
     private Vector2 inputDir;
     private Vector2 factoryIndex;
     private int playerNum;
@@ -35,8 +30,6 @@ public class SelectionManager : MonoBehaviour
         }
         else
         {
-            timeUntilMoveAgain = timeUntilMoveAgainMax;
-
             playerNum = playerManager.playerNum;
 
             //Change selectionsprite colour to blue if playernum 2
@@ -56,10 +49,12 @@ public class SelectionManager : MonoBehaviour
         }
 
         active = true;
+        GameManager.instance.JoystickInputEvent.AddListener(JoystickInput);
     }
 
     public void Deactivate()
     {
+        GameManager.instance.JoystickInputEvent.RemoveListener(JoystickInput);
         active = false;
         //Hide selector
         selectionSprite.SetActive(false);
@@ -73,108 +68,80 @@ public class SelectionManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void JoystickInput(InputData iData)
     {
-        if (!isClassic && active)
+        if (!isClassic && active && iData.playerNum == playerNum)
         {
             //Save Input Direction
-            inputDir = Vector2.zero;
-            inputDir.x = Input.GetAxis("P" + playerNum + "Horizontal");
-            inputDir.y = Input.GetAxis("P" + playerNum + "Vertical");
+            inputDir = iData.joystickDirection;
 
-            //Debug.LogWarning("Kolleg, mach da event scheise und so wie jetz grad, deactivate und active isch quasi für nüt, arschloch");
+            print("Input: " + inputDir);
 
-            //Reset when no input received so player can move again
-            if (inputDir == Vector2.zero)
+            //IDEA: what if selection loops around (so reaching rightborder will move you to the left side)
+
+            //Safety check on inputdir to make sure it is within the bounds of the factories
+
+            //Final check if inputDir is still 0,0 as we do not want the updateselectedfactory function to be called when theres no movement (inefficient)
+
+            Vector2 tempFactoryIndex = factoryIndex + inputDir;
+            if (CheckMoveValidity(tempFactoryIndex))
             {
-                canMove = true;
-                timeUntilMoveAgain = timeUntilMoveAgainMax;
+                MoveSelection(tempFactoryIndex);
             }
-
-            timeUntilMoveAgainCounter -= Time.deltaTime;
-            if (timeUntilMoveAgainCounter <= 0f)
+            else
             {
-                canMove = true;
-            }
-
-            //Cleanup input so it can be used in the factory index
-            inputDir = ParseInput(inputDir);
-
-            if (inputDir != Vector2.zero && canMove)
-            {
-                canMove = false;
-                timeUntilMoveAgain = timeUntilMoveAgain / 2;
-                timeUntilMoveAgainCounter = timeUntilMoveAgain;
-
-
-                print("Input: " + inputDir);
-
-                //IDEA: what if selection loops around (so reaching rightborder will move you to the left side)
-
-                //Safety check on inputdir to make sure it is within the bounds of the factories
-
-                //Final check if inputDir is still 0,0 as we do not want the updateselectedfactory function to be called when theres no movement (inefficient)
-
-                Vector2 tempFactoryIndex = factoryIndex + inputDir;
+                //If the next factory is unselectable, try and jump one and check if that is selectable, if yes, move there
+                tempFactoryIndex += inputDir;
                 if (CheckMoveValidity(tempFactoryIndex))
                 {
                     MoveSelection(tempFactoryIndex);
                 }
                 else
                 {
-                    //If the next factory is unselectable, try and jump one and check if that is selectable, if yes, move there
-                    tempFactoryIndex += inputDir;
-                    if (CheckMoveValidity(tempFactoryIndex))
-                    {
-                        MoveSelection(tempFactoryIndex);
-                    }
-                    else
-                    {
-                        //If that still doesn't work, look at the direction (if going horizontal, try up), if going up, try left and right
-                        tempFactoryIndex -= inputDir;
+                    //If that still doesn't work, look at the direction (if going horizontal, try up), if going up, try left and right
+                    tempFactoryIndex -= inputDir;
 
-                        //If were on a horizontal move and we're blocked
-                        if (inputDir.x != 0)
+                    //If were on a horizontal move and we're blocked
+                    if (inputDir.x != 0)
+                    {
+                        //Try going up
+                        tempFactoryIndex.y -= 1;
+                        if (CheckMoveValidity(tempFactoryIndex))
                         {
-                            //Try going up
-                            tempFactoryIndex.y -= 1;
+                            MoveSelection(tempFactoryIndex);
+                        }
+                        else
+                        {
+                            //Try going down
+                            tempFactoryIndex.y += 2;
                             if (CheckMoveValidity(tempFactoryIndex))
                             {
                                 MoveSelection(tempFactoryIndex);
                             }
                             else
                             {
-                                //Try going down
-                                tempFactoryIndex.y += 2;
-                                if (CheckMoveValidity(tempFactoryIndex))
-                                {
-                                    MoveSelection(tempFactoryIndex);
-                                }
-                                else
-                                {
-                                    //print("We tried it all (Horizontally), but we still can't move");
-                                }
+                                //print("We tried it all (Horizontally), but we still can't move");
                             }
                         }
-                        //If we're on a vertical move try going right and then try left
-                        else if (inputDir.y != 0)
+                    }
+                    //If we're on a vertical move try going right and then try left
+                    else if (inputDir.y != 0)
+                    {
+                        tempFactoryIndex.x += 1;
+                        if (CheckMoveValidity(tempFactoryIndex))
                         {
-                            tempFactoryIndex.x += 1;
+                            MoveSelection(tempFactoryIndex);
+                        }
+                        else
+                        {
+                            tempFactoryIndex.x -= 2;
                             if (CheckMoveValidity(tempFactoryIndex))
                             {
                                 MoveSelection(tempFactoryIndex);
                             }
                             else
                             {
-                                tempFactoryIndex.x -= 2;
-                                if (CheckMoveValidity(tempFactoryIndex))
-                                {
-                                    MoveSelection(tempFactoryIndex);
-                                }
-                                else
-                                {
-                                    //print("We tried it all (vertically), but we still can't move");
-                                }
+                                //print("We tried it all (vertically), but we still can't move");
                             }
                         }
                     }
