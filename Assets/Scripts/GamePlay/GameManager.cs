@@ -27,11 +27,21 @@ public class GameManager : MonoBehaviour
     public PlayerManager[] players;
 
     public UnityEvent<InputData> LineInputEvent;
+    public UnityEvent<InputData> LineReleasedEvent;
     public UnityEvent<InputData> DoubleLineInputEvent;
 
+    private int[] buttonsPressedLastUpdate = new int[2];
+    public UnityEvent<InputData> JoystickInputEvent;
+    public UnityEvent<InputData> JoystickReleasedEvent;
+    private float[] joystickCooldowns = new float[2];
+    private bool[] joystickMovedLastUpdate = new bool[2];
+    private float joystickCooldownTime = 0.3f;
+
+    /// <summary>
+    /// Setup Singleton instance
+    /// </summary>
     void Awake()
     {
-
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
@@ -44,6 +54,8 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case CurrentScene.GAMESELECTION:
+                gameState = CurrentScene.WAITFORSCENELOAD;
+                SceneManager.LoadScene("01GameSelection");
                 break;
             case CurrentScene.GAMECLASSIC:
                 gameState = CurrentScene.WAITFORSCENELOAD;
@@ -67,67 +79,69 @@ public class GameManager : MonoBehaviour
         //TODO expand system so if player does double input within a given set of updates, it will be counted as a double input
         for (int i = 1; i <= 2; i++)
         {
-            int[] numbersPressed = GetInputNumber(i);
-            //Add a line when one input was given this frame
-            if (numbersPressed.Length == 1)
+            //BUTTON Input Handling
+            List<int> lineIndexPressed = new List<int>();
+            int keysBeingHeld = 0;
+
+            //Get the button inputs per button Input (names from Input Manager)
+            for (int lineI = 1; lineI <= 6; lineI++)
             {
-                LineInputEvent?.Invoke(new InputData(numbersPressed[0], i));
+                int lineIndex = lineI - 1; //-1 because the line Codes are 0-indexed (to use them directly in arrays)
+                if (Input.GetButtonDown("P" + i + "L" + lineI))
+                {
+                    lineIndexPressed.Add(lineIndex);
+                }
+                else if (Input.GetButton("P" + i + "L" + lineI))
+                {
+                    keysBeingHeld += 1;
+                }
+                else if (Input.GetButtonUp("P" + i + "L" + lineI))
+                {
+                    LineReleasedEvent?.Invoke(new InputData(lineIndex, i));
+                }
             }
-            //Reset the shape when two buttons or more are pressed simultaneously
-            else if (numbersPressed.Length > 1)
+
+            //Add a line when one input was given this frame
+            if (lineIndexPressed.Count == 1)
+            {
+                LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
+            }
+            //Add a double line when two inputs were given this frame, either by one button being held and another pressed or two pressed this frame
+            else if ((keysBeingHeld >= 1 && lineIndexPressed.Count > 0) || lineIndexPressed.Count == 2)
             {
                 DoubleLineInputEvent?.Invoke(new InputData(i));
             }
+
+
+            //JOYSTICK movement Checking
+            if (joystickCooldowns[i - 1] <= 0f || !joystickMovedLastUpdate[i - 1])
+            {
+                joystickCooldowns[i - 1] = joystickCooldownTime;
+
+                //Joystick Input Handling
+                Vector2 inputDir = Vector2.zero;
+                inputDir.x = Input.GetAxis("P" + i + "Horizontal");
+                inputDir.y = Input.GetAxis("P" + i + "Vertical");
+
+                //Cleanup input for joystick movement
+                inputDir = ParseInput(inputDir);
+
+                if (inputDir != Vector2.zero)
+                {
+                    joystickMovedLastUpdate[i - 1] = true;
+                    JoystickInputEvent?.Invoke(new InputData(inputDir, i));
+                }
+                else if (joystickMovedLastUpdate[i - 1])
+                {
+                    joystickMovedLastUpdate[i - 1] = false;
+                    JoystickReleasedEvent?.Invoke(new InputData(i));
+                }
+            }
+            else
+            {
+                joystickCooldowns[i - 1] -= Time.deltaTime;
+            }
         }
-    }
-
-    /// <summary>
-    /// Returns the inputs given by a specific player 
-    /// </summary>
-    /// <param name="playerNum"></param>
-    /// <returns></returns>
-    private int[] GetInputNumber(int playerNum)
-    {
-        List<int> AmountKeysPressedThisFrame = new List<int>();
-        int i = 0;
-
-        if (Input.GetButtonDown("P" + playerNum + "L1"))
-        {
-            AmountKeysPressedThisFrame.Add(0);
-            i += 1;
-        }
-
-        if (Input.GetButtonDown("P" + playerNum + "L2"))
-        {
-            AmountKeysPressedThisFrame.Add(1);
-            i += 1;
-        }
-
-        if (Input.GetButtonDown("P" + playerNum + "L3"))
-        {
-            AmountKeysPressedThisFrame.Add(2);
-            i += 1;
-        }
-
-        if (Input.GetButtonDown("P" + playerNum + "L4"))
-        {
-            AmountKeysPressedThisFrame.Add(3);
-            i += 1;
-        }
-
-        if (Input.GetButtonDown("P" + playerNum + "L5"))
-        {
-            AmountKeysPressedThisFrame.Add(4);
-            i += 1;
-        }
-
-        if (Input.GetButtonDown("P" + playerNum + "L6"))
-        {
-            AmountKeysPressedThisFrame.Add(5);
-            i += 1;
-        }
-
-        return AmountKeysPressedThisFrame.ToArray();
     }
 
     public string GetPlayerName(int playerNum)
@@ -151,6 +165,22 @@ public class GameManager : MonoBehaviour
         {
             p2Name = playerName;
         }
+    }
+
+    //set x and y of Input to either -1,0 or 1
+    private Vector2 ParseInput(Vector2 input)
+    {
+        Vector2 inputDir = input;
+        //set x and y of Input to either -1,0 or 1
+        if (inputDir.x > 0) inputDir.x = 1;
+        else if (inputDir.x < 0) inputDir.x = -1;
+        else inputDir.x = 0;
+
+        if (inputDir.y > 0) inputDir.y = 1;
+        else if (inputDir.y < 0) inputDir.y = -1;
+        else inputDir.y = 0;
+
+        return inputDir;
     }
 
 }
