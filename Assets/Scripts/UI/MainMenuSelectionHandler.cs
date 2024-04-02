@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Drawing.Text;
 using System.Security.Policy;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public enum LoginScreenPlayerState
@@ -19,34 +21,25 @@ public enum LoginScreenPlayerState
 public class MainMenuSelectionHandler : MonoBehaviour
 {
     private GameManager gm;
-    private MainMenu mainMenu;
     [HideInInspector]
     public bool insertedCoin = false;
     public int playerNum;
 
     [Header("UI Navigation")]
     public NameCreator nameCreator;
-    public Image confirmButton;
-    public TextMeshProUGUI confirmText;
-    public float inputCooldown = 0.2f;
-    private float cooldownTimer;
+    public UISelectable confirmText;
     private GameObject currentSelectedBG;
     [Header("Prefabs")]
     public GameObject uiSelectionPrefab;
-
-    private Vector3 confirmTxtOriginalScale;
     private LoginScreenPlayerState loginState = LoginScreenPlayerState.WAITINGFORCOIN;
+    public UnityEvent<LoginScreenPlayerState, int> loginStateChangedEvent;
 
     // Start is called before the first frame update
     void Start()
     {
         gm = GameManager.instance;
         gm.LineInputEvent.AddListener(TryEnterNameInput);
-
-        mainMenu = GetComponent<MainMenu>();
-        mainMenu.SetSelectionHandler(this, playerNum);
-        cooldownTimer = inputCooldown;
-        confirmTxtOriginalScale = confirmButton.transform.localScale;
+        gm.JoystickInputEvent.AddListener(TryChangeSelection);
 
         //Instance and set selection to first element of array
         currentSelectedBG = Instantiate(uiSelectionPrefab, nameCreator.transform.position, Quaternion.identity);
@@ -54,53 +47,38 @@ public class MainMenuSelectionHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void TryChangeSelection(InputData iData)
     {
-        cooldownTimer -= Time.deltaTime;
-
-        if (loginState != LoginScreenPlayerState.WAITINGFORCOIN && cooldownTimer < 0f)
+        if (iData.playerNum == playerNum && loginState != LoginScreenPlayerState.NAME_INPUTTING)
         {
-            Vector2 playerInput = new Vector2(Input.GetAxis("P" + playerNum + "Horizontal"), Input.GetAxis("P" + playerNum + "Vertical"));
+            //Player Selection Management only possible when not inputting Name or looking at leaderboard (leaderboard is not implemented yet)
 
-            if (loginState != LoginScreenPlayerState.NAME_INPUTTING)
+            if (iData.joystickDirection.y < 0 && loginState != LoginScreenPlayerState.NAME_SELECTED)
             {
-                //Player Selection Management only possible when not inputting Name or looking at leaderboard (leaderboard is not implemented yet)
-                if (playerInput != Vector2.zero)
-                {
-                    if (playerInput.y < 0 && loginState != LoginScreenPlayerState.NAME_SELECTED)
-                    {
-                        loginState = LoginScreenPlayerState.NAME_SELECTED;
-                        currentSelectedBG.transform.position = nameCreator.transform.position;
-                        //print("Name selected");
-                    }
-                    else if (playerInput.y > 0 && loginState != LoginScreenPlayerState.CONFIRM_SELECTED)
-                    {
-                        loginState = LoginScreenPlayerState.CONFIRM_SELECTED;
-                        currentSelectedBG.transform.position = confirmText.transform.position;
-                        //print(nameCreator.GetName());
-                    }
-                    cooldownTimer = inputCooldown;
-                }
+                ChangeLoginState(LoginScreenPlayerState.NAME_SELECTED);
+                confirmText.Deselected();
+                currentSelectedBG.transform.position = nameCreator.transform.position;
+            }
+            else if (iData.joystickDirection.y > 0 && loginState != LoginScreenPlayerState.CONFIRM_SELECTED)
+            {
+                ChangeLoginState(LoginScreenPlayerState.CONFIRM_SELECTED);
+                confirmText.Selected();
+                currentSelectedBG.transform.position = confirmText.transform.position;
             }
 
-            //When the player has confirm selected, lerp the texts scale towards 0 and when it reaches there, colour the button green
-            if (loginState == LoginScreenPlayerState.CONFIRM_SELECTED)
-            {
-                confirmText.transform.localScale = Vector3.Lerp(confirmText.transform.localScale, Vector3.zero, 0.1f);
-                if (confirmText.transform.localScale.x < 0.1f)
-                {
-                    confirmButton.color = Color.green;
-                    loginState = LoginScreenPlayerState.READYTOPLAY;
-                    gm.SetPlayerName(playerNum, nameCreator.GetName());
-                    print("Ready to play for player " + playerNum);
-                }
-            }
-            else if (confirmText.transform.localScale != confirmTxtOriginalScale && loginState != LoginScreenPlayerState.READYTOPLAY)
-            {
-                confirmText.transform.localScale = Vector3.Lerp(confirmText.transform.localScale, confirmTxtOriginalScale, 0.1f);
-                confirmButton.color = Color.white;
-            }
         }
+    }
+    public void SetReadyToPlay()
+    {
+        ChangeLoginState(LoginScreenPlayerState.READYTOPLAY);
+        gm.SetPlayerName(playerNum, nameCreator.GetName());
+        print("Ready to play for player " + playerNum);
+    }
+
+    private void ChangeLoginState(LoginScreenPlayerState newState)
+    {
+        loginState = newState;
+        loginStateChangedEvent?.Invoke(loginState, playerNum);
     }
 
     //Connected to Line Input Event
@@ -108,19 +86,19 @@ public class MainMenuSelectionHandler : MonoBehaviour
     {
         if (iData.playerNum == playerNum)
         {
-            if (loginState == LoginScreenPlayerState.NAME_SELECTED)
+            switch (loginState)
             {
-                loginState = LoginScreenPlayerState.NAME_INPUTTING;
-                nameCreator.SetSelected(true, playerNum);
-                print("Inputting name for player " + playerNum);
+                case LoginScreenPlayerState.NAME_SELECTED:
+                    ChangeLoginState(LoginScreenPlayerState.NAME_INPUTTING);
+                    nameCreator.SetSelected(true, playerNum);
+                    print("Inputting name for player " + playerNum);
+                    break;
+                case LoginScreenPlayerState.NAME_INPUTTING:
+                    ChangeLoginState(LoginScreenPlayerState.NAME_SELECTED);
+                    nameCreator.SetSelected(false, playerNum);
+                    print("Canceled Inputting name for player " + playerNum);
+                    break;
             }
-            else if (loginState == LoginScreenPlayerState.NAME_INPUTTING)
-            {
-                loginState = LoginScreenPlayerState.NAME_SELECTED;
-                nameCreator.SetSelected(false, playerNum);
-                print("Canceled Inputting name for player " + playerNum);
-            }
-            cooldownTimer = inputCooldown;
         }
     }
 
@@ -130,8 +108,4 @@ public class MainMenuSelectionHandler : MonoBehaviour
         loginState = LoginScreenPlayerState.NAME_SELECTED;
     }
 
-    public bool ReadyToPlay()
-    {
-        return loginState == LoginScreenPlayerState.READYTOPLAY;
-    }
 }
