@@ -2,24 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
     private GameManager gm;
-
-    private MainMenuSelectionHandler p1SelectionHandler;
-    private MainMenuSelectionHandler p2SelectionHandler;
+    public MainMenuSelectionHandler[] mainMenuSelectionHandlers = new MainMenuSelectionHandler[2];
 
     public TextMeshProUGUI[] insertCoinTexts;
     public TextMeshProUGUI waitingForPlayerText;
     private bool coinInserted = false;
+    private bool[] playersReady = new bool[2];
+
+    public UnityEvent coinInsertedEvent;
 
     // Start is called before the first frame update
     void Start()
     {
         gm = GameManager.instance;
+
+        if (mainMenuSelectionHandlers[0].IsUnityNull() || mainMenuSelectionHandlers[1].IsUnityNull())
+        {
+            Debug.LogError("MainMenuSelectionHandlers are not set in the inspector");
+        }
     }
 
     // Update is called once per frame
@@ -27,8 +35,7 @@ public class MainMenu : MonoBehaviour
     {
         if (Input.GetButtonDown("InsertCoinArcade") && !coinInserted)
         {
-            p1SelectionHandler.CoinInserted();
-            p2SelectionHandler.CoinInserted();
+            coinInsertedEvent?.Invoke();
             gm.arcadeMode = true;
             coinInserted = true;
             foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
@@ -36,19 +43,30 @@ public class MainMenu : MonoBehaviour
         }
         else if (Input.GetButtonDown("InsertCoinKeyboard") && !coinInserted)
         {
-            p1SelectionHandler.CoinInserted();
-            p2SelectionHandler.CoinInserted();
+            coinInsertedEvent?.Invoke();
             gm.arcadeMode = false;
             coinInserted = true;
             foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
             print("Keyboard mode active");
         }
+    }
 
-        if (p1SelectionHandler.ReadyToPlay() && p2SelectionHandler.ReadyToPlay())
+    public void PlayerSelectionChanged(LoginScreenPlayerState lsps, int playerNum)
+    {
+        if (lsps == LoginScreenPlayerState.READYTOPLAY)
         {
-            gm.SwitchScene(CurrentScene.GAMECLASSIC);
+            playersReady[playerNum - 1] = true;
         }
-        else if (p1SelectionHandler.ReadyToPlay() || p2SelectionHandler.ReadyToPlay())
+        else
+        {
+            playersReady[playerNum - 1] = false;
+        }
+
+        if (playersReady[0] && playersReady[1])
+        {
+            gm.SwitchScene(CurrentScene.GAMESELECTION);
+        }
+        else if (playersReady[0] || playersReady[1])
         {
             waitingForPlayerText.enabled = true;
         }
@@ -56,23 +74,6 @@ public class MainMenu : MonoBehaviour
         {
             waitingForPlayerText.enabled = false;
         }
+
     }
-
-    public void SetSelectionHandler(MainMenuSelectionHandler selectionHandler, int playerNum)
-    {
-        if (playerNum == 1)
-        {
-            p1SelectionHandler = selectionHandler;
-        }
-        else if (playerNum == 2)
-        {
-            p2SelectionHandler = selectionHandler;
-        }
-        else
-        {
-            Debug.LogError("Player Number not set correctly on MainMenuSelectionHandler!!!");
-        }
-    }
-
-
 }
