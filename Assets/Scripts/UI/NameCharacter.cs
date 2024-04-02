@@ -27,7 +27,8 @@ public class NameCharacter : MonoBehaviour
     {
         selected = !selected;
 
-        if(!selected){
+        if (!selected)
+        {
             characterText.color = Color.black;
         }
         else
@@ -39,13 +40,18 @@ public class NameCharacter : MonoBehaviour
     //Handles setting the character either up or down
     public void SetCharacter(bool isUp)
     {
+        int charInt = (int)characterText.text[0];
         if (isUp)
         {
-            characterText.text = ((char)(characterText.text[0] + 1)).ToString();
+            int nextCharInt = charInt < 126 ? charInt + 1 : 32;
+            characterText.text = ((char)nextCharInt).ToString();
+            print("Num: " + (int)characterText.text[0]);
         }
         else
         {
-            characterText.text = ((char)(characterText.text[0] - 1)).ToString();
+            int nextCharInt = charInt > 32 ? charInt - 1 : 126;
+            characterText.text = ((char)nextCharInt).ToString();
+            print("Num: " + (int)characterText.text[0]);
         }
 
         SetVisibility(true);
