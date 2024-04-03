@@ -82,7 +82,7 @@ public class PlayerManager : MonoBehaviour
         gm.DoubleLineInputEvent.AddListener(ReinitializePlayer);
 
 
-        print("ScoreManager Start");
+        print("PlayerManager Start");
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
