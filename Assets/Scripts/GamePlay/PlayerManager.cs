@@ -58,9 +58,9 @@ public class PlayerManager : MonoBehaviour
 
     public void ReadyPlayer()
     {
-        ReadyPlayer(new List<ChallengeFactoryList> { new ChallengeFactoryList(selectedFactory) });
+        ReadyPlayer(challengeFactories);
     }
-    
+
     public void ReadyPlayer(List<ChallengeFactoryList> challengeFactories)
     {
         this.challengeFactories = challengeFactories;
@@ -112,7 +112,10 @@ public class PlayerManager : MonoBehaviour
     {
         //When event comes from the right Player and the selected factory is not locked (ie. Animating)
         if (iData.playerNum == playerNum && !selectedFactory.shapeBuilder.IsLocked())
-        {
+        {   
+            //Stop playing audio on sap so theres not as much overlapping sounds
+            selectedFactory.shapeBuilder.sap.StopCurrentAudio();
+
             //Play sound from sap on player shape
             playerShape.sap.PlayLinePlaced(iData.lineCode);
 
@@ -177,7 +180,7 @@ public class PlayerManager : MonoBehaviour
 
         //Deselect old Shape and stop audio
         selectedFactory.shapeBuilder.EndLineHighlight();
-        selectedFactory.shapeBuilder.sap.StopAllSounds();
+        selectedFactory.shapeBuilder.sap.StopCurrentAudio();
 
         //Set old factory to locked (without selection) 
         if (selectedFactory.shapeBuilder.IsLocked()) selectedFactory.shapeBuilder.selectState = SelectState.LOCKED;
@@ -210,7 +213,7 @@ public class PlayerManager : MonoBehaviour
             playerInfoManager.SetScore(score);
 
             //Inform challengemanager to reduce Lock Number on challenges below this one
-            challengeManager.ReduceShapeLockNum(cf);
+            if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
         }
         //When wrong shape is completed, stop combo and reset multiplier
         else
