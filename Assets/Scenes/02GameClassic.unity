@@ -657,6 +657,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -2.8582988
       objectReference: {fileID: 0}
+    - target: {fileID: 2361239613448719086, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.12813997
+      objectReference: {fileID: 0}
     - target: {fileID: 2579742493818178317, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_fontColorGradient.topLeft.b
       value: 0
@@ -737,6 +741,10 @@ PrefabInstance:
       propertyPath: m_Creator
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4136193884196499995, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.37186003
+      objectReference: {fileID: 0}
     - target: {fileID: 4242054731615629532, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 6
@@ -744,6 +752,10 @@ PrefabInstance:
     - target: {fileID: 4383972215477572224, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431981660561283845, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.37186003
       objectReference: {fileID: 0}
     - target: {fileID: 4475665094865158777, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_LocalPosition.x
@@ -815,7 +827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6154614488400682703, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4
+      value: 3.11
       objectReference: {fileID: 0}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: countdownTimer
