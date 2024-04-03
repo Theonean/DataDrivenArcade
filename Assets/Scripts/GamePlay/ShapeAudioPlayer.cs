@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShapeAudioPlayer : MonoBehaviour
@@ -7,12 +8,18 @@ public class ShapeAudioPlayer : MonoBehaviour
     public AudioClip[] lineClips = new AudioClip[6];
     public AudioClip shapeRight;
     public AudioClip shapeWrong;
+    private AudioSource audioSource;
 
     private bool playingShapeFinished = false;
 
+    private void Start()
+    {
+        audioSource = this.AddComponent<AudioSource>();
+    }
+
     public void PlayLinePlaced(int lineCode)
     {
-        AudioSource.PlayClipAtPoint(lineClips[lineCode], Vector3.zero);
+        audioSource.PlayOneShot(lineClips[lineCode]);
     }
 
     public IEnumerator PlayShapeCode(string shapeCode)
@@ -45,32 +52,54 @@ public class ShapeAudioPlayer : MonoBehaviour
         //print("Locked audio");
         if (isCorrect)
         {
-            AudioSource.PlayClipAtPoint(shapeRight, Vector3.zero);
+            audioSource.pitch = 0.5f + (combo * 0.05f);
+            audioSource.PlayOneShot(shapeRight);
             StartCoroutine(UnlockAudio(shapeRight.length));
         }
         else
         {
-            AudioSource.PlayClipAtPoint(shapeWrong, Vector3.zero);
+            audioSource.PlayOneShot(shapeWrong);
             StartCoroutine(UnlockAudio(shapeWrong.length));
         }
     }
 
-    public void StopAllSounds()
+    public void StopCurrentAudio()
     {
-        Debug.LogWarning("Tried to stop sounds but StopAllSounds is not implemented");
+        StartCoroutine(QuickSilentFade());
     }
 
     private IEnumerator PlayLineAfterDelay(int lineIndex, string shapeCode)
     {
         yield return new WaitForSeconds(0.25f * lineIndex);
-        AudioSource.PlayClipAtPoint(lineClips[int.Parse(shapeCode[lineIndex].ToString())], Vector3.zero);
+        audioSource.PlayOneShot(lineClips[int.Parse(shapeCode[lineIndex].ToString())]);
     }
 
     private IEnumerator UnlockAudio(float waitTime)
     {
         //print("Waiting for amount: " + waitTime);
         yield return new WaitForSeconds(waitTime);
+        audioSource.pitch = 1f;
         playingShapeFinished = false;
         //print("Unlocked audio");
+    }
+
+    //Quickly fade out audio to avoid clicks
+    private IEnumerator QuickSilentFade()
+    {
+        Debug.LogWarning("Quickly fading out audio still unreliable, sometimes not stopping playback?");
+        //Check if audio is playing (for efficiency I guess? ~ tired code writing yeehaw)
+        if (audioSource.isPlaying && !playingShapeFinished)
+        {
+            float originalVolume = audioSource.volume;
+            float decreaseVolumeSpeed = 5f;
+            while (audioSource.volume > 0)
+            {
+                audioSource.volume -= originalVolume * Time.deltaTime * decreaseVolumeSpeed;
+                print("volume: " + audioSource.volume + " originalVolume: " + originalVolume + " Time.deltaTime: " + Time.deltaTime + " decreaseVolumeSpeed: " + decreaseVolumeSpeed);
+                yield return null;
+            }
+            audioSource.Stop();
+            audioSource.volume = originalVolume;
+        }
     }
 }
