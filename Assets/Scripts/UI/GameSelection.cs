@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class GameSelection : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public JoystickSelectable[] selectedOnStart = new JoystickSelectable[2];
+    private string[] playersSelectedActions = new string[2];
+    private GameManager gm;
+
+    private void Start()
     {
-        
+        gm = GameManager.instance;
+
+        foreach (JoystickSelectable js in selectedOnStart)
+        {
+            js.Selected();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SelectionChanged(int playernum, string actionType)
     {
-        
+        playersSelectedActions[playernum - 1] = actionType;
     }
 }
