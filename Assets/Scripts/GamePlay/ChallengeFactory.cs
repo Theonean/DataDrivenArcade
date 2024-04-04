@@ -204,6 +204,20 @@ public class ChallengeFactory : ShapeFactory
         }
     }
 
+    public void IncreaseShapeNumSides()
+    {
+        maxFacesFloorMIN += 1;
+        shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
+    }
+    public void DecreaseShapeNumSides()
+    {
+        if (maxFacesFloorMIN > 1)
+        {
+            maxFacesFloorMIN -= 1;
+            shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
+        }
+    }
+
     private void UpdateUI()
     {
         localComboText.text = localCombo.ToString();
