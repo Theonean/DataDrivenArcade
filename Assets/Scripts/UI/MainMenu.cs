@@ -10,12 +10,11 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     private GameManager gm;
-    public MainMenuSelectionHandler[] mainMenuSelectionHandlers = new MainMenuSelectionHandler[2];
 
     public TextMeshProUGUI[] insertCoinTexts;
     public TextMeshProUGUI waitingForPlayerText;
     private bool coinInserted = false;
-    private bool[] playersReady = new bool[2];
+    private string[] playersSelectedActions = new string[2];
 
     public UnityEvent coinInsertedEvent;
 
@@ -23,11 +22,6 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-
-        if (mainMenuSelectionHandlers[0].IsUnityNull() || mainMenuSelectionHandlers[1].IsUnityNull())
-        {
-            Debug.LogError("MainMenuSelectionHandlers are not set in the inspector");
-        }
     }
 
     // Update is called once per frame
@@ -51,22 +45,15 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void PlayerSelectionChanged(LoginScreenPlayerState lsps, int playerNum)
+    public void PlayerSelectionChanged(int playerNum, string actionType)
     {
-        if (lsps == LoginScreenPlayerState.READYTOPLAY)
-        {
-            playersReady[playerNum - 1] = true;
-        }
-        else
-        {
-            playersReady[playerNum - 1] = false;
-        }
+        playersSelectedActions[playerNum - 1] = actionType;
 
-        if (playersReady[0] && playersReady[1])
+        if (playersSelectedActions[0] == "READYTOPLAY" && playersSelectedActions[1] == "READYTOPLAY")
         {
             gm.SwitchScene(CurrentScene.GAMESELECTION);
         }
-        else if (playersReady[0] || playersReady[1])
+        else if (playersSelectedActions[0] == "READYTOPLAY" || playersSelectedActions[1] == "READYTOPLAY")
         {
             waitingForPlayerText.enabled = true;
         }
@@ -74,6 +61,5 @@ public class MainMenu : MonoBehaviour
         {
             waitingForPlayerText.enabled = false;
         }
-
     }
 }
