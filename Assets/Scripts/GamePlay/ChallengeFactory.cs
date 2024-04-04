@@ -207,6 +207,8 @@ public class ChallengeFactory : ShapeFactory
     public void IncreaseShapeNumSides()
     {
         maxFacesFloorMIN += 1;
+        shapeNumSides = maxFacesFloorMIN;
+        if (movingShape != null) Destroy(movingShape);
         shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
     }
     public void DecreaseShapeNumSides()
@@ -214,6 +216,8 @@ public class ChallengeFactory : ShapeFactory
         if (maxFacesFloorMIN > 1)
         {
             maxFacesFloorMIN -= 1;
+            shapeNumSides = maxFacesFloorMIN;
+            if (movingShape != null) Destroy(movingShape);
             shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
         }
     }
