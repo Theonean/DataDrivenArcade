@@ -90,12 +90,12 @@ public class MainMenuSelectionHandler : MonoBehaviour
             {
                 case LoginScreenPlayerState.NAME_SELECTED:
                     ChangeLoginState(LoginScreenPlayerState.NAME_INPUTTING);
-                    nameCreator.SetSelected(true, playerNum);
+                    nameCreator.ToggleSelected();
                     print("Inputting name for player " + playerNum);
                     break;
                 case LoginScreenPlayerState.NAME_INPUTTING:
                     ChangeLoginState(LoginScreenPlayerState.NAME_SELECTED);
-                    nameCreator.SetSelected(false, playerNum);
+                    nameCreator.ToggleSelected();
                     print("Canceled Inputting name for player " + playerNum);
                     break;
             }

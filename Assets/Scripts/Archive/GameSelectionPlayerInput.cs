@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Archive;
 
-public enum SelectionState
+namespace Archive
 {
-    GameModeClassic = 0,
-    GameModeGrid = 1,
-    GameModeCustom = 2,
-    ChallengeFactory = 3,
+    public enum SelectionState
+    {
+        GameModeClassic = 0,
+        GameModeGrid = 1,
+        GameModeCustom = 2,
+        ChallengeFactory = 3,
+    }
 }
 
 public class GameSelectionPlayerInput : MonoBehaviour
@@ -23,7 +27,7 @@ public class GameSelectionPlayerInput : MonoBehaviour
     public UIGameModeSelectable[] gameModes = new UIGameModeSelectable[3];
     private ChallengeFactory challengeFactory;
     private PlayerManager playerManager;
-    private SelectionState selectionState = SelectionState.ChallengeFactory;
+    private Archive.SelectionState selectionState = Archive.SelectionState.ChallengeFactory;
     private bool hasNewGameSelected = true;
     private GameObject[] selectables = new GameObject[5];
     private GameManager gm;
