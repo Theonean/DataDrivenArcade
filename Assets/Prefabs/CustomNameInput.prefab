@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2409532402289173952}
   - component: {fileID: 4713921797858124703}
+  - component: {fileID: 1476919566578914964}
+  - component: {fileID: 6688599414448263408}
   m_Layer: 0
   m_Name: CustomNameInput
   m_TagString: Untagged
@@ -46,4 +48,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameLength: 8
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
-  timeBetweenMoves: 0.25
+  playerNum: 0
+--- !u!114 &1476919566578914964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3439028144890326570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 651f678d0c29cb74b88cad13ee0208de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationOnSelection: 0
+  actionType: 
+  linkedSelectable: {fileID: 0}
+  gameMode: 0
+  controlledByPlayer: 0
+  hasEditable: 0
+  SelectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  FinishedSelectionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveSelectionUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveSelectionDownEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveSelectionLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveSelectionRightEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  highlightSprite: {fileID: 0}
+  highlightSize: {x: 0, y: 0}
+--- !u!114 &6688599414448263408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3439028144890326570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b848d28a4b963d446be3cd9cd7070be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlledByPlayer: 1
+  buttonPressedEvent:
+    m_PersistentCalls:
+      m_Calls: []
