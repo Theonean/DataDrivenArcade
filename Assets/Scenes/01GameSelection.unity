@@ -1526,12 +1526,12 @@ MonoBehaviour:
   selectedOnStart:
   - {fileID: 1050266648}
   - {fileID: 2073712561}
-  infoPanel: {fileID: 0}
-  infoPanelTitle: {fileID: 0}
-  infoPanelText: {fileID: 0}
-  classicDescription: 
-  gridDescription: 
-  customDescription: 
+  infoPanel: {fileID: 537328653}
+  infoPanelTitle: {fileID: 1329874490}
+  infoPanelText: {fileID: 1889381344}
+  classicDescription: Is classic the wayy you know and love it
+  gridDescription: Is grid, more chaelenge, more cool
+  customDescription: Is exactly the way you want it to be :)
 --- !u!4 &1824835381
 Transform:
   m_ObjectHideFlags: 0
