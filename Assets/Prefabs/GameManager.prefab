@@ -46,10 +46,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arcadeMode: 0
-  p1Data: {fileID: 0}
-  p2Data: {fileID: 0}
-  gameModeData: {fileID: 0}
-  players: []
+  gameModeData:
+    gameMode: 0
+    gridSize: {x: 0, y: 0}
+    singlePlayer: 0
+    roundTime: 0
+    sideMultiplierPerLevel: 0
+    sideStartingLevel: 0
+    shapesNeededForUnlockStart: 0
+    ShapesNeededForUnlockScalePerLevel: 0
+    instantArrivalShapes: 0
+    allShapesSameSpeed: 1
   LineInputEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -86,5 +93,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816fd66a061708f4db0338996b4a9175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveData: {fileID: 0}
-  saveFile: gamesave2.txt
+  playersData:
+  - playerName: 
+    roundsPlayed: 0
+    scores: 
+    preferredCustomSettings:
+      gameMode: 0
+      gridSize: {x: 0, y: 0}
+      singlePlayer: 0
+      roundTime: 0
+      sideMultiplierPerLevel: 0
+      sideStartingLevel: 0
+      shapesNeededForUnlockStart: 0
+      ShapesNeededForUnlockScalePerLevel: 0
+      instantArrivalShapes: 0
+      allShapesSameSpeed: 1
+  - playerName: 
+    roundsPlayed: 0
+    scores: 
+    preferredCustomSettings:
+      gameMode: 0
+      gridSize: {x: 0, y: 0}
+      singlePlayer: 0
+      roundTime: 0
+      sideMultiplierPerLevel: 0
+      sideStartingLevel: 0
+      shapesNeededForUnlockStart: 0
+      ShapesNeededForUnlockScalePerLevel: 0
+      instantArrivalShapes: 0
+      allShapesSameSpeed: 1
+  saveFiles:
+  - 
+  - 

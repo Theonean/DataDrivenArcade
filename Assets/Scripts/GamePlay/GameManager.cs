@@ -19,11 +19,9 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public static CurrentScene gameState;
     public bool arcadeMode = false;
-    public SaveData p1Data;
-    public SaveData p2Data;
+    public static string p1Name;
+    public static string p2Name;
     public GameModeData gameModeData;
-
-    public PlayerManager[] players;
 
     [Header("Button Input")]
     public UnityEvent<InputData> LineInputEvent;
@@ -38,6 +36,7 @@ public class GameManager : MonoBehaviour
     private float[] joystickCooldowns = new float[2];
     private bool[] joystickMovedLastUpdate = new bool[2];
     private float joystickCooldownTime = 0.3f;
+    private SaveManager saveManager;
 
     /// <summary>
     /// Setup Singleton instance
@@ -52,6 +51,7 @@ public class GameManager : MonoBehaviour
         if (gameModeData == null)
         {
             gameModeData = new GameModeData(GameModeType.CLASSIC);
+            saveManager = SaveManager.singleton;
         }
     }
 
@@ -81,14 +81,31 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case CurrentScene.LOGIN:
+                Debug.Log("Switching to login");
+                SaveManager.singleton.DeInitiate();
                 gameState = CurrentScene.LOGIN;
                 SceneManager.LoadScene("00MainMenu");
                 break;
             case CurrentScene.GAMESELECTION:
+                Debug.Log("Switching to game selection");
+                //Switching from login to gameselection, reinitialize save data
+                if (gameState == CurrentScene.LOGIN)
+                {
+                    SaveManager.singleton.Initiate(p1Name, 1);
+                    SaveManager.singleton.Initiate(p2Name, 2);
+                }
+                else if (gameState == CurrentScene.GAME)
+                {
+                    SaveManager.singleton.SaveData();
+                }
+
                 gameState = CurrentScene.WAITFORSCENELOAD;
                 SceneManager.LoadScene("01GameSelection");
                 break;
             case CurrentScene.GAME:
+                SaveManager.singleton.SaveData();
+
+                Debug.Log("Switching to game");
                 gameState = CurrentScene.WAITFORSCENELOAD;
                 SceneManager.LoadScene("02GameClassic");
                 break;
@@ -191,8 +208,8 @@ public class GameManager : MonoBehaviour
     }
     public string GetPlayerName(int playerNum)
     {
-        if (playerNum == 1) return p1Data.playerName;
-        else if (playerNum == 2) return p2Data.playerName;
+        if (playerNum == 1) return p1Name;
+        else if (playerNum == 2) return p2Name;
         else
         {
             Debug.Log("Error in GetPlayerName");
@@ -204,11 +221,11 @@ public class GameManager : MonoBehaviour
     {
         if (playernum == 1)
         {
-            p1Data.playerName = playerName;
+            p1Name = playerName;
         }
         else if (playernum == 2)
         {
-            p2Data.playerName = playerName;
+            p2Name = playerName;
         }
     }
 
@@ -227,5 +244,4 @@ public class GameManager : MonoBehaviour
 
         return inputDir;
     }
-
 }

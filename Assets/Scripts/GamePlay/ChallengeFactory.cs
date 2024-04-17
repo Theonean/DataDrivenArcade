@@ -166,7 +166,7 @@ public class ChallengeFactory : ShapeFactory
             if (isCorrectShape)
             {
                 localCombo += 1;
-                shapeNumSides = maxFacesFloorMIN + localCombo;
+                shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
             }

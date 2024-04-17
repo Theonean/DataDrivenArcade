@@ -25,7 +25,7 @@ public class ChallengeFactoryList
     }
 }
 
-public class PlayerManager : MonoBehaviour, ISaveable
+public class PlayerManager : MonoBehaviour
 {
     //What does this class do?
     //track score of player and manage the current selection of the player and challenge shapes
@@ -54,7 +54,7 @@ public class PlayerManager : MonoBehaviour, ISaveable
     //SIMPLIFY THIS, MULTIPLY SIDES OF FACE WITH COMBO
     //WHAT IF SCORE IS LITERALLY HOW MANY LINES ARE PRESENT IN THE SHAPE
     //MAYBE DEDUCT POINTS FOR EACH LINE THAT'S WRONG IN THE SENT SHAPE?
-    private int score = 0;
+    public int score = 0;
     private int combo = 0;
 
     private void Start()
@@ -264,16 +264,6 @@ public class PlayerManager : MonoBehaviour, ISaveable
         score = 0;
         combo = 0;
         playerInfoManager.Reset();
-    }
-
-    public void LoadData(SaveData data)
-    {
-        playerInfoManager.SetName(data.playerName);
-    }
-
-    public void SaveData(SaveData data)
-    {
-        data.playerName = playerInfoManager.nameText.text;
     }
 
 }

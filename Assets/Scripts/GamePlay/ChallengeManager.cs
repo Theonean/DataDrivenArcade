@@ -6,7 +6,7 @@ using SaveSystem;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ChallengeManager : MonoBehaviour, ISaveable
+public class ChallengeManager : MonoBehaviour
 {
     public GameObject challengePrefab;
     public int faceMultiplierPerLevel;
@@ -168,21 +168,5 @@ public class ChallengeManager : MonoBehaviour, ISaveable
         ChallengeFactory challengeFactory = challenge.GetComponent<ChallengeFactory>();
         challengeFactory.maxFacesFloorMIN = maxFacesFloorMIN;
         return challengeFactory;
-    }
-
-    public void LoadData(SaveData data)
-    {
-    }
-
-    public void SaveData(SaveData data)
-    {
-        if (gameModeType == GameModeType.CUSTOM)
-        {
-            gm.gameModeData.gridSize = gridSize;
-            gm.gameModeData.sideMultiplierPerLevel = faceMultiplierPerLevel;
-            gm.gameModeData.sideStartingLevel = faceStartValue;
-            gm.gameModeData.shapesNeededForUnlockStart = shapesNeededForUnlockStart;
-            gm.gameModeData.ShapesNeededForUnlockScalePerLevel = ShapesNeededForUnlockScalePerLevel;
-        }
     }
 }

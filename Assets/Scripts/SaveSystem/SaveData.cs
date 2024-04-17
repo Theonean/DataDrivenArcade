@@ -9,13 +9,21 @@ namespace SaveSystem
     {
         public string playerName = "";
         public int roundsPlayed = 0;
-        public List<int> scores = new List<int>();
-        public GameModeData preferredCustomSettings;
+        public List<Score> scores = new List<Score>();
+        public GameModeData preferredCustomSettings = new GameModeData(GameModeType.CUSTOM);
 
-        public List<int> getTopNScores(int n)
+        public SaveData()
+        {
+            playerName = "";
+            roundsPlayed = 0;
+            scores = new List<Score>();
+            preferredCustomSettings = new GameModeData(GameModeType.CUSTOM);
+        }
+
+        public List<Score> getTopNScores(int n)
         {
             scores.Sort();
-            List<int> topScores = new List<int>();
+            List<Score> topScores = new List<Score>();
             //add top n scores to list by iterating from end of list downwards for n steps
             for (int i = scores.Count - 1; i >= scores.Count - n; i--)
             {
@@ -23,6 +31,17 @@ namespace SaveSystem
             }
 
             return topScores;
+        }
+
+        override
+        public string ToString()
+        {
+            string scoresString = "";
+            foreach (Score score in scores)
+            {
+                scoresString += score.score + ", " + score.gameMode + "|";
+            }
+            return "Player Name: " + playerName + ", Rounds Played: " + roundsPlayed + ", Scores: " + scoresString + " \n" + preferredCustomSettings.ToString();
         }
     }
 }

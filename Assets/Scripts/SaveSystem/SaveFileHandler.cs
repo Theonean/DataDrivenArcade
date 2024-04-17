@@ -33,27 +33,21 @@ namespace SaveSystem
                 //Output the number of save files in the filepath to the console and their names
                 //TODO Finish This Debug
                 string[] saveFiles = Directory.GetFiles(Path.GetDirectoryName(filePath), "*.txt");
-                Debug.Log("Number of save files: " + saveFiles.Length + " at: " + filePath);
+                //Debug.Log("Number of save files: " + saveFiles.Length + " at: " + filePath);
                 foreach (string saveFile in saveFiles)
                 {
-                    Debug.Log("Save file name: " + Path.GetFileName(saveFile));
+                    //Debug.Log("Save file name: " + Path.GetFileName(saveFile));
                 }
 
-                Debug.Log("Save Data Loaded from: " + filePath);
+                Debug.Log("Save Data Loaded for player: " + fileName + " with content: " + saveData.ToString());
                 return saveData;
             }
             else
             {
-                Debug.Log("No save file named '" + filePath + "' found");
+                Debug.LogWarning("No save file named '" + filePath + "' found");
                 return null;
             }
         }
-
-        public bool SaveExists()
-        {
-            return File.Exists(filePath);
-        }
-
     }
 }
 

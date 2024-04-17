@@ -94,6 +94,21 @@ public class GameSelection : MonoBehaviour
                 //Start game with custom game settings
                 case "StartCustomGame":
                     gm.gameModeData = new GameModeData(GameModeType.CUSTOM); //Create empty hull of data which is filled with save
+
+                    //Set gamemodedata on gamemanager
+                    foreach (Editable editable in customGameSettings.GetComponentsInChildren<Editable>())
+                    {
+                        gm.gameModeData.SetField(editable.name, editable.GetValue());
+                    }
+
+                    gameModeData = gm.gameModeData; //Save gamemodedata to variable for later use
+
+                    //HACKEDY HACK HACK YEEHAW
+                    SaveManager.singleton.playersData[0].preferredCustomSettings = gm.gameModeData;
+                    SaveManager.singleton.playersData[1].preferredCustomSettings = gm.gameModeData;
+
+                    print("Custom game settings: " + gm.gameModeData.ToString());
+
                     GameManager.SwitchScene(CurrentScene.GAME);
                     break;
             }
@@ -126,7 +141,7 @@ public class GameSelection : MonoBehaviour
         foreach (Editable field in editableFields)
         {
             field.SetVisibility(active);
-            print("Field " + field.name + " is active " + field.gameObject.activeSelf + " and should be " + active);
+            //print("Field " + field.name + " is active " + field.gameObject.activeSelf + " and should be " + active);
         }
     }
 }

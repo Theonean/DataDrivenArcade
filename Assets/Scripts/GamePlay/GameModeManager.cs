@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SaveSystem;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public enum GameModeState
 {
@@ -13,7 +15,7 @@ public enum GameModeState
     CHOOSINGANOTHERROUND
 }
 
-public class GameModeManager : MonoBehaviour, ISaveable
+public class GameModeManager : MonoBehaviour
 {
     //This class should handle the game mode logic
     //Initiates the game and tells the challengemanager to create the correct number / grid of challenge
@@ -43,7 +45,8 @@ public class GameModeManager : MonoBehaviour, ISaveable
     private void Start()
     {
         gm = GameManager.instance;
-        gameModeData = gm.gameModeData;
+        this.gameModeData = gm.gameModeData;
+        roundTime = gameModeData.roundTime;
 
         countdownRoundTimer.text = roundTime.ToString();
 
@@ -65,6 +68,12 @@ public class GameModeManager : MonoBehaviour, ISaveable
         }
 
         goAgainObject.SetActive(false);
+
+        //Get all inputvisualizer and activate them
+        foreach (InputVisualizer iV in FindObjectsOfType<MonoBehaviour>(true).OfType<InputVisualizer>())
+        {
+            iV.ToggleActive(true);
+        }
     }
 
 
@@ -80,6 +89,14 @@ public class GameModeManager : MonoBehaviour, ISaveable
             if (timeLeftRound < 0)
             {
                 timeLeftRound = roundTime;
+
+                //ADD PLUS ONE ROUND PLAYED TO BOTH PLAYERS and ADD SCORES
+                SaveManager.singleton.playersData[0].roundsPlayed += 1;
+                SaveManager.singleton.playersData[1].roundsPlayed += 1;
+                SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode));
+                SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode));
+                Debug.LogWarning("Wee Woo Wee Woo Scuffed Code Police");
+                SaveManager.singleton.SaveData();
 
                 //Reset both players
                 p1.UnreadyPlayer();
@@ -177,28 +194,6 @@ public class GameModeManager : MonoBehaviour, ISaveable
                     GameManager.SwitchScene(CurrentScene.GAMESELECTION);
                     break;
             }
-        }
-    }
-
-    public void LoadData(SaveData data)
-    {
-        if (gm.gameModeData.gameMode == GameModeType.CUSTOM)
-        {
-            roundTime = data.preferredCustomSettings.roundTime;
-        }
-        else
-        {
-            roundTime = gm.gameModeData.roundTime;
-        }
-
-        Debug.LogWarning("Game Mode manager not activated, Start function remapped to Activate Function");
-    }
-
-    public void SaveData(SaveData data)
-    {
-        if (gameModeData.gameMode == GameModeType.CUSTOM)
-        {
-            data.preferredCustomSettings.roundTime = roundTime;
         }
     }
 }

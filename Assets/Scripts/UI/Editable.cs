@@ -27,16 +27,18 @@ public class Editable : MonoBehaviour, ISaveable
 
     private GameManager gm;
     public InputDataType inputType;
+    [HideInInspector]
+    public string value;
     public Vector2 minMaxValue; //Only visible with InputType float
     public string startValue; //Only visible with InputType float
     public float stepValue; //Only visible with InputType float
     public int nameLength = 8; //Only visible with InputType String
     public bool editing = false;
     private InputField[] nameCharacters;
-    private float interCharDistance = 0.3f;
+    private float interCharDistance = 0.6f;
     private int editingNameCharIndex = 0;
 
-    private void Awake()
+    void Start()
     {
         gm = GameManager.instance;
 
@@ -126,6 +128,7 @@ public class Editable : MonoBehaviour, ISaveable
         {
             name += nameCharacters[i].GetValue();
         }
+        value = name;
         return name;
     }
 
@@ -135,11 +138,11 @@ public class Editable : MonoBehaviour, ISaveable
         if (iData.playerNum == controlledByPlayer)
         {
             //Changing the value of the InputField
-            if (iData.joystickDirection.y == 1)
+            if (iData.joystickDirection.y == -1)
             {
                 nameCharacters[editingNameCharIndex].ChangeValueUp();
             }
-            else if (iData.joystickDirection.y == -1)
+            else if (iData.joystickDirection.y == 1)
             {
                 nameCharacters[editingNameCharIndex].ChangeValueDown();
             }
@@ -166,58 +169,29 @@ public class Editable : MonoBehaviour, ISaveable
         }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        print("editable disabled and we have value: " + GetValue());
         onDisabledEvent?.Invoke(controlledByPlayer, GetValue());
     }
 
-    public void LoadData(SaveData data)
+    public void LoadData(SaveData data, int playerNum)
     {
-        switch (gameObject.name)
+        if (playerNum == 1)
         {
-            case "GridWidthValue":
-                startValue = data.preferredCustomSettings.gridSize.x.ToString();
-                break;
-            case "GridDepthValue":
-                startValue = data.preferredCustomSettings.gridSize.y.ToString();
-                break;
-            case "RoundTimeValue":
-                startValue = data.preferredCustomSettings.roundTime.ToString();
-                break;
-            case "SidesYScalingValue":
-                startValue = data.preferredCustomSettings.sideMultiplierPerLevel.ToString();
-                break;
-            case "SidesStartingValue":
-                startValue = data.preferredCustomSettings.sideStartingLevel.ToString();
-                break;
-            case "StartingLockNumValue":
-                startValue = data.preferredCustomSettings.shapesNeededForUnlockStart.ToString();
-                break;
-            case "LockYScalingValue":
-                startValue = data.preferredCustomSettings.ShapesNeededForUnlockScalePerLevel.ToString();
-                break;
-            case "P1NameInputField" or "P2NameInputField":
-            //name is getting set in gamemanager over event call set in editor
-                break;
+            string tempStartValue = new string(startValue);
+            startValue = data.preferredCustomSettings.GetField(name);
+            if (startValue == null)
+            {
+                startValue = tempStartValue;
+            }
         }
     }
 
-    public void SaveData(SaveData data)
+    public SaveData SaveData(SaveData data, int playerNum)
     {
-        switch (gameObject.name)
-        {
-            case "P1NameInputField":
-                print("saving Name data: " + GetValue());
-                data.playerName = GetValue();
-                break;
-            case "P2NameInputField":
-                print("saving Name data: " + GetValue());
-                data.playerName = GetValue();
-                break;
-            default:
-                data.preferredCustomSettings.SetField(joystickSelectable.actionType, GetValue());
-                break;
-        }
+        //This wasn't working somehow I switched that logic to the GameManagers SelectionChanged function 
+        //I am thinking it might be because Savedata is called when the scene unloads it doesn't have access to it's fields anymoreee?
+        //data.preferredCustomSettings.SetField(gameObject.name, value);
+        return data;
     }
 }

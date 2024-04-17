@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SaveSystem {
     public interface ISaveable 
     {
-        public void LoadData(SaveData data);
-        public void SaveData(SaveData data);
+        public void LoadData(SaveData data, int playerNum);
+        public SaveData SaveData(SaveData data, int playerNum);
     }
 }

@@ -63,10 +63,12 @@ public class RotateWiggler : MonoBehaviour
         // Handle scaling
         if (scale)
         {
+            float scaleZ = transform.localScale.z;
             scaleTime += Time.deltaTime * scaleSpeed;
             float scalePingPong = Mathf.PingPong(scaleTime, 1); // Oscillates between 0 and 1
             float scaleValue = Mathf.Lerp(scaleRange.x, scaleRange.y, scaleEasingCurve.Evaluate(scalePingPong));
             transform.localScale = Vector3.one * scaleValue;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleZ); //bugfix because otherwise elements z scale mucks with their environment
         }
 
         //Slowly change the gradient colors on the text over time, pick a random gradient corner each update and slowly change that

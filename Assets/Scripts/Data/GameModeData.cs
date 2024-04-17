@@ -64,13 +64,13 @@ public class GameModeData
                 allShapesSameSpeed = false;
                 break;
             case GameModeType.CUSTOM:
-                gridSize = new Vector2(0, 0);
+                gridSize = new Vector2(4, 3);
                 singlePlayer = false;
-                roundTime = 0f;
-                sideMultiplierPerLevel = 0;
-                sideStartingLevel = 0;
-                shapesNeededForUnlockStart = 0;
-                ShapesNeededForUnlockScalePerLevel = 0;
+                roundTime = 120;
+                sideMultiplierPerLevel = 1;
+                sideStartingLevel = 1;
+                shapesNeededForUnlockStart = 3;
+                ShapesNeededForUnlockScalePerLevel = 3;
                 instantArrivalShapes = false;
                 allShapesSameSpeed = true;
                 break;
@@ -78,7 +78,7 @@ public class GameModeData
         this.gameMode = gameMode;
     }
 
-    public void SetField(string fieldName, string value)
+    public bool SetField(string fieldName, string value)
     {
         switch (fieldName)
         {
@@ -106,7 +106,34 @@ public class GameModeData
             case "ShapeInstantArrivalValue":
                 instantArrivalShapes = bool.Parse(value);
                 break;
+            default:
+                return false;
         }
+        return true;
+    }
+
+    public string GetField(string fieldName)
+    {
+        switch (fieldName)
+        {
+            case "GridWidthValue":
+                return gridSize.x.ToString();
+            case "GridDepthValue":
+                return gridSize.y.ToString();
+            case "RoundTimeValue":
+                return roundTime.ToString();
+            case "SidesYScalingValue":
+                return sideMultiplierPerLevel.ToString();
+            case "SidesStartingValue":
+                return sideStartingLevel.ToString();
+            case "StartingLockNumValue":
+                return shapesNeededForUnlockStart.ToString();
+            case "LockYScalingValue":
+                return ShapesNeededForUnlockScalePerLevel.ToString();
+            case "ShapeInstantArrivalValue":
+                return instantArrivalShapes.ToString();
+        }
+        return "";
     }
 
     override public string ToString()

@@ -35,8 +35,13 @@ public class SelectionManager : MonoBehaviour
             //Change selectionsprite colour to blue if playernum 2
             if (playerNum == 2)
             {
-                selectionSprite.GetComponent<SpriteShapeRenderer>().color = Color.blue;
-                selectionSprite.GetComponent<SpriteShapeRenderer>().color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.5f);
+                selectionSprite.GetComponent<SpriteRenderer>().color = Color.blue;
+                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.5f);
+            }
+            else
+            {
+                selectionSprite.GetComponent<SpriteRenderer>().color = Color.red;
+                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.red.r, Color.red.g, Color.red.b, 0.5f);
             }
 
             factoryIndex = startIndex;

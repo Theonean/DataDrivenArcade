@@ -4,78 +4,132 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace SaveSystem {
+namespace SaveSystem
+{
     public class SaveManager : MonoBehaviour
     {
         public static SaveManager singleton;
 
-        public SaveData saveData;
+        public SaveData[] playersData = new SaveData[2];
 
-        public string saveFile = "gamesave2.txt";
+        public string[] saveFiles = new string[2];
 
         public List<ISaveable> saveables;
 
-        public SaveFileHandler saveFileHandler;
+        public SaveFileHandler[] saveFileHandlers = new SaveFileHandler[2];
+        private bool[] playersInitialized = new bool[2];
+        private bool activated = false;
 
-        void Awake() {
-            if (singleton == null) {
+        void Awake()
+        {
+            if (singleton == null)
+            {
                 singleton = this;
-            } else if (singleton!= this) {
+            }
+            else if (singleton != this)
+            {
                 Destroy(gameObject);
             }
 
             DontDestroyOnLoad(gameObject);
-
-            // Save the data to a file
-            saveFileHandler = new SaveFileHandler(saveFile);
         }
 
-        void OnEnable() {
+        public void Initiate(string fileName, int playerNum)
+        {
+            int playerNumIndex = playerNum - 1;
+            saveFiles[playerNumIndex] = fileName;
+            print("Player " + playerNum + " is using file " + saveFiles[playerNumIndex]);
+            saveFileHandlers[playerNumIndex] = new SaveFileHandler(saveFiles[playerNumIndex] + ".txt");
+            playersInitialized[playerNumIndex] = true;
+
+            // If all players are initialized, activate the save system
+            if (playersInitialized.All(x => x))
+            {
+                activated = true;
+            }
+        }
+
+        public void DeInitiate()
+        {
+            activated = false;
+            playersInitialized = new bool[2] { false, false };
+        }
+
+        void OnEnable()
+        {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
+            //SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
-        void OnDisable() {
+        void OnDisable()
+        {
             SceneManager.sceneLoaded -= OnSceneLoaded;
-            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+            //SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            LoadData();          
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (activated)
+            {
+                LoadData(1);
+                LoadData(2);
+            }
         }
 
-        void OnSceneUnloaded(Scene current) {
-            SaveData();
-        }
+        /*void OnSceneUnloaded(Scene current)
+        {
+            if (activated)
+            {
+                SaveData(1);
+                SaveData(2);
+            }
+        }*/
 
-        public void SaveData() {
+        public void SaveData()
+        {
+            SaveData(1);
+            SaveData(2);
+        }
+        
+        //SaveData is Managed by the Gamamanger, I had problems with it not finding the saveable stuff so I just made it work whatever way I could 
+        public void SaveData(int playerNum)
+        {
+            int playerNumIndex = playerNum - 1;
+
             saveables = GetSaveables();
-            Debug.Log("Saving Data: " + saveables.Count);
-            foreach (ISaveable s in saveables) {
-                s.SaveData(saveData);
+            Debug.Log("P" + playerNum + " Saving Data: " + saveables.Count);
+            foreach (ISaveable s in saveables)
+            {
+                playersData[playerNumIndex] = s.SaveData(playersData[playerNumIndex], playerNum);
             }
-            if (saveables.Count > 0)
-                saveFileHandler.Save(saveData);
-                
+
+            saveFileHandlers[playerNumIndex].Save(playersData[playerNumIndex]);
         }
 
-        public void LoadData() {
-            saveData = saveFileHandler.Load();
-            if (saveData == null) {
-                saveData = new SaveData();
-                SaveData();
+        public void LoadData(int playerNum)
+        {
+            int playerNumIndex = playerNum - 1;
+            playersData[playerNumIndex] = saveFileHandlers[playerNumIndex].Load();
+            if (playersData[playerNumIndex] == null)
+            {
+                playersData[playerNumIndex] = new SaveData();
+                playersData[playerNumIndex].playerName = saveFiles[playerNumIndex];
+                SaveData(playerNum);
             }
-            else {
+            else
+            {
                 List<ISaveable> saveables = GetSaveables();
-                Debug.Log("Loading Data: " + saveables.Count);            
-                foreach (ISaveable s in saveables) {
-                    s.LoadData(saveData);
-                }                
+                Debug.Log("P" + playerNum + "Loading Data: " + saveables.Count);
+                foreach (ISaveable s in saveables)
+                {
+                    s.LoadData(playersData[playerNumIndex], playerNum);
+                }
             }
         }
 
-        List<ISaveable> GetSaveables() {
-            IEnumerable<ISaveable> saveables = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+        List<ISaveable> GetSaveables()
+        {
+            IEnumerable<ISaveable> saveables = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveable>();
             return new List<ISaveable>(saveables);
         }
 
