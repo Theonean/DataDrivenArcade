@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public static CurrentScene gameState;
     public bool arcadeMode = false;
+    public bool singlePlayer = false;
     public static string p1Name;
     public static string p2Name;
     public GameModeData gameModeData;
@@ -146,9 +147,16 @@ public class GameManager : MonoBehaviour
             {
                 LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
             }
+
             //Add a double line when two inputs were given this frame, either by one button being held and another pressed or two pressed this frame
-            else if ((keysBeingHeld >= 1 && lineIndexPressed.Count > 0) || lineIndexPressed.Count == 2)
+            if ((keysBeingHeld >= 1 && lineIndexPressed.Count > 0) || lineIndexPressed.Count == 2)
             {
+                //Iterate over pressed line indexes and release events
+                foreach (int lineIndex in lineIndexPressed)
+                {
+                    LineReleasedEvent?.Invoke(new InputData(lineIndex, i));
+                }
+
                 DoubleLineInputEvent?.Invoke(new InputData(i));
             }
 

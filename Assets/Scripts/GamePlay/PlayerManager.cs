@@ -61,6 +61,8 @@ public class PlayerManager : MonoBehaviour
     {
         gm = GameManager.instance;
         playerInfoManager.SetName(gm.GetPlayerName(playerNum));
+        playerInfoManager.SetLastScore(SaveManager.singleton.playersData[playerNum - 1].GetHighScore());
+        print("PlayerManager" + playerNum + " Start with highscore: " + SaveManager.singleton.playersData[playerNum - 1].GetHighScore());
     }
 
     public void ReadyPlayer()

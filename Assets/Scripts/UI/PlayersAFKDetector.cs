@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class PlayersAFKDetector : MonoBehaviour
 {
     public TextMeshProUGUI afkText;
+    public TextMeshProUGUI afkBG;
     public string targetScene;
     public float AFKWaitTime;
     public float warningTime;
@@ -41,13 +42,17 @@ public class PlayersAFKDetector : MonoBehaviour
             {
                 //Display the afk timer text and scale it up
                 afkText.enabled = true;
+                afkBG.enabled = true;
                 afkText.text = "Going AFK in " + afkTimer.ToString("0") + " \n Press any button to stay active";
+
+                //afkBG.color = new Color(afkBG.color.r, afkBG.color.g, afkBG.color.b, Mathf.Lerp(0.5f, 1f, (warningTime - afkTimer) / warningTime));
             }
         }
     }
     public void ToggleVisibility(bool visible)
     {
         afkText.enabled = visible;
+        afkBG.enabled = visible;
     }
 
     private void InputReceived(InputData iData)
@@ -63,5 +68,6 @@ public class PlayersAFKDetector : MonoBehaviour
         afkTimer = AFKWaitTime;
         afk = false;
         afkText.enabled = false;
+        afkBG.enabled = false;
     }
 }

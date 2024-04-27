@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
 
     public TextMeshProUGUI[] insertCoinTexts;
     public TextMeshProUGUI waitingForPlayerText;
+    public GameObject gameHelp;
     public GameObject[] p2Objects;
     private bool coinInserted = false;
     private string[] playersSelectedActions = new string[2];
@@ -52,18 +53,25 @@ public class MainMenu : MonoBehaviour
 
     private void ToggleSingleOrMultiplayer(bool isSinglePlayer)
     {
-        if (isSinglePlayer)
+        if (coinInserted)
         {
-            gm.gameModeData.singlePlayer = true;
-            foreach (GameObject obj in p2Objects)
+            if (isSinglePlayer)
             {
-                obj.SetActive(false);
+                gm.singlePlayer = true;
+                foreach (GameObject obj in p2Objects)
+                {
+                    obj.SetActive(false);
+                }
             }
-        }
-        else
-        {
-            gm.gameModeData.singlePlayer = false;
-            GameManager.SwitchScene(CurrentScene.LOGIN);
+            else
+            {
+                gm.singlePlayer = false;
+                foreach (GameObject obj in p2Objects)
+                {
+                    obj.SetActive(true);
+                }
+                coinInsertedEvent?.Invoke();
+            }
         }
     }
 
@@ -71,17 +79,26 @@ public class MainMenu : MonoBehaviour
     {
         playersSelectedActions[playerNum - 1] = actionType;
 
-        if ((playersSelectedActions[0] == "READYTOPLAY" && playersSelectedActions[1] == "READYTOPLAY") || (playersSelectedActions[0] == "READYTOPLAY" && gm.gameModeData.singlePlayer))
+        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer)
         {
-            GameManager.SwitchScene(CurrentScene.GAMESELECTION);
-        }
-        else if (playersSelectedActions[0] == "READYTOPLAY" || playersSelectedActions[1] == "READYTOPLAY")
+            switch (playersSelectedActions[0])
+            {
+                case "READYTOPLAY":
+                    GameManager.SwitchScene(CurrentScene.GAMESELECTION);
+                    break;
+                case "GameHelp":
+                    Debug.Log("GameHelp");
+                    gameHelp.SetActive(true);
+                    break;
+            }
+        }else if (playersSelectedActions[0] == "READYTOPLAY" || playersSelectedActions[1] == "READYTOPLAY")
         {
             waitingForPlayerText.enabled = true;
         }
         else
         {
             waitingForPlayerText.enabled = false;
+            gameHelp.SetActive(false);
         }
     }
 }

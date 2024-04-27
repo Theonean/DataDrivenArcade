@@ -56,7 +56,7 @@ public class InputField : MonoBehaviour
                     break;
                 case InputDataType.STRING:
                     int charInt = (int)characterText.text[0];
-                    int nextCharInt = charInt < 126 ? charInt + 1 : 32;
+                    int nextCharInt = charInt < 90 ? charInt + 1 : 65;
                     SetValue(((char)nextCharInt).ToString());
                     break;
             }
@@ -96,8 +96,9 @@ public class InputField : MonoBehaviour
                     break;
                 case InputDataType.STRING:
                     int charInt = (int)characterText.text[0];
-                    int nextCharInt = charInt > 32 ? charInt - 1 : 126;
+                    int nextCharInt = charInt > 65 ? charInt - 1 : 90;
                     characterText.text = ((char)nextCharInt).ToString();
+                    print(charInt + " " + characterText.text);
                     break;
                 case InputDataType.VECTOR2:
                     break;

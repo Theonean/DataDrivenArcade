@@ -163,7 +163,7 @@ public class CustomShapeBuilder : MonoBehaviour
 
         if (debug) { print("Generated shapecode: " + code); }
 
-        if (IsSelected())
+        if (IsSelected() && gameObject.activeSelf) // Check if the game object is active
         {
             StartCoroutine(sap.PlayShapeCode(code));
         }

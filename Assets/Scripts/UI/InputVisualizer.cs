@@ -18,6 +18,8 @@ public enum Direction
 public class InputVisualizer : MonoBehaviour
 {
     public GameObject lines;
+    public GameObject[] playerKeyboardBindings;
+    public bool showKeyBindings = false;
     public int playernum = 0;
 
     private Animator joystickAnimator;
@@ -67,8 +69,21 @@ public class InputVisualizer : MonoBehaviour
 
     public void ToggleActive(bool showLines)
     {
+        gm = GameManager.instance;
         active = !active;
         lines.SetActive(showLines);
+
+        if (!gm.arcadeMode && showKeyBindings)
+        {
+            if(playernum == 1)
+            {
+                playerKeyboardBindings[0].SetActive(active);
+            }
+            else
+            {
+                playerKeyboardBindings[1].SetActive(active);
+            }
+        }
     }
 
     /// <summary>

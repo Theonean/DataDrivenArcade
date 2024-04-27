@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public enum GameModeType
 {
     CLASSIC,
@@ -15,7 +16,6 @@ public class GameModeData
 {
     public GameModeType gameMode;
     public Vector2 gridSize;
-    public bool singlePlayer; //Only changed with P1 or P2 button in Main Menu
     public float roundTime;
     public int sideMultiplierPerLevel;
     public int sideStartingLevel;
@@ -27,7 +27,6 @@ public class GameModeData
     public GameModeData()
     {
         gridSize = new Vector2(0, 0);
-        singlePlayer = false;
         roundTime = 0f;
         sideMultiplierPerLevel = 0;
         sideStartingLevel = 0;
@@ -43,7 +42,6 @@ public class GameModeData
         {
             case GameModeType.CLASSIC:
                 gridSize = new Vector2(2, 1);
-                singlePlayer = false;
                 roundTime = 60f;
                 sideMultiplierPerLevel = 1;
                 sideStartingLevel = 1;
@@ -54,7 +52,6 @@ public class GameModeData
                 break;
             case GameModeType.GRID:
                 gridSize = new Vector2(4, 3);
-                singlePlayer = false;
                 roundTime = 120;
                 sideMultiplierPerLevel = 1;
                 sideStartingLevel = 1;
@@ -65,7 +62,6 @@ public class GameModeData
                 break;
             case GameModeType.CUSTOM:
                 gridSize = new Vector2(4, 3);
-                singlePlayer = false;
                 roundTime = 120;
                 sideMultiplierPerLevel = 1;
                 sideStartingLevel = 1;
@@ -138,6 +134,6 @@ public class GameModeData
 
     override public string ToString()
     {
-        return "GameModeData: " + gameMode + " " + gridSize + " " + singlePlayer + " " + roundTime + " " + sideMultiplierPerLevel + " " + sideStartingLevel + " " + shapesNeededForUnlockStart + " " + ShapesNeededForUnlockScalePerLevel + " " + instantArrivalShapes;
+        return "GameModeData: " + gameMode + " " + gridSize + " " + roundTime + " " + sideMultiplierPerLevel + " " + sideStartingLevel + " " + shapesNeededForUnlockStart + " " + ShapesNeededForUnlockScalePerLevel + " " + instantArrivalShapes;
     }
 }

@@ -30,7 +30,8 @@ public class PlayerInfoManager : MonoBehaviour
         {
             comboText.color = Color.red;
             comboText.text = combo.ToString();
-            StartCoroutine(LerpColor(Color.white, 1));
+
+            if (gameObject.activeSelf) StartCoroutine(LerpColor(Color.white, 1));
         }
 
         comboText.text = combo.ToString();

@@ -33,7 +33,7 @@ public class GameModeManager : MonoBehaviour
     public GameObject goAgainObject;
     public TextMeshProUGUI goAgainTitleText;
     public JoystickSelectable[] startSelectablesGoAgain = new JoystickSelectable[2];
-    private String[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
+    private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
     [Header("Game Mode Data")]
     public ChallengeManager challengeManager;
     public PlayerManager p1;
@@ -41,6 +41,7 @@ public class GameModeManager : MonoBehaviour
     private List<ChallengeFactoryList> challengeFactories;
     private GameModeState gameModeState = GameModeState.COUNTDOWN;
     private GameModeData gameModeData;
+    public GameObject[] p2Objects;
 
     private void Start()
     {
@@ -74,6 +75,15 @@ public class GameModeManager : MonoBehaviour
         {
             iV.ToggleActive(true);
         }
+
+        //when in singleplayer hide p2 objects
+        if (gm.singlePlayer)
+        {
+            foreach (GameObject obj in p2Objects)
+            {
+                obj.SetActive(false);
+            }
+        }
     }
 
 
@@ -85,22 +95,44 @@ public class GameModeManager : MonoBehaviour
             timeLeftRound -= Time.deltaTime;
             countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
 
+            if (timeLeftRound <= 10f)
+            {                //Scale the timer text down and up to indicate time is running out
+                float t = timeLeftRound - Mathf.Round(timeLeftRound);
+                countdownRoundTimer.rectTransform.localScale = Vector3.one * Mathf.Lerp(0.024f, 0.012f, t);
+                countdownRoundTimer.color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time, 1f));
+            }
+
+
+
             //Round Finished
             if (timeLeftRound < 0)
             {
                 timeLeftRound = roundTime;
 
-                //ADD PLUS ONE ROUND PLAYED TO BOTH PLAYERS and ADD SCORES
+                //ADD Scores to both players and add roundswon to winner if not singleplayer
                 SaveManager.singleton.playersData[0].roundsPlayed += 1;
-                SaveManager.singleton.playersData[1].roundsPlayed += 1;
-                SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode));
-                SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode));
+                SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode, gm.GetPlayerName(2)));
+                if (!gm.singlePlayer)
+                {
+                    SaveManager.singleton.playersData[1].roundsPlayed += 1;
+                    SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode, gm.GetPlayerName(1)));
+
+                    if (p1.score > p2.score)
+                    {
+                        SaveManager.singleton.playersData[0].roundsWon += 1;
+                    }
+                    else if (p1.score < p2.score)
+                    {
+                        SaveManager.singleton.playersData[1].roundsWon += 1;
+                    }
+                }
+                
                 Debug.LogWarning("Wee Woo Wee Woo Scuffed Code Police");
                 SaveManager.singleton.SaveData();
 
                 //Reset both players
                 p1.UnreadyPlayer();
-                p2.UnreadyPlayer();
+                if (!gm.singlePlayer) p2.UnreadyPlayer();
 
                 //Iterate over all challenge factories and reset them
                 foreach (ChallengeFactoryList cfl in challengeFactories)
@@ -120,6 +152,7 @@ public class GameModeManager : MonoBehaviour
                 }
 
                 countdownRoundTimer.text = roundTime.ToString();
+                timeLeftRound = roundTime;
             }
         }
         else if (gameModeState == GameModeState.COUNTDOWN)
@@ -130,16 +163,15 @@ public class GameModeManager : MonoBehaviour
             {
                 countdownStartTime.enabled = false;
                 gameModeState = GameModeState.RUNNING;
-                timeLeftRound = roundTime;
 
                 p1.ReadyPlayer(challengeFactories);
-                p2.ReadyPlayer(challengeFactories);
+                if (!gm.singlePlayer) p2.ReadyPlayer(challengeFactories);
             }
         }
 
         //QUIT / Continue Menu
         //Check if insert coin button has been pressed -> open the quit / continue menu, menu should not be open / closable when the round has ended
-        if (Input.GetButtonDown("InsertCoinArcade") || Input.GetButtonDown("InsertCoinKeyboard") && timeLeftRound > 0)
+        if (Input.GetButtonDown("InsertCoinArcade") || Input.GetButtonDown("InsertCoinKeyboard") && gameModeState != GameModeState.COUNTDOWN)
         {
             //If pressed while the menu is open, simply close it and contine round after 3 second wait
             if (gameModeState == GameModeState.CHOOSINGANOTHERROUND)
@@ -148,8 +180,6 @@ public class GameModeManager : MonoBehaviour
                 timeLeftStart = countdownStart;
                 gameModeState = GameModeState.COUNTDOWN;
                 countdownStartTime.enabled = true;
-                p1.ReadyPlayer();
-                p2.ReadyPlayer();
                 timeLeftRound = timeLeftBeforePause;
                 countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
             }
@@ -158,7 +188,7 @@ public class GameModeManager : MonoBehaviour
             {
                 timeLeftBeforePause = timeLeftRound;
                 p1.UnreadyPlayer();
-                p2.UnreadyPlayer();
+                if (!gm.singlePlayer) p2.UnreadyPlayer();
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
                 goAgainTitleText.text = "Continue?";
                 goAgainObject.SetActive(true);

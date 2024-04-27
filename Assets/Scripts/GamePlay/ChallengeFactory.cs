@@ -30,6 +30,7 @@ public class ChallengeFactory : ShapeFactory
     public GameObject movingShape;
     public bool shapeTeleports = false;
     public bool shapeSameSpeed = false;
+    public ParticleSystem shapeArrivedCorrectSystem;
 
     public void ResetCF()
     {
@@ -148,6 +149,7 @@ public class ChallengeFactory : ShapeFactory
             while (distance > 0.1f && flyingShape != null)
             {
                 flyingShape.transform.position += direction * Time.deltaTime * flySpeed;
+                shapeArrivedCorrectSystem.transform.position = flyingShape.transform.position;
                 distance = Vector3.Distance(flyingShape.transform.position, challengeShapePosition);
                 //print(distance);
                 yield return null;
@@ -169,6 +171,11 @@ public class ChallengeFactory : ShapeFactory
                 shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
+
+                var main = shapeArrivedCorrectSystem.main;
+                main.startColor = player.playerNum == 1 ? Color.red : Color.blue;
+
+                shapeArrivedCorrectSystem.Play();
             }
             else
             {
@@ -202,6 +209,11 @@ public class ChallengeFactory : ShapeFactory
             }
 
             player.ShapeArrived(isCorrectShape, this);
+        }
+        else
+        {
+            shapeArrivedCorrectSystem.Play();
+            shapeBuilder.sap.playShapeFinished(false, 0);
         }
 
         //Update shape selection status

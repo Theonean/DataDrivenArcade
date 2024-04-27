@@ -119,10 +119,10 @@ public class JoystickSelectable : MonoBehaviour
 
     private void MoveSelection(InputData iData)
     {
-        if ((iData.playerNum == controlledByPlayer || gm.gameModeData.singlePlayer) && selectionState != SelectionState.SelectedInputLocked)
+        if ((iData.playerNum == controlledByPlayer || gm.singlePlayer) && selectionState != SelectionState.SelectedInputLocked)
         {
             UnityEvent directionEvent = null;
-            iData.joystickDirection.x = gm.gameModeData.singlePlayer && controlledByPlayer != 1 ? iData.joystickDirection.x * -1 : iData.joystickDirection.x; //If in singleplayer mirror movement
+            iData.joystickDirection.x = gm.singlePlayer && controlledByPlayer != 1 ? iData.joystickDirection.x * -1 : iData.joystickDirection.x; //If in singleplayer mirror movement
             if (iData.joystickDirection.y < 0 && MoveSelectionUpEvent.GetPersistentEventCount() > 0)
             {
                 directionEvent = MoveSelectionUpEvent;

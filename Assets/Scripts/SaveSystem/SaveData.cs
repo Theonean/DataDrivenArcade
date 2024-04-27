@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace SaveSystem
@@ -8,6 +9,7 @@ namespace SaveSystem
     public class SaveData
     {
         public string playerName = "";
+        public int roundsWon = 0;
         public int roundsPlayed = 0;
         public List<Score> scores = new List<Score>();
         public GameModeData preferredCustomSettings = new GameModeData(GameModeType.CUSTOM);
@@ -15,6 +17,7 @@ namespace SaveSystem
         public SaveData()
         {
             playerName = "";
+            roundsWon = 0;
             roundsPlayed = 0;
             scores = new List<Score>();
             preferredCustomSettings = new GameModeData(GameModeType.CUSTOM);
@@ -41,7 +44,20 @@ namespace SaveSystem
             {
                 scoresString += score.score + ", " + score.gameMode + "|";
             }
-            return "Player Name: " + playerName + ", Rounds Played: " + roundsPlayed + ", Scores: " + scoresString + " \n" + preferredCustomSettings.ToString();
+            return "Player Name: " + playerName + ", Rounds Won: " + roundsWon + ", Scores: " + scoresString + " \n" + preferredCustomSettings.ToString();
+        }
+
+        public int GetHighScore()
+        {
+            scores.Sort();
+            if (scores.Count > 0)
+            {
+                return scores[scores.Count - 1].score;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

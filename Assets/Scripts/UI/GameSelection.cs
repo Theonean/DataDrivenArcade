@@ -6,6 +6,7 @@ using SaveSystem;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSelection : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GameSelection : MonoBehaviour
     public GameObject infoPanel;
     public TextMeshProUGUI infoPanelTitle;
     public TextMeshProUGUI infoPanelText;
+    public Image infoPanelGamePreview;
+    public Sprite[] gamePreviews = new Sprite[3];
+
     [Header("Custom Game Settings")]
     public GameObject customGameSettings;
     public JoystickSelectable[] customGameSettingsStartSelections = new JoystickSelectable[2];
@@ -27,6 +31,7 @@ public class GameSelection : MonoBehaviour
     [Multiline]
     public string customDescription;
     private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
+    public GameObject[] p2Objects;
     private GameManager gm;
     private GameModeData gameModeData;
 
@@ -41,6 +46,12 @@ public class GameSelection : MonoBehaviour
 
         infoPanel.GetComponent<Canvas>().enabled = false;
         SetCustomGameSettingsActive(false);
+
+        foreach (GameObject obj in p2Objects)
+        {
+            obj.SetActive(!gm.singlePlayer);
+        }
+
     }
 
     public void SelectionChanged(int playernum, string actionType)
@@ -48,7 +59,8 @@ public class GameSelection : MonoBehaviour
         playersSelectedActions[playernum - 1] = actionType;
         //print("Player " + playernum + " selected " + actionType + " and is active in hierarchy " + gameObject.activeInHierarchy);
 
-        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) && !waitingOtherPlayer.IsUnityNull()) //Waitingother in if fixes bug that was happening when switching scenes
+        if ((playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer)
+         && !waitingOtherPlayer.IsUnityNull()) //Waitingother in if fixes bug that was happening when switching scenes
         {
             waitingOtherPlayer.SetActive(false);
 
@@ -57,16 +69,19 @@ public class GameSelection : MonoBehaviour
                 case "ClassicInfo":
                     infoPanelTitle.text = "Classic Mode Description";
                     infoPanelText.text = classicDescription;
+                    infoPanelGamePreview.sprite = gamePreviews[0];
                     SetInfoPanelActive(true);
                     break;
                 case "GridInfo":
                     infoPanelTitle.text = "Grid Mode Description";
                     infoPanelText.text = gridDescription;
+                    infoPanelGamePreview.sprite = gamePreviews[1];
                     SetInfoPanelActive(true);
                     break;
                 case "CustomInfo":
                     infoPanelTitle.text = "Custom Mode Description";
                     infoPanelText.text = customDescription;
+                    infoPanelGamePreview.sprite = gamePreviews[2];
                     SetInfoPanelActive(true);
                     break;
                 case "ClassicStart":
