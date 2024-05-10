@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayersAFKDetector : MonoBehaviour
 {
@@ -36,7 +33,7 @@ public class PlayersAFKDetector : MonoBehaviour
             if (afkTimer <= 0f)
             {
                 afk = true;
-                GameManager.SwitchScene(targetScene);
+                gm.SwitchScene(targetScene);
             }
             else if (afkTimer <= warningTime)
             {

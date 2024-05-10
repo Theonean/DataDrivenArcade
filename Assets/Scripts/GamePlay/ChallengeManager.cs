@@ -39,6 +39,13 @@ public class ChallengeManager : MonoBehaviour
         //Get and set data from the GameModeData on gameManager
         gameModeType = gm.gameModeData.gameMode;
         gridSize = gm.gameModeData.gridSize;
+
+        //Fixes visual inconvenience for singleplayer classic gamemode spawning 2nd player CF. Feedback -> why is something there I can't interact with?
+        if (gameModeData.gameMode == GameModeType.CLASSIC && gm.singlePlayer)
+        {
+            gridSize = new Vector2(1, 1);
+        }
+
         faceMultiplierPerLevel = gm.gameModeData.sideMultiplierPerLevel;
         faceStartValue = gm.gameModeData.sideStartingLevel;
         shapesNeededForUnlockStart = gm.gameModeData.shapesNeededForUnlockStart;

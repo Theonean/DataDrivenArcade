@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ChallengeFactory : ShapeFactory
+public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefactory
 {
     public string factoryName;
     public bool showLocalCombo;
@@ -30,7 +28,16 @@ public class ChallengeFactory : ShapeFactory
     public GameObject movingShape;
     public bool shapeTeleports = false;
     public bool shapeSameSpeed = false;
-    public ParticleSystem shapeArrivedCorrectSystem;
+    public ParticleSystem[] shapeArrivedCorrectSystem = new ParticleSystem[2];
+
+    //Variables for the getting score right functionality
+    public TextMeshProUGUI scoreRightText;
+    private Vector3 cameraStartPos;
+
+    private void Start()
+    {
+        cameraStartPos = Camera.main.transform.position;
+    }
 
     public void ResetCF()
     {
@@ -117,7 +124,7 @@ public class ChallengeFactory : ShapeFactory
     //Clones a shape and moves that to the challenge shape
     public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode)
     {
-        print("Moving shape to challenge");
+        //print("Moving shape to challenge");
         //Clone player shape
         GameObject playerShapeObject = player.playerShape.gameObject;
         CustomShapeBuilder flyingShape = Instantiate(shapePrefab, playerShapeObject.transform.position, playerShapeObject.transform.rotation).GetComponent<CustomShapeBuilder>();
@@ -137,6 +144,7 @@ public class ChallengeFactory : ShapeFactory
 
         //Set from challengemanager on creation from gamemodesettings
         float flySpeed = shapeSameSpeed ? 5f : 5f / shapeBuilder.GetShapecode().Length;
+        ParticleSystem myShapeArrivedCorrectSystem = player.playerNum == 1 ? shapeArrivedCorrectSystem[0] : shapeArrivedCorrectSystem[1];
 
         if (shapeTeleports)
         {
@@ -149,33 +157,32 @@ public class ChallengeFactory : ShapeFactory
             while (distance > 0.1f && flyingShape != null)
             {
                 flyingShape.transform.position += direction * Time.deltaTime * flySpeed;
-                shapeArrivedCorrectSystem.transform.position = flyingShape.transform.position;
+                myShapeArrivedCorrectSystem.transform.position = flyingShape.transform.position;
                 distance = Vector3.Distance(flyingShape.transform.position, challengeShapePosition);
                 //print(distance);
                 yield return null;
             }
         }
 
+        //finalize shape arrival at CF and signal player
         if (flyingShape != null)
         {
             //Destroy cloned shape when it arrives (and not destroyed yet by game reset)
             Destroy(flyingShape.gameObject);
 
             bool isCorrectShape = playerShapeCode == shapeBuilder.GetShapecode();
-            print("Shape arrived and code is correct: " + isCorrectShape + " after comparing codes: " + playerShapeCode + " to " + shapeBuilder.GetShapecode());
+            //print("Shape arrived and code is correct: " + isCorrectShape + " after comparing codes: " + playerShapeCode + " to " + shapeBuilder.GetShapecode());
 
             //Create new challenge if code was correct
             if (isCorrectShape)
             {
+                StartCoroutine(FlyScoreUp((player.GetCombo() + 1) * shapeNumSides)); //Let score fly up before combo and sides are updated so right number is shown
                 localCombo += 1;
                 shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
 
-                var main = shapeArrivedCorrectSystem.main;
-                main.startColor = player.playerNum == 1 ? Color.red : Color.blue;
-
-                shapeArrivedCorrectSystem.Play();
+                myShapeArrivedCorrectSystem.Play();
             }
             else
             {
@@ -188,6 +195,9 @@ public class ChallengeFactory : ShapeFactory
                 localCombo = 0;
                 shapeNumSides = maxFacesFloorMIN;
             }
+
+            //Create some camera screenshake in a coroutine
+            StartCoroutine(ShakeCamera());
 
             UpdateUI();
 
@@ -210,9 +220,10 @@ public class ChallengeFactory : ShapeFactory
 
             player.ShapeArrived(isCorrectShape, this);
         }
+        //If flyingShape already destroyed, play a destruction sound and particle effect for flair
         else
         {
-            shapeArrivedCorrectSystem.Play();
+            myShapeArrivedCorrectSystem.Play();
             shapeBuilder.sap.playShapeFinished(false, 0);
         }
 
@@ -225,6 +236,47 @@ public class ChallengeFactory : ShapeFactory
         {
             shapeBuilder.selectState = SelectState.SELECTED;
         }
+    }
+
+    private IEnumerator FlyScoreUp(int score)
+    {
+        float time = 1f;
+        float counter = 0f;
+        float scale = 2f + Mathf.Sqrt(Mathf.Sqrt(score));
+        scoreRightText.enabled = true;
+        scoreRightText.text = score.ToString();
+        Vector3 originalPos = scoreRightText.transform.position;
+
+        //slightly displace text randomly to the left or right to give it some taste
+        scoreRightText.transform.position += new Vector3(Random.Range(-0.5f, 0.5f), 0, 0);
+
+        while (counter < time)
+        {
+            counter += Time.deltaTime;
+            float xMovement = 0.05f * Mathf.Sin(counter * 20f);
+            scoreRightText.transform.position = originalPos + new Vector3(xMovement, counter * 2f, 0);
+            scoreRightText.color = Color.Lerp(Color.white, Color.clear, counter / time);
+            scoreRightText.transform.localScale = Vector3.Lerp(Vector3.one * scale, Vector3.zero, counter / time);
+            yield return null;
+        }
+        scoreRightText.transform.position = originalPos;
+        scoreRightText.enabled = false;
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+        float time = 0.5f;
+        float counter = 0f;
+        float frequency = 0.02f;
+        float amplitude = 20f;
+
+        while (counter < time)
+        {
+            counter += Time.deltaTime;
+            Camera.main.transform.position = cameraStartPos + new Vector3(Mathf.Sin(counter * amplitude) * frequency, Mathf.Sin(counter * amplitude) * frequency, 0);
+            yield return null;
+        }
+        Camera.main.transform.position = cameraStartPos;
     }
 
     public void IncreaseShapeNumSides()

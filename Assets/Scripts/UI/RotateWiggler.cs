@@ -23,6 +23,8 @@ public class RotateWiggler : MonoBehaviour
 
     [Header("FontGradient")]
     public bool colorChange = true;
+    public bool isBackground = false;
+    public float backgroundValueReduction = 0.4f;
     public TextMeshProUGUI textComponent;
     public float colorChangeInterval;
     private float colorChangeTimer;
@@ -41,10 +43,22 @@ public class RotateWiggler : MonoBehaviour
         // Initialize colors
         if (textComponent != null && colorChange)
         {
-            targetTopLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-            targetTopRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-            targetBottomLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-            targetBottomRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
+            targetTopLeft = Random.ColorHSV(0, 1, 0.9f, 1,
+                0.9f - (isBackground ? backgroundValueReduction : 0f),
+                1 - (isBackground ? backgroundValueReduction : 0f));
+
+            targetTopRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                0.9f - (isBackground ? backgroundValueReduction : 0f),
+                1 - (isBackground ? backgroundValueReduction : 0f));
+
+            targetBottomLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                0.9f - (isBackground ? backgroundValueReduction : 0f),
+                1 - (isBackground ? backgroundValueReduction : 0f));
+
+            targetBottomRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                0.9f - (isBackground ? backgroundValueReduction : 0f),
+                1 - (isBackground ? backgroundValueReduction : 0f));
+
         }
     }
 
@@ -79,10 +93,21 @@ public class RotateWiggler : MonoBehaviour
             // Check if it's time to pick new target colors
             if (colorChangeTimer >= colorChangeInterval)
             {
-                targetTopLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-                targetTopRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-                targetBottomLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
-                targetBottomRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1);
+                targetTopLeft = Random.ColorHSV(0, 1, 0.9f, 1,
+                    0.9f - (isBackground ? backgroundValueReduction : 0f),
+                    1 - (isBackground ? backgroundValueReduction : 0f));
+
+                targetTopRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                    0.9f - (isBackground ? backgroundValueReduction : 0f),
+                    1 - (isBackground ? backgroundValueReduction : 0f));
+
+                targetBottomLeft = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                    0.9f - (isBackground ? backgroundValueReduction : 0f),
+                    1 - (isBackground ? backgroundValueReduction : 0f));
+
+                targetBottomRight = Random.ColorHSV(0, 1, 0.9f, 1, 0.9f, 1,
+                    0.9f - (isBackground ? backgroundValueReduction : 0f),
+                    1 - (isBackground ? backgroundValueReduction : 0f));
                 colorChangeTimer = 0;
             }
 

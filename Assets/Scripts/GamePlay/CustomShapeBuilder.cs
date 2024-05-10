@@ -202,13 +202,14 @@ public class CustomShapeBuilder : MonoBehaviour
         //if the shape only has 2 sides, push the first line to the right and the second line to the left
         if (numSides == 2)
         {
+
             if (currentNodeNum == 0)
             {
-                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * 0.5f, 0, 0);
+                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * -0.5f, 0, 0);
             }
             else
             {
-                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * -0.5f, 0, 0);
+                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * 0.5f, 0, 0);
             }
         }
 
@@ -221,7 +222,9 @@ public class CustomShapeBuilder : MonoBehaviour
         //rotate textureObject to face the correct direction
         Vector2 nodeDir = nextCorner - currCorner;
         float angle = Mathf.Atan2(nodeDir.y, nodeDir.x) * Mathf.Rad2Deg; // Use Atan2 to get the angle in radians and convert to degrees
+
         textureObject.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Adjust rotation to align with Unity's coordinate system
+        if(numSides == 2) textureObject.transform.rotation = Quaternion.Euler(0, 0, angle - 90 + 180); //Adjust for two sided
 
         //scale textureobject.y to the correct length of nodeDir
         float nodeDirLength = nodeDir.magnitude;

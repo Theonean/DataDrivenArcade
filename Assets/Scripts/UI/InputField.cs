@@ -38,7 +38,7 @@ public class InputField : MonoBehaviour
             switch (inputDataType)
             {
                 case InputDataType.BOOL:
-                    SetValue((characterText.text == "True") ? "False" : "True");
+                    SetValue((characterText.text == "X") ? " " : "X");
                     break;
                 case InputDataType.FLOAT:
                     float textValue = float.Parse(characterText.text);
@@ -65,11 +65,18 @@ public class InputField : MonoBehaviour
 
     private void SetValue(string value)
     {
-        characterText.text = value;
+        if (inputDataType == InputDataType.BOOL)
+        {
+            characterText.text = value == "true" ? "X" : " ";
+        }
+        else
+        {
+            characterText.text = value;
+        }
 
         //Scale the underline so its same size as the text
-        underline.transform.localScale = new Vector3(characterText.preferredWidth * 1.1f, underline.transform.localScale.y);
-        underline.transform.localPosition = new Vector3(characterText.transform.localPosition.x + underline.transform.localScale.x / 4, underline.transform.localPosition.y, underline.transform.localPosition.z);
+        underline.transform.localScale = new Vector3(characterText.preferredWidth * 0.9f, underline.transform.localScale.y, 1f);
+        underline.transform.position = new Vector3(characterText.transform.position.x + characterText.preferredWidth, underline.transform.position.y, underline.transform.position.z);
     }
 
     public void ChangeValueDown()
@@ -79,7 +86,7 @@ public class InputField : MonoBehaviour
             switch (inputDataType)
             {
                 case InputDataType.BOOL:
-                    characterText.text = (characterText.text == "True") ? "False" : "True";
+                    characterText.text = (characterText.text == "X") ? " " : "X";
                     break;
                 case InputDataType.FLOAT or InputDataType.FLOAT:
                     float textValue = float.Parse(characterText.text);
@@ -98,7 +105,7 @@ public class InputField : MonoBehaviour
                     int charInt = (int)characterText.text[0];
                     int nextCharInt = charInt > 65 ? charInt - 1 : 90;
                     characterText.text = ((char)nextCharInt).ToString();
-                    print(charInt + " " + characterText.text);
+                    //print(charInt + " " + characterText.text);
                     break;
                 case InputDataType.VECTOR2:
                     break;
@@ -111,7 +118,12 @@ public class InputField : MonoBehaviour
 
     public string GetValue()
     {
-        return characterText.text;
+        if (inputDataType == InputDataType.BOOL)
+        {
+            return characterText.text == "X" ? "true" : "false";
+        }
+        else
+            return characterText.text;
     }
 
     void Update()

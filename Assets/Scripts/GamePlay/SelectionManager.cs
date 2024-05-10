@@ -18,11 +18,12 @@ public class SelectionManager : MonoBehaviour
     public PlayerManager playerManager;
     bool isClassic = true;
     bool active = false;
+    bool scaleSet = false;
 
     public void Activate(Vector2 startIndex)
     {
         //Check if playerManager has  1 challenge factory
-        if (playerManager.challengeFactories.Count == 1 && playerManager.challengeFactories[0].list.Count == 2)
+        if (GameManager.instance.gameModeData.gameMode == GameModeType.CLASSIC)
         {
             //Hide selector and disable movement input, because theres only one factory to select anyway
             selectionSprite.SetActive(false);
@@ -36,19 +37,30 @@ public class SelectionManager : MonoBehaviour
             if (playerNum == 2)
             {
                 selectionSprite.GetComponent<SpriteRenderer>().color = Color.blue;
-                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.2f);
+                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.9f);
             }
             else
             {
                 selectionSprite.GetComponent<SpriteRenderer>().color = Color.red;
-                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.red.r, Color.red.g, Color.red.b, 0.5f);
+                selectionSprite.GetComponent<SpriteRenderer>().color = new Color(Color.red.r, Color.red.g, Color.red.b, 0.9f);
             }
 
             factoryIndex = startIndex;
 
-            //DIRRRTTTYYYY but its fine for this kind of "DLC" Script I guess?
             selectionSprite.SetActive(true);
             MoveSelection(factoryIndex);
+
+            //Workaround to make it not scale up each round when the game resets
+            if (!scaleSet)
+            {
+                scaleSet = true;
+                //Scale the selection to the scaling of the CF on the grid so it always looks the same size (because grid size can change depending on setting and game mode)
+                ChallengeFactory cf = playerManager.challengeFactories[(int)startIndex.y].list[(int)startIndex.x];
+                selectionSprite.transform.localScale = new Vector3(
+                    selectionSprite.transform.localScale.x * cf.transform.localScale.x,
+                    selectionSprite.transform.localScale.y * cf.transform.localScale.y,
+                    selectionSprite.transform.localScale.z);
+            }
 
             isClassic = false;
         }
@@ -63,7 +75,7 @@ public class SelectionManager : MonoBehaviour
         active = false;
         //Hide selector
         selectionSprite.SetActive(false);
-        print("Deactivating SelectionManager");
+        //print("Deactivating SelectionManager");
     }
 
     public void ResetSelection(Vector2 startIndex)

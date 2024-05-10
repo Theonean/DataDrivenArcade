@@ -84,14 +84,13 @@ public class PlayerManager : MonoBehaviour
             selectedFactoryStartIndex = new Vector2(challengeFactories[0].list.Count - 1, 0);
         }
 
-
         selectedFactory = challengeFactories[(int)selectedFactoryStartIndex.y].list[(int)selectedFactoryStartIndex.x];
 
         gm.LineInputEvent.AddListener(TryAddLine);
         gm.DoubleLineInputEvent.AddListener(ReinitializePlayer);
 
 
-        print("PlayerManager Start");
+        //print("PlayerManager Start");
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
@@ -109,7 +108,6 @@ public class PlayerManager : MonoBehaviour
         gm.LineInputEvent.RemoveListener(TryAddLine);
         gm.DoubleLineInputEvent.RemoveListener(ReinitializePlayer);
 
-        ResetPlayer();
         selectedFactory.shapeBuilder.EndLineHighlight();
 
         GetComponentInChildren<SelectionManager>().Deactivate();
@@ -216,7 +214,7 @@ public class PlayerManager : MonoBehaviour
             combo++;
 
             //Add score to player
-            score += selectedFactory.shapeNumSides * combo;
+            score += (cf.shapeNumSides - 1) * combo; //-1 adjusts to account for shapenumsides going up before this function is called
             playerInfoManager.SetScore(score);
 
             //Inform challengemanager to reduce Lock Number on challenges below this one

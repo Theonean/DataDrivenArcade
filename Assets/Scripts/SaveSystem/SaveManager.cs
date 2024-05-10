@@ -32,6 +32,8 @@ namespace SaveSystem
             }
 
             DontDestroyOnLoad(gameObject);
+
+            //  BRIAN: if gm.instance.singlePlayer initialize arrays to 1 else 2
         }
 
         public void Initiate(string fileName, int playerNum)
@@ -39,7 +41,7 @@ namespace SaveSystem
             int playerNumIndex = playerNum - 1;
             saveFiles[playerNumIndex] = fileName;
             print("Player " + playerNum + " is using file " + saveFiles[playerNumIndex]);
-            saveFileHandlers[playerNumIndex] = new SaveFileHandler(saveFiles[playerNumIndex] + ".txt");
+            saveFileHandlers[playerNumIndex] = new SaveFileHandler(saveFiles[playerNumIndex]);
             playersInitialized[playerNumIndex] = true;
 
             // If all players are initialized, activate the save system
@@ -53,6 +55,7 @@ namespace SaveSystem
         {
             activated = false;
             playersInitialized = new bool[2] { false, false };
+            playersData = new SaveData[2];
         }
 
         void OnEnable()
@@ -88,9 +91,10 @@ namespace SaveSystem
         public void SaveData()
         {
             SaveData(1);
-            SaveData(2);
+            if (!(GameManager.instance.singlePlayer || playersData[0].playerName.Equals(playersData[1].playerName)))
+                SaveData(2);
         }
-        
+
         //SaveData is Managed by the Gamamanger, I had problems with it not finding the saveable stuff so I just made it work whatever way I could 
         public void SaveData(int playerNum)
         {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using SaveSystem;
 using TMPro;
@@ -14,14 +13,20 @@ public enum CurrentScene
     WAITFORSCENELOAD
 }
 
+// BRIAN: Add enum for playermode (singleplayer, multiplayer)
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public static CurrentScene gameState;
+    public CurrentScene gameState; //REWORK, call over instance instead of static
     public bool arcadeMode = false;
-    public bool singlePlayer = false;
-    public static string p1Name;
-    public static string p2Name;
+    public bool singlePlayer = false; //BRIAN: if you make this an int, you can use it for savemanager array sizes
+
+    // Add coop mode variable here
+    public bool coopMode = false;
+    
+    public static string p1Name; //REWORK, call over instance instead of static
+    public static string p2Name; //REWORK, call over instance instead of static
     public GameModeData gameModeData;
 
     [Header("Button Input")]
@@ -37,7 +42,8 @@ public class GameManager : MonoBehaviour
     private float[] joystickCooldowns = new float[2];
     private bool[] joystickMovedLastUpdate = new bool[2];
     private float joystickCooldownTime = 0.3f;
-    private SaveManager saveManager;
+    public TextMeshProUGUI coopObject;
+    public TextMeshProUGUI onlineStatusObject;
 
     /// <summary>
     /// Setup Singleton instance
@@ -45,79 +51,114 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if (instance == null) instance = this;
-        else Destroy(gameObject);
+        else if (instance != this) Destroy(gameObject);
 
         DontDestroyOnLoad(this);
 
         if (gameModeData == null)
         {
             gameModeData = new GameModeData(GameModeType.CLASSIC);
-            saveManager = SaveManager.singleton;
+        }
+
+        if (gameState == CurrentScene.LOGIN)
+        {
+            coopObject = GameObject.Find("CoopMode").GetComponent<TextMeshProUGUI>();
+            coopObject.enabled = false;
+            onlineStatusObject = GameObject.Find("SaveFilesMode").GetComponent<TextMeshProUGUI>();
+            onlineStatusObject.enabled = false;
+
+            if (!arcadeMode && MongoConnector.isOnline)
+            {
+                onlineStatusObject.enabled = true;
+                onlineStatusObject.text = "Online Mode ~ Scores uploaded";
+            }
+            else
+            {
+                onlineStatusObject.enabled = true;
+                onlineStatusObject.text = "Offline Mode ~ Scores saved locally";
+            }
         }
     }
 
-    public static void SwitchScene(string sceneName)
+    public void SwitchScene(string sceneName)
     {
-        if (sceneName == "00MainMenu")
+        switch (sceneName)
         {
-            SwitchScene(CurrentScene.LOGIN);
-        }
-        else if (sceneName == "01GameSelection")
-        {
-            SwitchScene(CurrentScene.GAMESELECTION);
-        }
-        else if (sceneName == "02GameClassic")
-        {
-            SwitchScene(CurrentScene.GAME);
-        }
-        else
-        {
-            Debug.LogWarning("No scene specified for switch");
+            case "00MainMenu":
+                SwitchScene(CurrentScene.LOGIN);
+                break;
+            case "01GameSelection":
+                SwitchScene(CurrentScene.GAMESELECTION);
+                break;
+            case "02GameClassic":
+                SwitchScene(CurrentScene.GAME);
+                break;
+            default:
+                Debug.LogWarning("No scene specified for switch");
+                break;
         }
     }
 
-    public static void SwitchScene(CurrentScene newState)
+
+    public void SwitchScene(CurrentScene newState)
     {
 
         switch (newState)
         {
             case CurrentScene.LOGIN:
                 Debug.Log("Switching to login");
+                singlePlayer = false;
+
+                coopObject.enabled = true;
+                onlineStatusObject.enabled = true;
+
                 SaveManager.singleton.DeInitiate();
-                gameState = CurrentScene.LOGIN;
+
                 SceneManager.LoadScene("00MainMenu");
                 break;
             case CurrentScene.GAMESELECTION:
                 Debug.Log("Switching to game selection");
-                //Switching from login to gameselection, reinitialize save data
-                if (gameState == CurrentScene.LOGIN)
+                coopObject.enabled = true;
+                onlineStatusObject.enabled = true;
+
+                //Checking to see where we come from
+                switch (gameState)
                 {
-                    SaveManager.singleton.Initiate(p1Name, 1);
-                    SaveManager.singleton.Initiate(p2Name, 2);
-                }
-                else if (gameState == CurrentScene.GAME)
-                {
-                    SaveManager.singleton.SaveData();
+                    case CurrentScene.LOGIN:
+                        SaveManager.singleton.Initiate(p1Name, 1);
+                        SaveManager.singleton.Initiate(p2Name, 2);
+                        break;
+                    case CurrentScene.GAME:
+                        SaveManager.singleton.SaveData();
+                        break;
                 }
 
-                gameState = CurrentScene.WAITFORSCENELOAD;
                 SceneManager.LoadScene("01GameSelection");
                 break;
             case CurrentScene.GAME:
                 SaveManager.singleton.SaveData();
+                coopObject.enabled = false;
+                onlineStatusObject.enabled = false;
 
                 Debug.Log("Switching to game");
-                gameState = CurrentScene.WAITFORSCENELOAD;
+
                 SceneManager.LoadScene("02GameClassic");
                 break;
         }
 
+        //Changing to requested state for currentscene
         gameState = newState;
     }
     private void Update()
     {
+        /*
+         PlayerInput() {}
+            KeyBoardInput() {}
+            JoystickInput() {}
+        CoinButtons() {}
+
+        */
         //Check if the player has pressed a button and call relevant events
-        //TODO expand system so if player does double input within a given set of updates, it will be counted as a double input
         for (int i = 1; i <= 2; i++)
         {
             //BUTTON Input Handling
@@ -235,9 +276,21 @@ public class GameManager : MonoBehaviour
         {
             p2Name = playerName;
         }
+
+        //If both player names are the same, coop mode is activated
+        if (p1Name == p2Name)
+        {
+            coopObject.enabled = true;
+            coopObject.text = "Coop ~ scores combined";
+        }
+        else
+        {
+            coopObject.enabled = true;
+            coopObject.text = "1V1 ~ scores separate";
+        }
     }
 
-    //set x and y of Input to either -1,0 or 1
+    //Round inputVector to nearest of -1,0 or 1
     private Vector2 ParseInput(Vector2 input)
     {
         Vector2 inputDir = input;

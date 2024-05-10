@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using SaveSystem;
 using TMPro;
 using Unity.VisualScripting;
@@ -66,6 +62,9 @@ public class GameSelection : MonoBehaviour
 
             switch (playersSelectedActions[0])
             {
+                case "GoBack":
+                    GameManager.instance.SwitchScene(CurrentScene.LOGIN);
+                    break;
                 case "ClassicInfo":
                     infoPanelTitle.text = "Classic Mode Description";
                     infoPanelText.text = classicDescription;
@@ -87,12 +86,12 @@ public class GameSelection : MonoBehaviour
                 case "ClassicStart":
                     //Start the game with the game mode data initialized to classic
                     gm.gameModeData = new GameModeData(GameModeType.CLASSIC);
-                    GameManager.SwitchScene(CurrentScene.GAME);
+                    GameManager.instance.SwitchScene(CurrentScene.GAME);
                     break;
                 case "GridStart":
                     //Start the game with the game mode data initialized to grid
                     gm.gameModeData = new GameModeData(GameModeType.GRID);
-                    GameManager.SwitchScene(CurrentScene.GAME);
+                    GameManager.instance.SwitchScene(CurrentScene.GAME);
                     break;
                 //Open custom game settings
                 case "CustomStart":
@@ -124,7 +123,7 @@ public class GameSelection : MonoBehaviour
 
                     print("Custom game settings: " + gm.gameModeData.ToString());
 
-                    GameManager.SwitchScene(CurrentScene.GAME);
+                    GameManager.instance.SwitchScene(CurrentScene.GAME);
                     break;
             }
         }
@@ -152,7 +151,7 @@ public class GameSelection : MonoBehaviour
 
         //Find all the editables and toggle them
         Editable[] editableFields = customGameSettings.GetComponentsInChildren<Editable>();
-        print("Found " + editableFields.Length + " editable fields with the names " + string.Join(", ", editableFields.Select(x => x.name).ToArray()));
+        //print("Found " + editableFields.Length + " editable fields with the names " + string.Join(", ", editableFields.Select(x => x.name).ToArray()));
         foreach (Editable field in editableFields)
         {
             field.SetVisibility(active);

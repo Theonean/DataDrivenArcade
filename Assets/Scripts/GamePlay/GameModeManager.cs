@@ -107,32 +107,50 @@ public class GameModeManager : MonoBehaviour
             //Round Finished
             if (timeLeftRound < 0)
             {
-                timeLeftRound = roundTime;
-
-                //ADD Scores to both players and add roundswon to winner if not singleplayer
-                SaveManager.singleton.playersData[0].roundsPlayed += 1;
-                SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode, gm.GetPlayerName(2)));
-                if (!gm.singlePlayer)
-                {
-                    SaveManager.singleton.playersData[1].roundsPlayed += 1;
-                    SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode, gm.GetPlayerName(1)));
-
-                    if (p1.score > p2.score)
-                    {
-                        SaveManager.singleton.playersData[0].roundsWon += 1;
-                    }
-                    else if (p1.score < p2.score)
-                    {
-                        SaveManager.singleton.playersData[1].roundsWon += 1;
-                    }
-                }
-                
-                Debug.LogWarning("Wee Woo Wee Woo Scuffed Code Police");
-                SaveManager.singleton.SaveData();
-
-                //Reset both players
+                //unready both players, BUGFIX: when not first thing in the update loop, players can sneak in an extra input and destroy the highlighting system
                 p1.UnreadyPlayer();
                 if (!gm.singlePlayer) p2.UnreadyPlayer();
+
+                countdownRoundTimer.color = Color.white;
+                timeLeftRound = roundTime;
+
+                //In coop mode, only save Player 1 Data
+                if (GameManager.p1Name.Equals(GameManager.p2Name))
+                {
+                    int score = p1.score + p2.score;
+
+                    //Update score visually at end of round so players can see combined score
+                    p1.score = score;
+                    p1.playerInfoManager.SetScore(score);
+                    p2.score = score;
+                    p2.playerInfoManager.SetScore(score);
+
+                    SaveManager.singleton.playersData[0].roundsPlayed += 1;
+                    SaveManager.singleton.playersData[0].scores.Add(new Score(score, gameModeData.gameMode, gm.GetPlayerName(1), true));
+                }
+                else
+                {
+
+                    //ADD Scores to both players and add roundswon to winner if not singleplayer
+                    SaveManager.singleton.playersData[0].roundsPlayed += 1;
+                    SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode, gm.GetPlayerName(2)));
+                    if (!gm.singlePlayer)
+                    {
+                        SaveManager.singleton.playersData[1].roundsPlayed += 1;
+                        SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode, gm.GetPlayerName(1)));
+
+                        if (p1.score > p2.score)
+                        {
+                            SaveManager.singleton.playersData[0].roundsWon += 1;
+                        }
+                        else if (p1.score < p2.score)
+                        {
+                            SaveManager.singleton.playersData[1].roundsWon += 1;
+                        }
+                    }
+                }
+
+                SaveManager.singleton.SaveData();
 
                 //Iterate over all challenge factories and reset them
                 foreach (ChallengeFactoryList cfl in challengeFactories)
@@ -153,6 +171,7 @@ public class GameModeManager : MonoBehaviour
 
                 countdownRoundTimer.text = roundTime.ToString();
                 timeLeftRound = roundTime;
+                timeLeftStart = countdownStart;
             }
         }
         else if (gameModeState == GameModeState.COUNTDOWN)
@@ -163,6 +182,8 @@ public class GameModeManager : MonoBehaviour
             {
                 countdownStartTime.enabled = false;
                 gameModeState = GameModeState.RUNNING;
+
+                print("Round Started");
 
                 p1.ReadyPlayer(challengeFactories);
                 if (!gm.singlePlayer) p2.ReadyPlayer(challengeFactories);
@@ -217,11 +238,15 @@ public class GameModeManager : MonoBehaviour
                     timeLeftStart = countdownStart;
                     gameModeState = GameModeState.COUNTDOWN;
                     countdownStartTime.enabled = true;
+
+                    //Reset the score of both players
+                    p1.ResetPlayer();
+                    if (!gm.singlePlayer) p2.ResetPlayer();
                     break;
                 case "Quit":
                     //Quit the game
                     print("Quitting Game");
-                    GameManager.SwitchScene(CurrentScene.GAMESELECTION);
+                    GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
                     break;
             }
         }

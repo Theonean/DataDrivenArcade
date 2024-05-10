@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.ComponentModel;
-using UnityEngine.Assertions.Must;
 using TMPro;
 using Unity.VisualScripting;
 using System;
@@ -14,6 +13,7 @@ public enum ActionOnSelection
     ScaleAndColour,
     ShowHighlight
 }
+[SerializeField]
 public enum SelectionState
 {
     Unselected,
@@ -39,6 +39,7 @@ public class JoystickSelectable : MonoBehaviour
     public UnityEvent MoveSelectionDownEvent;
     public UnityEvent MoveSelectionLeftEvent;
     public UnityEvent MoveSelectionRightEvent;
+    private AnimationCurve scaleUpDownCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     //Scale and Colour Selection Type
     private Image objectToColour;
@@ -95,6 +96,7 @@ public class JoystickSelectable : MonoBehaviour
                 {
                     if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
                     scaleCoroutine = StartCoroutine(ConfirmSelected(true));
+                    StartCoroutine(ScaleUpDown());
                 }
                 break;
             case ActionOnSelection.ShowHighlight:
@@ -196,8 +198,8 @@ public class JoystickSelectable : MonoBehaviour
 
     private IEnumerator ConfirmSelected(bool scalingDown)
     {
-        objectToColour.color = scalingDown ? Color.green : Color.white;
         Vector3 targetScale = scalingDown ? Vector3.zero : scaleObjectOriginalScale;
+        if (!scalingDown) objectToColour.color = Color.white;
         float scaleSpeed = 0.1f;
 
         while (Vector3.Distance(objectToScale.transform.localScale, targetScale) > 0.01f)
@@ -206,9 +208,39 @@ public class JoystickSelectable : MonoBehaviour
             yield return null;
         }
 
+        if (scalingDown) objectToColour.color = Color.green;
+        objectToScale.transform.localScale = scaleObjectOriginalScale;
+
         if (scalingDown && !actionType.Equals(String.Empty))
         {
             SelectionChangeEvent?.Invoke(controlledByPlayer, actionType);
+        }
+    }
+
+    //Scales the selectable slightly up and down as an indication of action and to add some juice to the game
+    private IEnumerator ScaleUpDown()
+    {
+        float animationTime = 0.4f;
+        // Play a little animation which scales x and y up and then down again to the original value with a smooth curve
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * 1.2f; // Scale up by 20%
+
+        // Scale up
+        float counter = 0;
+        while (Vector3.Distance(transform.localScale, targetScale) > 0.01f)
+        {
+            counter += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, scaleUpDownCurve.Evaluate(counter / animationTime));
+            yield return null;
+        }
+
+        // Scale down
+        counter = 0;
+        while (Vector3.Distance(transform.localScale, originalScale) > 0.01f)
+        {
+            counter += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(transform.localScale, originalScale, scaleUpDownCurve.Evaluate(counter / animationTime));
+            yield return null;
         }
     }
 

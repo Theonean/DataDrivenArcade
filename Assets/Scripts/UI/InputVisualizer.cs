@@ -134,8 +134,9 @@ public class InputVisualizer : MonoBehaviour
             buttonAnimName += inputType;
 
             buttonAnimators[iData.lineCode].Play(buttonAnimName);
+
+            timeUntilIdleJoystick = timeUntilIdle;
+            playingIdleAnimation = false;
         }
     }
-
-
 }

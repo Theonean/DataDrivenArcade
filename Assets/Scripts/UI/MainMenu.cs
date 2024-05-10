@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -14,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI[] insertCoinTexts;
     public TextMeshProUGUI waitingForPlayerText;
     public GameObject gameHelp;
+    public GameObject gameAbout;
     public GameObject[] p2Objects;
     private bool coinInserted = false;
     private string[] playersSelectedActions = new string[2];
@@ -29,49 +25,49 @@ public class MainMenu : MonoBehaviour
         gm.MultiplayerPressed.AddListener(() => ToggleSingleOrMultiplayer(false));
     }
 
-
-    // Update is called once per frame
     private void InsertCoinPressed(bool isArcadeMode)
     {
-        if (isArcadeMode && !coinInserted)
+        if (!coinInserted) return;
+        switch (isArcadeMode)
         {
-            coinInsertedEvent?.Invoke();
-            gm.arcadeMode = true;
-            coinInserted = true;
-            foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
-            print("Arcade mode active");
-        }
-        else if (!isArcadeMode && !coinInserted)
-        {
-            coinInsertedEvent?.Invoke();
-            gm.arcadeMode = false;
-            coinInserted = true;
-            foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
-            print("Keyboard mode active");
+            case true:
+                coinInsertedEvent?.Invoke();
+                gm.arcadeMode = true;
+                coinInserted = true;
+                foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
+                print("Arcade mode active");
+                break;
+            case false:
+                coinInsertedEvent?.Invoke();
+                gm.arcadeMode = false;
+                coinInserted = true;
+                foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
+                print("Keyboard mode active");
+                break;
         }
     }
 
     private void ToggleSingleOrMultiplayer(bool isSinglePlayer)
     {
-        if (coinInserted)
+        if (!coinInserted) return;
+
+        switch (isSinglePlayer)
         {
-            if (isSinglePlayer)
-            {
+            case true:
                 gm.singlePlayer = true;
                 foreach (GameObject obj in p2Objects)
                 {
                     obj.SetActive(false);
                 }
-            }
-            else
-            {
+                break;
+            case false:
                 gm.singlePlayer = false;
                 foreach (GameObject obj in p2Objects)
                 {
                     obj.SetActive(true);
                 }
                 coinInsertedEvent?.Invoke();
-            }
+                break;
         }
     }
 
@@ -79,19 +75,40 @@ public class MainMenu : MonoBehaviour
     {
         playersSelectedActions[playerNum - 1] = actionType;
 
-        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer)
+        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer && actionType != "")
         {
             switch (playersSelectedActions[0])
             {
                 case "READYTOPLAY":
-                    GameManager.SwitchScene(CurrentScene.GAMESELECTION);
+                    //Find both player names by searching for editable components
+                    string p1Name = GameObject.Find("P1NameInputField").GetComponent<Editable>().GetValue();
+                    GameManager.instance.SetPlayerName(1, p1Name);
+                    print("Player 1 name: " + p1Name);
+
+                    if (!GameManager.instance.singlePlayer)
+                    {
+                        string p2Name = GameObject.Find("P2NameInputField").GetComponent<Editable>().GetValue();
+                        GameManager.instance.SetPlayerName(2, p2Name);
+                        print("Player 2 name: " + p2Name);
+                    }
+
+                    GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
                     break;
                 case "GameHelp":
-                    Debug.Log("GameHelp");
                     gameHelp.SetActive(true);
+                    gameAbout.SetActive(false);
+                    break;
+                case "GameAbout":
+                    gameAbout.SetActive(true);
+                    gameHelp.SetActive(false);
+                    break;
+                case "QuitGame":
+                    if (gm.arcadeMode) GameManager.instance.SwitchScene(CurrentScene.LOGIN);
+                    else Application.Quit();
                     break;
             }
-        }else if (playersSelectedActions[0] == "READYTOPLAY" || playersSelectedActions[1] == "READYTOPLAY")
+        }
+        else if (playersSelectedActions[0] == "READYTOPLAY" || playersSelectedActions[1] == "READYTOPLAY")
         {
             waitingForPlayerText.enabled = true;
         }
@@ -99,6 +116,7 @@ public class MainMenu : MonoBehaviour
         {
             waitingForPlayerText.enabled = false;
             gameHelp.SetActive(false);
+            gameAbout.SetActive(false);
         }
     }
 }

@@ -86,8 +86,7 @@ public class ShapeAudioPlayer : MonoBehaviour
     //Quickly fade out audio to avoid clicks
     private IEnumerator QuickSilentFade()
     {
-        Debug.LogWarning("Quickly fading out audio still unreliable, sometimes not stopping playback?");
-        //Check if audio is playing (for efficiency I guess? ~ tired code writing yeehaw)
+        //Check if audio is playing (for efficiency I guess?)
         if (audioSource.isPlaying && !playingShapeFinished)
         {
             float originalVolume = audioSource.volume;
@@ -95,7 +94,7 @@ public class ShapeAudioPlayer : MonoBehaviour
             while (audioSource.volume > 0)
             {
                 audioSource.volume -= originalVolume * Time.deltaTime * decreaseVolumeSpeed;
-                print("volume: " + audioSource.volume + " originalVolume: " + originalVolume + " Time.deltaTime: " + Time.deltaTime + " decreaseVolumeSpeed: " + decreaseVolumeSpeed);
+                //print("volume: " + audioSource.volume + " originalVolume: " + originalVolume + " Time.deltaTime: " + Time.deltaTime + " decreaseVolumeSpeed: " + decreaseVolumeSpeed);
                 yield return null;
             }
             audioSource.Stop();
