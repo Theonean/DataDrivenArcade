@@ -64,7 +64,7 @@ public class MainMenuOld : MonoBehaviour
 
         if (playersReady[0] && playersReady[1])
         {
-            GameManager.SwitchScene(CurrentScene.GAMESELECTION);
+            //GameManager.SwitchScene(CurrentScene.GAMESELECTION);
         }
         else if (playersReady[0] || playersReady[1])
         {
