@@ -327,6 +327,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2141322227585837477, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2141322227585837477, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2141322227585837477, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2141322227585837477, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2141322227585837477, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7884914805657595454, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -365,6 +385,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7884914805657595454, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785748553752127500, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785748553752127500, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785748553752127500, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785748553752127500, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785748553752127500, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -497,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6574206044169225543, guid: 9715e7edff585ab4db6567f89898e574, type: 3}
       propertyPath: targetScene
-      value: 01GameSelection
+      value: 02Selection
       objectReference: {fileID: 0}
     - target: {fileID: 6574206044169225543, guid: 9715e7edff585ab4db6567f89898e574, type: 3}
       propertyPath: warningTime
