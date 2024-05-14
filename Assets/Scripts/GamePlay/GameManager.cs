@@ -22,12 +22,10 @@ public class GameManager : MonoBehaviour
     public CurrentScene gameState; //REWORK, call over instance instead of static
     public bool arcadeMode = false;
     public bool singlePlayer = false; //BRIAN: if you make this an int, you can use it for savemanager array sizes
-
-    // Add coop mode variable here
     public bool coopMode = false;
 
-    public static string p1Name; //REWORK, call over instance instead of static
-    public static string p2Name; //REWORK, call over instance instead of static
+    public string p1Name;
+    public string p2Name;
     public GameModeData gameModeData;
 
     [Header("Button Input")]

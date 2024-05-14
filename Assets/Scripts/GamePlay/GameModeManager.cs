@@ -115,7 +115,7 @@ public class GameModeManager : MonoBehaviour
                 timeLeftRound = roundTime;
 
                 //In coop mode, only save Player 1 Data
-                if (GameManager.p1Name.Equals(GameManager.p2Name))
+                if (gm.coopMode)
                 {
                     int score = p1.score + p2.score;
 

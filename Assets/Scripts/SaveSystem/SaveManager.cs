@@ -91,8 +91,10 @@ namespace SaveSystem
         public void SaveData()
         {
             SaveData(1);
-            if (!(GameManager.instance.singlePlayer || playersData[0].playerName.Equals(playersData[1].playerName)))
-                SaveData(2);
+
+            //Player 2 doesn't get saved in singleplayer or coop mode
+            if (GameManager.instance.singlePlayer || GameManager.instance.coopMode) return;
+            SaveData(2);
         }
 
         //SaveData is Managed by the Gamamanger, I had problems with it not finding the saveable stuff so I just made it work whatever way I could 
