@@ -5,52 +5,36 @@ using UnityEngine.Events;
 public class MainMenu : MonoBehaviour
 {
     private GameManager gm;
-
-    public TextMeshProUGUI[] insertCoinTexts;
     public TextMeshProUGUI waitingForPlayerText;
+    [SerializeField]
+    private JoystickSelectable[] startSelected = new JoystickSelectable[2];
+    [SerializeField]
+    private InputVisualizer[] inputVisualizers = new InputVisualizer[2];
     public GameObject gameHelp;
     public GameObject gameAbout;
     public GameObject[] p2Objects;
-    private bool coinInserted = false;
     private string[] playersSelectedActions = new string[2];
-
-    public UnityEvent coinInsertedEvent;
 
     // Start is called before the first frame update
     void Start()
     {
         gm = GameManager.instance;
-        gm.InsertCoinPressed.AddListener(InsertCoinPressed);
         gm.SinglePlayerPressed.AddListener(() => ToggleSingleOrMultiplayer(true));
         gm.MultiplayerPressed.AddListener(() => ToggleSingleOrMultiplayer(false));
-    }
 
-    private void InsertCoinPressed(bool isArcadeMode)
-    {
-        if (!coinInserted) return;
-        switch (isArcadeMode)
+        foreach (JoystickSelectable js in startSelected)
         {
-            case true:
-                coinInsertedEvent?.Invoke();
-                gm.arcadeMode = true;
-                coinInserted = true;
-                foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
-                print("Arcade mode active");
-                break;
-            case false:
-                coinInsertedEvent?.Invoke();
-                gm.arcadeMode = false;
-                coinInserted = true;
-                foreach (TextMeshProUGUI insertCoinText in insertCoinTexts) { insertCoinText.enabled = false; }
-                print("Keyboard mode active");
-                break;
+            js.Selected();
         }
+
+        inputVisualizers[0].ToggleActive(true);
+        inputVisualizers[1].ToggleActive(true);
+
+        ToggleSingleOrMultiplayer(true);
     }
 
     private void ToggleSingleOrMultiplayer(bool isSinglePlayer)
     {
-        if (!coinInserted) return;
-
         switch (isSinglePlayer)
         {
             case true:
@@ -66,7 +50,6 @@ public class MainMenu : MonoBehaviour
                 {
                     obj.SetActive(true);
                 }
-                coinInsertedEvent?.Invoke();
                 break;
         }
     }
@@ -77,6 +60,9 @@ public class MainMenu : MonoBehaviour
 
         if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer && actionType != "")
         {
+            gameHelp.SetActive(false);
+            gameAbout.SetActive(false);
+
             switch (playersSelectedActions[0])
             {
                 case "READYTOPLAY":
@@ -115,8 +101,6 @@ public class MainMenu : MonoBehaviour
         else
         {
             waitingForPlayerText.enabled = false;
-            gameHelp.SetActive(false);
-            gameAbout.SetActive(false);
         }
     }
 }
