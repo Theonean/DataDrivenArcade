@@ -48,6 +48,7 @@ public class PlayerManager : MonoBehaviour
 
     public CustomShapeBuilder playerShape;
     private GameManager gm;
+    private GameObject shadowShape = null;
     public SpriteRenderer[] lockObjects;
 
     //SCORE MANAGEMENT
@@ -95,6 +96,9 @@ public class PlayerManager : MonoBehaviour
 
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
         selectedFactory.shapeBuilder.selectState = SelectState.SELECTED;
+
+        //Create shadow of selected shape as guide for player
+        CreateSelectedShapeShadow();
 
         playerInfoManager.SetScore(score);
         playerInfoManager.SetCombo(combo);
@@ -196,6 +200,10 @@ public class PlayerManager : MonoBehaviour
         //Reset player shape to the selected factory
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
+        //Create shadow of selected shape as guide for player
+        CreateSelectedShapeShadow();
+
+        //Start line highlight on new selected factory (starts blinking animation)
         selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
 
         //Show player input is blocked while this shape is selected
@@ -211,6 +219,7 @@ public class PlayerManager : MonoBehaviour
         //Score and Combo Calculation
         if (correctShape)
         {
+            //Increase combo which influences score as multiplier
             combo++;
 
             //Add score to player
@@ -220,7 +229,7 @@ public class PlayerManager : MonoBehaviour
             //Inform challengemanager to reduce Lock Number on challenges below this one
             if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
         }
-        //When wrong shape is completed, stop combo and reset multiplier
+        //When wrong shape is completed, stop combo which resets multiplier
         else
         {
             combo = 0;
@@ -228,6 +237,7 @@ public class PlayerManager : MonoBehaviour
 
         playerInfoManager.SetCombo(combo);
 
+        //If the player still has this factory selected when it arrives
         if (cf.Equals(selectedFactory))
         {
             //Show player input is blocked while this shape is selected
@@ -237,6 +247,9 @@ public class PlayerManager : MonoBehaviour
             }
 
             playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
+
+            //Create shadow of selected shape as guide for player
+            CreateSelectedShapeShadow();
         }
     }
 
@@ -252,7 +265,7 @@ public class PlayerManager : MonoBehaviour
     {
         print("Resetting PLAYER " + playerNum);
 
-        //Reset playe shape to 2 sides
+        //Reset playe shape to 2 sides -> Old Bug workaround?
         playerShape.InitializeShape(false, 2);
 
         //Reset to original position, which also resets player factory
@@ -261,9 +274,46 @@ public class PlayerManager : MonoBehaviour
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
+        //Create shadow of selected shape as guide for player
+        CreateSelectedShapeShadow();
+
         score = 0;
         combo = 0;
         playerInfoManager.Reset();
+    }
+
+    /// <summary>
+    /// Create a shadow of the shape that is currently selected inside the player factory as a guide for the player
+    /// </summary>
+    private void CreateSelectedShapeShadow()
+    {
+        //If shadow doesn't exist yet, create new one from selected factorys shapeBuilder
+        if (shadowShape.IsUnityNull())
+        {
+            //Clone selected factorys shapeBuilder and parent it to the player
+            shadowShape = Instantiate(selectedFactory.shapeBuilder.gameObject, transform);
+            shadowShape.name = "ShadowShape";
+            shadowShape.transform.localScale = playerShape.transform.localScale;
+            shadowShape.transform.localPosition = new Vector3(0, 0, 0);
+            shadowShape.transform.position = playerShape.transform.position;
+            shadowShape.transform.position = new Vector3(shadowShape.transform.position.x, shadowShape.transform.position.y, 0);
+        }
+        //If shadow already exists, update it to be the same as the selected factorys shapeBuilder
+        else
+        {
+            //Get shapebuilder script from shadowShape
+            CustomShapeBuilder shadowShapeBuilder = shadowShape.GetComponent<CustomShapeBuilder>();
+
+            //Recreate shadow to be same as selected factory
+            shadowShapeBuilder.InitializeShape(true, selectedFactory.shapeNumSides, selectedFactory.shapeBuilder.GetShapecode());
+        }
+
+        //create shadow effect by setting all the line textures to a black color
+        foreach (SpriteRenderer lineRenderer in shadowShape.GetComponentsInChildren<SpriteRenderer>())
+        {
+            lineRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
+        }
+
     }
 
 }
