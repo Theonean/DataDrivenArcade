@@ -46,8 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27875a6e976c8f44d82aba7ed743f5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: 0
   arcadeMode: 0
   singlePlayer: 0
+  coopMode: 0
   gameModeData:
     gameMode: 1
     gridSize: {x: 4, y: 4}
@@ -82,8 +84,8 @@ MonoBehaviour:
   MultiplayerPressed:
     m_PersistentCalls:
       m_Calls: []
-  coopObject: {fileID: 0}
-  onlineStatusObject: {fileID: 0}
+  coopObject: {fileID: 8555097832402754229}
+  onlineStatusObject: {fileID: 7294736445265443558}
 --- !u!114 &8570469547494942450
 MonoBehaviour:
   m_ObjectHideFlags: 0
