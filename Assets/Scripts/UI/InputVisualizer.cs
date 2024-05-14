@@ -75,7 +75,7 @@ public class InputVisualizer : MonoBehaviour
 
         if (!gm.arcadeMode && showKeyBindings)
         {
-            if(playernum == 1)
+            if (playernum == 1)
             {
                 playerKeyboardBindings[0].SetActive(active);
             }
@@ -83,6 +83,15 @@ public class InputVisualizer : MonoBehaviour
             {
                 playerKeyboardBindings[1].SetActive(active);
             }
+        }
+    }
+
+    public void UIButtonPressed(int lineNum)
+    {
+        if (playernum == 1)
+        {
+            print("Player 1 pressed line on UI " + lineNum);
+            gm.LineInputEvent.Invoke(new InputData(lineNum, 1));
         }
     }
 
