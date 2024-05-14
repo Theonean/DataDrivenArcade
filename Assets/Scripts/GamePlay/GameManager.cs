@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public enum CurrentScene
 {
+    WELCOME,
     LOGIN,
     GAMESELECTION,
     GAME,
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     // Add coop mode variable here
     public bool coopMode = false;
-    
+
     public static string p1Name; //REWORK, call over instance instead of static
     public static string p2Name; //REWORK, call over instance instead of static
     public GameModeData gameModeData;
@@ -84,13 +85,16 @@ public class GameManager : MonoBehaviour
     {
         switch (sceneName)
         {
-            case "00MainMenu":
+            case "00Welcome":
+                SwitchScene(CurrentScene.WELCOME);
+                break;
+            case "01MainMenu":
                 SwitchScene(CurrentScene.LOGIN);
                 break;
-            case "01GameSelection":
+            case "02Selection":
                 SwitchScene(CurrentScene.GAMESELECTION);
                 break;
-            case "02GameClassic":
+            case "03Game":
                 SwitchScene(CurrentScene.GAME);
                 break;
             default:
@@ -105,16 +109,28 @@ public class GameManager : MonoBehaviour
 
         switch (newState)
         {
+            case CurrentScene.WELCOME:
+                Debug.Log("Switching to welcome");
+                coopObject.enabled = false;
+                onlineStatusObject.enabled = false;
+
+                //Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
+                SaveManager.singleton.DeInitiate();
+
+                SceneManager.LoadScene("00Welcome");
+                break;
             case CurrentScene.LOGIN:
                 Debug.Log("Switching to login");
-                singlePlayer = false;
+                //Default set singleplayer mode to true, P1 has to manually switch to P2 mode
+                singlePlayer = true;
 
                 coopObject.enabled = true;
                 onlineStatusObject.enabled = true;
 
+                //Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
-                SceneManager.LoadScene("00MainMenu");
+                SceneManager.LoadScene("01MainMenu");
                 break;
             case CurrentScene.GAMESELECTION:
                 Debug.Log("Switching to game selection");
@@ -133,7 +149,7 @@ public class GameManager : MonoBehaviour
                         break;
                 }
 
-                SceneManager.LoadScene("01GameSelection");
+                SceneManager.LoadScene("02Selection");
                 break;
             case CurrentScene.GAME:
                 SaveManager.singleton.SaveData();
@@ -142,7 +158,7 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log("Switching to game");
 
-                SceneManager.LoadScene("02GameClassic");
+                SceneManager.LoadScene("03Game");
                 break;
         }
 
@@ -235,6 +251,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("InsertCoinKeyboard"))
         {
             InsertCoinPressed?.Invoke(false);
+            print("Insert Coin Pressed");
         }
         else if (Input.GetButtonDown("InsertCoinArcade"))
         {
