@@ -386,6 +386,11 @@ public class CustomShapeBuilder : MonoBehaviour
             }
         }
     }
+
+    private void OnDisable() {
+        if(playerNum!= 0)
+            GameManager.instance.LineInputEvent.RemoveListener(HighlightNextLine);
+    }
 }
 
 #endregion

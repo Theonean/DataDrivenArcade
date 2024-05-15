@@ -48,6 +48,7 @@ public class PlayerManager : MonoBehaviour
 
     public CustomShapeBuilder playerShape;
     private GameManager gm;
+    private bool playerReady = false;
     private GameObject shadowShape = null;
     public SpriteRenderer[] lockObjects;
 
@@ -105,6 +106,7 @@ public class PlayerManager : MonoBehaviour
 
         //activate the selection manager and pass it the starting index of the selected factory
         GetComponentInChildren<SelectionManager>().Activate(selectedFactoryStartIndex);
+        playerReady = true;
     }
 
     public void UnreadyPlayer()
@@ -115,6 +117,7 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.EndLineHighlight();
 
         GetComponentInChildren<SelectionManager>().Deactivate();
+        playerReady = false;
     }
 
     private void TryAddLine(InputData iData)
@@ -314,6 +317,15 @@ public class PlayerManager : MonoBehaviour
             lineRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
         }
 
+    }
+
+    private void OnDisable()
+    {
+        if (playerReady)
+        {
+            gm.LineInputEvent.RemoveListener(TryAddLine);
+            gm.DoubleLineInputEvent.RemoveListener(ReinitializePlayer);
+        }
     }
 
 }
