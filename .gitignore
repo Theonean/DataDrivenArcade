@@ -10,6 +10,9 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+#Manual Ignore for MongoConnector which contains sensitive login details to Database
+/Assets/Scripts/DONOTCOMMIT_MongoConnector.cs
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
