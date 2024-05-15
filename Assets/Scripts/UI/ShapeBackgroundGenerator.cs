@@ -22,8 +22,14 @@ public class ShapeBackgroundGenerator : MonoBehaviour
     public GameObject shapePrefab;
     public float shapeMinSides;
     public float shapeMaxSides;
+    private bool finishedLoading = false;
 
     private void Start()
+    {
+        StartCoroutine(GenerateBackground());
+    }
+
+    private IEnumerator GenerateBackground()
     {
         //Draw lines on background
         if (lineMode)
@@ -92,13 +98,17 @@ public class ShapeBackgroundGenerator : MonoBehaviour
                 }
             }
         }
+
+        yield return null;
+
+        finishedLoading = true;
     }
 
 
     // when liveupdate is set, update lines or shapes position based on gridsize and gridspacing and scale
     void Update()
     {
-        if (liveUpdateSettings)
+        if (liveUpdateSettings && finishedLoading)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
