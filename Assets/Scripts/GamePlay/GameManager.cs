@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using SaveSystem;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -26,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     public string p1Name;
     public string p2Name;
+    [SerializeField]
+    public SpriteRenderer transitionOverlay;
     public GameModeData gameModeData;
 
     [Header("Button Input")]
@@ -43,6 +47,10 @@ public class GameManager : MonoBehaviour
     private float joystickCooldownTime = 0.3f;
     public TextMeshProUGUI coopObject;
     public TextMeshProUGUI onlineStatusObject;
+    public AnimationCurve fadeOutCurve;
+    public AnimationCurve fadeInCurve;
+    private AsyncOperation asyncLoad;
+    private bool leavingSceneLeft = false;
 
     /// <summary>
     /// Setup Singleton instance
@@ -66,7 +74,7 @@ public class GameManager : MonoBehaviour
             onlineStatusObject = GameObject.Find("SaveFilesMode").GetComponent<TextMeshProUGUI>();
             onlineStatusObject.enabled = false;
 
-            if (!arcadeMode && MongoConnector.isOnline)
+            if (!arcadeMode && DONOTCOMMIT_MongoConnector.isOnline)
             {
                 onlineStatusObject.enabled = true;
                 onlineStatusObject.text = "Online Mode ~ Scores uploaded";
@@ -77,6 +85,14 @@ public class GameManager : MonoBehaviour
                 onlineStatusObject.text = "Offline Mode ~ Scores saved locally";
             }
         }
+
+        if (!leavingSceneLeft && gameState == CurrentScene.WELCOME)
+        {
+            print("Fading scene in manually on first load of GM");
+            StartCoroutine(FadeSceneIn());
+        }
+
+        print("GameManager Awake");
     }
 
     public void SwitchScene(string sceneName)
@@ -104,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void SwitchScene(CurrentScene newState)
     {
-
+        int targetBuildIndex = -1;
         switch (newState)
         {
             case CurrentScene.WELCOME:
@@ -112,30 +128,32 @@ public class GameManager : MonoBehaviour
                 coopObject.enabled = false;
                 onlineStatusObject.enabled = false;
 
-                //Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
+                // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
-                SceneManager.LoadScene("00Welcome");
+                asyncLoad = SceneManager.LoadSceneAsync("00Welcome");
+                targetBuildIndex = 0;
                 break;
             case CurrentScene.LOGIN:
                 Debug.Log("Switching to login");
-                //Default set singleplayer mode to true, P1 has to manually switch to P2 mode
+                // Default set singleplayer mode to true, P1 has to manually switch to P2 mode
                 singlePlayer = true;
 
                 coopObject.enabled = true;
                 onlineStatusObject.enabled = true;
 
-                //Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
+                // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
-                SceneManager.LoadScene("01MainMenu");
+                asyncLoad = SceneManager.LoadSceneAsync("01MainMenu");
+                targetBuildIndex = 1;
                 break;
             case CurrentScene.GAMESELECTION:
                 Debug.Log("Switching to game selection");
                 coopObject.enabled = true;
                 onlineStatusObject.enabled = true;
 
-                //Checking to see where we come from
+                // Checking to see where we come from
                 switch (gameState)
                 {
                     case CurrentScene.LOGIN:
@@ -147,7 +165,8 @@ public class GameManager : MonoBehaviour
                         break;
                 }
 
-                SceneManager.LoadScene("02Selection");
+                asyncLoad = SceneManager.LoadSceneAsync("02Selection");
+                targetBuildIndex = 2;
                 break;
             case CurrentScene.GAME:
                 SaveManager.singleton.SaveData();
@@ -156,13 +175,43 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log("Switching to game");
 
-                SceneManager.LoadScene("03Game");
+                asyncLoad = SceneManager.LoadSceneAsync("03Game");
+                targetBuildIndex = 3;
                 break;
         }
 
-        //Changing to requested state for currentscene
+        //Check if build index of next scene is lower than current scene, if yes leaving scene to the left
+        if (targetBuildIndex < SceneManager.GetActiveScene().buildIndex)
+        {
+            leavingSceneLeft = true;
+        }
+        else
+        {
+            leavingSceneLeft = false;
+        }
+
+        asyncLoad.allowSceneActivation = false; // Stop automatic loading of next scene
+        StartCoroutine(LoadSceneAndFadeIn());
+
+        // Changing to requested state for currentscene
         gameState = newState;
     }
+
+    private IEnumerator LoadSceneAndFadeIn()
+    {
+        yield return StartCoroutine(FadeSceneOut());
+
+        asyncLoad.allowSceneActivation = true;
+
+        yield return new WaitUntil(() => asyncLoad.isDone);
+
+        // Wait for the first frame to ensure the scene is fully initialized
+        yield return null;
+
+        StartCoroutine(FadeSceneIn());
+    }
+
+
     private void Update()
     {
         /*
@@ -320,4 +369,89 @@ public class GameManager : MonoBehaviour
 
         return inputDir;
     }
+
+    /// <summary>
+    /// Moves Camera from center of screen to right and fades from white to black
+    /// </summary>
+    /// <param name="time">Time taken for the fade and move</param>
+    /// <returns></returns>
+    private IEnumerator FadeSceneOut()
+    {
+        float elapsedTime = 0;
+        float minTime = 1.5f;
+        float cameraZ = Camera.main.transform.position.z;
+
+        transitionOverlay.enabled = true;
+        Vector3 startPos = Camera.main.transform.position;
+        Vector3 endpos = leavingSceneLeft ? new Vector3(-3, 0, cameraZ) : new Vector3(3, 0, cameraZ);
+        Color startColor = Color.clear;
+        Color endColor = Color.black;
+
+        while (asyncLoad.progress < 0.9f || elapsedTime < minTime)
+        {
+            float t = fadeOutCurve.Evaluate(elapsedTime / minTime);
+            t *= 1.2f; // Speed up the fade out so evaluationcurve overshoots and we actually reach 100 opacity
+
+            Camera.main.transform.position = Vector3.Lerp(startPos, endpos, t);
+            transitionOverlay.color = Color.Lerp(startColor, endColor, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        print("Scene Fade out Complete after " + elapsedTime + " seconds");
+
+        //Allow scene activation during black screen
+        asyncLoad.allowSceneActivation = true;
+    }
+
+    /// <summary>
+    /// Moves Camera from Left of Screen to Center and fades from black to white
+    /// </summary>
+    /// <param name="time">Time taken for the fade and move</param>
+    /// <returns></returns>
+    private IEnumerator FadeSceneIn()
+    {
+        print("Scene Fade In START");
+        float fadeInTime = 1.5f; // Duration for the fade-in effect
+        float elapsedTime = 0f;
+
+        // Ensure the transition overlay is enabled and setup
+        transitionOverlay.enabled = true;
+        Color startColor = Color.black;
+        Color endColor = Color.clear;
+
+        // Ensure the main camera is correctly set after the scene load
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main Camera not found!");
+            yield break;
+        }
+
+        int startX = leavingSceneLeft ? 3 : -3;
+        Vector3 startPos = new Vector3(startX, 0, mainCamera.transform.position.z);
+        Vector3 endPos = new Vector3(0, 0, mainCamera.transform.position.z);
+
+        while (elapsedTime < fadeInTime)
+        {
+            float t = elapsedTime / fadeInTime;
+            float curveT = fadeInCurve.Evaluate(t); // Use curve for smooth interpolation
+
+            // Interpolate camera position and overlay color
+            mainCamera.transform.position = Vector3.Lerp(startPos, endPos, curveT);
+            transitionOverlay.color = Color.Lerp(startColor, endColor, curveT);
+
+            elapsedTime += Time.deltaTime;
+            //print("t: " + t + " curveT: " + curveT + " elapsed: " + elapsedTime + " delta: " + Time.deltaTime);
+            yield return null;
+        }
+
+        // Explicitly set final states to avoid lingering interpolation artifacts
+        mainCamera.transform.position = endPos;
+        transitionOverlay.color = endColor;
+        transitionOverlay.enabled = false;
+
+        Debug.Log("Scene Fade-in complete.");
+    }
+
 }
