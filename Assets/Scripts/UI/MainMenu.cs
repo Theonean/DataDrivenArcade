@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     public GameObject gameAbout;
     public GameObject[] p2Objects;
     private string[] playersSelectedActions = new string[2];
+    private bool switchingScenes = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,24 +34,32 @@ public class MainMenu : MonoBehaviour
         ToggleSingleOrMultiplayer(true);
     }
 
-    private void ToggleSingleOrMultiplayer(bool isSinglePlayer)
+    public void ToggleSingleOrMultiplayer(bool isSinglePlayer)
     {
-        switch (isSinglePlayer)
+        if (!switchingScenes)
         {
-            case true:
-                gm.singlePlayer = true;
-                foreach (GameObject obj in p2Objects)
-                {
-                    obj.SetActive(false);
-                }
-                break;
-            case false:
-                gm.singlePlayer = false;
-                foreach (GameObject obj in p2Objects)
-                {
-                    obj.SetActive(true);
-                }
-                break;
+            switch (isSinglePlayer)
+            {
+                case true:
+                    gm.singlePlayer = true;
+                    foreach (GameObject obj in p2Objects)
+                    {
+                        obj.SetActive(false);
+                    }
+
+                    //If P1 has the ready to play button, immediately switch
+                    if (playersSelectedActions[0].Equals("READYTOPLAY"))
+                        GotoSelectionScene();
+
+                    break;
+                case false:
+                    gm.singlePlayer = false;
+                    foreach (GameObject obj in p2Objects)
+                    {
+                        obj.SetActive(true);
+                    }
+                    break;
+            }
         }
     }
 
@@ -58,7 +67,13 @@ public class MainMenu : MonoBehaviour
     {
         playersSelectedActions[playerNum - 1] = actionType;
 
-        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer && actionType != "")
+        //Dont parse empty action types
+        if (actionType == "Empty") return;
+
+        //block all actions when scene switch starts
+        if (switchingScenes) return;
+
+        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer)
         {
             gameHelp.SetActive(false);
             gameAbout.SetActive(false);
@@ -66,19 +81,7 @@ public class MainMenu : MonoBehaviour
             switch (playersSelectedActions[0])
             {
                 case "READYTOPLAY":
-                    //Find both player names by searching for editable components
-                    string p1Name = GameObject.Find("P1NameInputField").GetComponent<Editable>().GetValue();
-                    GameManager.instance.SetPlayerName(1, p1Name);
-                    print("Player 1 name: " + p1Name);
-
-                    if (!GameManager.instance.singlePlayer)
-                    {
-                        string p2Name = GameObject.Find("P2NameInputField").GetComponent<Editable>().GetValue();
-                        GameManager.instance.SetPlayerName(2, p2Name);
-                        print("Player 2 name: " + p2Name);
-                    }
-
-                    GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
+                    GotoSelectionScene();
                     break;
                 case "GameHelp":
                     gameHelp.SetActive(true);
@@ -89,7 +92,7 @@ public class MainMenu : MonoBehaviour
                     gameHelp.SetActive(false);
                     break;
                 case "QuitGame":
-                    if (gm.arcadeMode) GameManager.instance.SwitchScene(CurrentScene.LOGIN);
+                    if (gm.arcadeMode) GameManager.instance.SwitchScene(CurrentScene.WELCOME);
                     else Application.Quit();
                     break;
             }
@@ -102,5 +105,24 @@ public class MainMenu : MonoBehaviour
         {
             waitingForPlayerText.enabled = false;
         }
+    }
+
+    private void GotoSelectionScene()
+    {
+        switchingScenes = true;
+
+        //Find both player names by searching for editable components
+        string p1Name = GameObject.Find("P1NameInputField").GetComponent<Editable>().GetValue();
+        GameManager.instance.SetPlayerName(1, p1Name);
+        print("Player 1 name: " + p1Name);
+
+        if (!GameManager.instance.singlePlayer)
+        {
+            string p2Name = GameObject.Find("P2NameInputField").GetComponent<Editable>().GetValue();
+            GameManager.instance.SetPlayerName(2, p2Name);
+            print("Player 2 name: " + p2Name);
+        }
+
+        GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
     }
 }
