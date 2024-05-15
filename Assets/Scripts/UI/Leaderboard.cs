@@ -3,12 +3,10 @@ using MongoDB.Bson;
 using SaveSystem;
 using System;
 using System.Linq;
-using System.Collections;
 using UnityEngine;
 using System.IO;
 using TMPro;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -18,6 +16,10 @@ public class Leaderboard : MonoBehaviour
     private void Awake()
     {
         scores = new List<(string, Score)>();
+    }
+
+    private void Start()
+    {
         LoadScores();
     }
 
@@ -56,19 +58,28 @@ public class Leaderboard : MonoBehaviour
         var filter = new BsonDocument();
         var findOptions = new FindOptions<BsonDocument> { NoCursorTimeout = false };
 
-        using var cursor = await collection.FindAsync(filter, findOptions);
-        while (await cursor.MoveNextAsync())
+        try
         {
-            var batch = cursor.Current;
-            foreach (var document in batch)
+            using var cursor = await collection.FindAsync(filter, findOptions);
+            while (await cursor.MoveNextAsync())
             {
-                document.Remove("_id"); //Otherwise Unity will throw an error as it can't serialize an ObjectId (SaveData doesn't have that attribute)
-                var json = document.ToJson();
+                var batch = cursor.Current;
+                foreach (var document in batch)
+                {
+                    document.Remove("_id"); //Otherwise Unity will throw an error as it can't serialize an ObjectId (SaveData doesn't have that attribute)
+                    var json = document.ToJson();
 
-                SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-                AddScores(saveData);
+                    SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+                    AddScores(saveData);
+                }
             }
         }
+        catch
+        {
+            Debug.Log("Error while loading scores from database");
+            return;
+        }
+
     }
 
     private void AddScores(SaveData saveData)
