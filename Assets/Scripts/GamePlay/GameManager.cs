@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public CurrentScene gameState; //REWORK, call over instance instead of static
     public bool arcadeMode = false;
     public bool singlePlayer = false; //BRIAN: if you make this an int, you can use it for savemanager array sizes
-    public bool coopMode = false;
+    public bool coopMode = true; //Start with true because both inputfields are initialized to AAA
 
     public string p1Name;
     public string p2Name;
@@ -249,7 +249,20 @@ public class GameManager : MonoBehaviour
             //Add a line when one input was given this frame
             if (lineIndexPressed.Count == 1)
             {
-                LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
+                if(arcadeMode)
+                {
+                    LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
+                }
+                else if(Input.GetButton("P" + i + "ToggleLineSelection"))
+                {
+                    LineInputEvent?.Invoke(new InputData(lineIndexPressed[0] + 3, i));
+                }
+                else
+                {
+                    LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
+                }
+                //Dirty workaround to put in the control to toggle line selection (so you eihter place lines 1 to 3 or 4 to 6 depending on if lshift or rctrl is held)
+                
             }
 
             //Add a double line when two inputs were given this frame, either by one button being held and another pressed or two pressed this frame
@@ -262,6 +275,11 @@ public class GameManager : MonoBehaviour
                 }
 
                 DoubleLineInputEvent?.Invoke(new InputData(i));
+            }
+            
+            if(Input.GetButtonUp("P" + i + "ToggleLineSelection"))
+            {
+                Debug.Log("Toggle Line Selection going up");
             }
 
             //JOYSTICK movement Checking

@@ -29,6 +29,7 @@ public class GameSelection : MonoBehaviour
     private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
     public GameObject[] p2Objects;
     private GameManager gm;
+    private bool switchingScenes = false;
     private GameModeData gameModeData;
 
     private void Start()
@@ -54,6 +55,8 @@ public class GameSelection : MonoBehaviour
     {
         playersSelectedActions[playernum - 1] = actionType;
         //print("Player " + playernum + " selected " + actionType + " and is active in hierarchy " + gameObject.activeInHierarchy);
+
+        if (switchingScenes) return;
 
         if ((playersSelectedActions[0].Equals(playersSelectedActions[1]) || gm.singlePlayer)
          && !waitingOtherPlayer.IsUnityNull()) //Waitingother in if fixes bug that was happening when switching scenes
@@ -85,11 +88,13 @@ public class GameSelection : MonoBehaviour
                     break;
                 case "ClassicStart":
                     //Start the game with the game mode data initialized to classic
+                    switchingScenes = true;
                     gm.gameModeData = new GameModeData(GameModeType.CLASSIC);
                     GameManager.instance.SwitchScene(CurrentScene.GAME);
                     break;
                 case "GridStart":
                     //Start the game with the game mode data initialized to grid
+                    switchingScenes = true;
                     gm.gameModeData = new GameModeData(GameModeType.GRID);
                     GameManager.instance.SwitchScene(CurrentScene.GAME);
                     break;
@@ -107,6 +112,7 @@ public class GameSelection : MonoBehaviour
                     break;
                 //Start game with custom game settings
                 case "StartCustomGame":
+                    switchingScenes = true;
                     gm.gameModeData = new GameModeData(GameModeType.CUSTOM); //Create empty hull of data which is filled with save
 
                     //Set gamemodedata on gamemanager
@@ -119,7 +125,7 @@ public class GameSelection : MonoBehaviour
 
                     //HACKEDY HACK HACK YEEHAW
                     SaveManager.singleton.playersData[0].preferredCustomSettings = gm.gameModeData;
-                    SaveManager.singleton.playersData[1].preferredCustomSettings = gm.gameModeData;
+                    if (!gm.singlePlayer) SaveManager.singleton.playersData[1].preferredCustomSettings = gm.gameModeData;
 
                     print("Custom game settings: " + gm.gameModeData.ToString());
 
@@ -129,7 +135,7 @@ public class GameSelection : MonoBehaviour
         }
         else if (!playersSelectedActions[0].Equals(playersSelectedActions[1]))
         {
-            waitingOtherPlayer.SetActive(true);
+            if (!waitingOtherPlayer.IsUnityNull()) waitingOtherPlayer.SetActive(true);
             SetInfoPanelActive(false);
         }
     }

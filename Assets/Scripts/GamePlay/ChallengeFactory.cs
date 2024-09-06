@@ -32,7 +32,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
 
     //Variables for the getting score right functionality
     public TextMeshProUGUI scoreRightText;
-    private Vector3 cameraStartPos = Vector3.zero;
+    private Vector3 cameraStartPos = new Vector3(0, 0, -20);
 
     public void ResetCF()
     {

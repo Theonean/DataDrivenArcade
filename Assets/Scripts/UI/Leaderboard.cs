@@ -25,21 +25,25 @@ public class Leaderboard : MonoBehaviour
 
     private void LoadScores()
     {
-        if (GameManager.instance.arcadeMode)
+        if (GameManager.instance.arcadeMode || !DONOTCOMMIT_MongoConnector.isOnline)
         {
+            print("Loading local scores");
             LoadLocalScores();
         }
         else
         {
+            print("Loading online scores from MongoDB");
             LoadOnlineScores();
         }
+
         //print out all gathered data
-        PrintScoresToLeaderboard(scores);
+        ShowScores("ALL");
     }
 
     private void LoadLocalScores()
     {
         string[] saveFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt");
+        print("Found " + saveFiles.Length + " local save files at " + Application.persistentDataPath);
         foreach (string fileName in saveFiles)
         {
             string retrievedData = File.ReadAllText(Path.Combine(Application.persistentDataPath, fileName));
@@ -102,18 +106,18 @@ public class Leaderboard : MonoBehaviour
     }
     public void ShowScores(string gameMode)
     {
-
-        //Filter scores by game mode
-        //List<(string, Score)> filteredScores = scores.Where(x => x.Item2.gameMode == gameMode).ToList();
+        /*
         print(scores);
         foreach ((string, Score) playerScore in scores)
         {
             print(playerScore.Item1 + " - " + playerScore.Item2.score + " - " + playerScore.Item2.gameMode.ToString());
         }
+        */
 
+        //Filter scores by game mode
         List<(string, Score)> filteredScores = gameMode == "ALL" ? scores : scores.Where(x => x.Item2.gameMode.ToString() == gameMode).ToList();
 
-        //Sort scores by score
+        //Sort scores descending
         filteredScores.Sort((x, y) => y.Item2.score.CompareTo(x.Item2.score));
 
         //Print scores to leaderboard

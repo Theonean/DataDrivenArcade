@@ -23,27 +23,26 @@ namespace SaveSystem
 
         public SaveFileHandler(string fileName)
         {
-            this.fileName = fileName;
-            filePath = Path.Combine(Application.persistentDataPath, fileName);
+            this.fileName = fileName + ".txt";
 
-            databaseType = GameManager.instance.arcadeMode ? DatabaseType.Local : DatabaseType.MongoDB;
+            databaseType = GameManager.instance.arcadeMode || !DONOTCOMMIT_MongoConnector.isOnline ? DatabaseType.Local : DatabaseType.MongoDB;
 
-            try
+            if (databaseType == DatabaseType.MongoDB)
             {
-                if (databaseType == DatabaseType.MongoDB)
+                try
                 {
                     Debug.Log("Connecting to MongoDB");
                     dbClient = new MongoClient(uri);
                     db = dbClient.GetDatabase("ShapeShifters_poetrywar"); // Assuming 'Players' is the database name.
                 }
-                else
-                    fileName += ".txt";
+                catch (Exception ex)
+                {
+                    Debug.LogError("Error accessing MongoDB: " + ex.Message + "\nSwitching to Local Database");
+                    databaseType = DatabaseType.Local;
+                }
             }
-            catch (Exception ex)
-            {
-                Debug.LogError("Error accessing MongoDB: " + ex.Message + "\nSwitching to Local Database");
-                databaseType = DatabaseType.Local;
-            }
+
+            filePath = Path.Combine(Application.persistentDataPath, this.fileName);
         }
 
         public void Save(SaveData saveData)

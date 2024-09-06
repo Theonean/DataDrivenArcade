@@ -27,6 +27,9 @@ public class PlayersAFKDetector : MonoBehaviour
 
     private void Update()
     {
+        //No AFK Checking in regular desktop mode, players should be able to chill if they want
+        if(!gm.arcadeMode) return;
+
         if (afkTimer > 0f && !afk)
         {
             afkTimer -= Time.deltaTime;

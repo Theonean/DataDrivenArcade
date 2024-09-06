@@ -114,10 +114,20 @@ public class GameModeManager : MonoBehaviour
                 countdownRoundTimer.color = Color.white;
                 timeLeftRound = roundTime;
 
-                //In coop mode, only save Player 1 Data
-                if (gm.coopMode)
+                //In singleplayer mode, save Player 1 Data and only visually set player 1
+                if (gm.singlePlayer)
+                {
+                    Debug.Log("Round Ended in Single Player Mode - Player 1 Score: " + p1.score);
+
+                    SaveManager.singleton.playersData[0].roundsPlayed += 1;
+                    SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode, gm.GetPlayerName(1)));
+                }
+                //In coop mode, save Player 1 Data but set both players visually
+                else if (gm.coopMode)
                 {
                     int score = p1.score + p2.score;
+
+                    Debug.Log("Round Ended in Coop or Single Mode - Total Score: " + score);
 
                     //Update score visually at end of round so players can see combined score
                     p1.score = score;
@@ -128,8 +138,10 @@ public class GameModeManager : MonoBehaviour
                     SaveManager.singleton.playersData[0].roundsPlayed += 1;
                     SaveManager.singleton.playersData[0].scores.Add(new Score(score, gameModeData.gameMode, gm.GetPlayerName(1), true));
                 }
+                //Otherwise we are in versus mode, save scores for both players
                 else
                 {
+                    Debug.Log("Round Ended in two player mode - Player 1 Score: " + p1.score + " Player 2 Score: " + p2.score);
 
                     //ADD Scores to both players and add roundswon to winner if not singleplayer
                     SaveManager.singleton.playersData[0].roundsPlayed += 1;

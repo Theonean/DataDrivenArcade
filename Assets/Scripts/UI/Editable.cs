@@ -38,6 +38,7 @@ public class Editable : MonoBehaviour, ISaveable
     private float interCharDistance = 0.6f;
     private int editingNameCharIndex = 0;
 
+    //This has to be Start (in awake the savemmanager isn't ready yet so it silently fails)
     void Start()
     {
         gm = GameManager.instance;

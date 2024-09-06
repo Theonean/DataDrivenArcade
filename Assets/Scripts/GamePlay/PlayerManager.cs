@@ -62,9 +62,18 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         gm = GameManager.instance;
-        playerInfoManager.SetName(gm.GetPlayerName(playerNum));
-        playerInfoManager.SetLastScore(SaveManager.singleton.playersData[playerNum - 1].GetHighScore());
-        print("PlayerManager" + playerNum + " Start with highscore: " + SaveManager.singleton.playersData[playerNum - 1].GetHighScore());
+
+        if (!gm.singlePlayer || playerNum == 1)
+        {
+            playerInfoManager.SetName(gm.GetPlayerName(playerNum));
+            int highScore = SaveManager.singleton.playersData[playerNum - 1].GetHighScore();
+            if (highScore < 0)
+            {
+                highScore = 0;
+            }
+            playerInfoManager.SetLastScore(highScore);
+            print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
+        }
     }
 
     public void ReadyPlayer()

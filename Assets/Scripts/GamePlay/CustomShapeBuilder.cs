@@ -199,17 +199,19 @@ public class CustomShapeBuilder : MonoBehaviour
         //set position of textureObject to the middle of the line
         textureObject.transform.localPosition = (currCorner + nextCorner) / 2;
 
+        //TESTING: Maybe this is a "social workaround" thats not needed and can be solved by just plaaying the game -> lacking directional consistency 
         //if the shape only has 2 sides, push the first line to the right and the second line to the left
+
         if (numSides == 2)
         {
 
             if (currentNodeNum == 0)
             {
-                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * -0.5f, 0, 0);
+                textureObject.transform.localPosition += new Vector3(0, textureHeightUnityUnit * +0.5f, 0);
             }
             else
             {
-                textureObject.transform.localPosition += new Vector3(textureHeightUnityUnit * 0.5f, 0, 0);
+                textureObject.transform.localPosition += new Vector3(0, textureHeightUnityUnit * -0.5f, 0);
             }
         }
 
@@ -224,7 +226,8 @@ public class CustomShapeBuilder : MonoBehaviour
         float angle = Mathf.Atan2(nodeDir.y, nodeDir.x) * Mathf.Rad2Deg; // Use Atan2 to get the angle in radians and convert to degrees
 
         textureObject.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Adjust rotation to align with Unity's coordinate system
-        if(numSides == 2) textureObject.transform.rotation = Quaternion.Euler(0, 0, angle - 90 + 180); //Adjust for two sided
+
+        if(numSides == 2) textureObject.transform.rotation = Quaternion.Euler(0, 0, angle); //Adjust for two sided
 
         //scale textureobject.y to the correct length of nodeDir
         float nodeDirLength = nodeDir.magnitude;
@@ -387,8 +390,9 @@ public class CustomShapeBuilder : MonoBehaviour
         }
     }
 
-    private void OnDisable() {
-        if(playerNum!= 0)
+    private void OnDisable()
+    {
+        if (playerNum != 0)
             GameManager.instance.LineInputEvent.RemoveListener(HighlightNextLine);
     }
 }

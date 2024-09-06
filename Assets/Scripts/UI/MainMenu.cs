@@ -32,6 +32,7 @@ public class MainMenu : MonoBehaviour
         inputVisualizers[1].ToggleActive(true);
 
         ToggleSingleOrMultiplayer(true);
+        Debug.LogError("Gamemanager is not switched to coop when player dont touch the input fields");
     }
 
     public void ToggleSingleOrMultiplayer(bool isSinglePlayer)
@@ -42,6 +43,8 @@ public class MainMenu : MonoBehaviour
             {
                 case true:
                     gm.singlePlayer = true;
+
+                    //disable all P2 objects which also deselects selectables
                     foreach (GameObject obj in p2Objects)
                     {
                         obj.SetActive(false);
@@ -54,6 +57,7 @@ public class MainMenu : MonoBehaviour
                     break;
                 case false:
                     gm.singlePlayer = false;
+                    startSelected[1].Selected();
                     foreach (GameObject obj in p2Objects)
                     {
                         obj.SetActive(true);
