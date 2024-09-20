@@ -25,86 +25,22 @@ namespace SaveSystem
         {
             this.fileName = fileName + ".txt";
 
-            databaseType = GameManager.instance.arcadeMode || !DONOTCOMMIT_MongoConnector.isOnline ? DatabaseType.Local : DatabaseType.MongoDB;
-
-            if (databaseType == DatabaseType.MongoDB)
-            {
-                try
-                {
-                    Debug.Log("Connecting to MongoDB");
-                    dbClient = new MongoClient(uri);
-                    db = dbClient.GetDatabase("ShapeShifters_poetrywar"); // Assuming 'Players' is the database name.
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError("Error accessing MongoDB: " + ex.Message + "\nSwitching to Local Database");
-                    databaseType = DatabaseType.Local;
-                }
-            }
+            databaseType = DatabaseType.Local;
 
             filePath = Path.Combine(Application.persistentDataPath, this.fileName);
         }
 
         public void Save(SaveData saveData)
         {
-            if (databaseType == DatabaseType.MongoDB)
-            {
-                Debug.Log("Saving to MongoDB");
-                var collection = db.GetCollection<BsonDocument>(collectionName); // Ensure this is the correct collection name
-
-                // Convert SaveData to a BsonDocument
-                var document = saveData.ToBsonDocument();
-
-                // Define a filter to check if the document already exists
-                var filter = Builders<BsonDocument>.Filter.Eq("playerName", saveData.playerName); // Replace 'PlayerName' with the actual unique field
-
-                // Define an update operation (set each field, or replace the entire document)
-                var update = new BsonDocument("$set", document);
-
-                // Upsert option
-                var options = new UpdateOptions { IsUpsert = true };
-
-                // Perform the update or insert operation
-                collection.UpdateOne(filter, update, options);
-
-                Debug.Log("Data saved or updated in MongoDB");
-            }
-            else if (databaseType == DatabaseType.Local)
-            {
-                string data = JsonUtility.ToJson(saveData, true);
-                File.WriteAllText(filePath, data);
-                Debug.Log("Game Saved to: " + filePath);
-            }
+            string data = JsonUtility.ToJson(saveData, true);
+            File.WriteAllText(filePath, data);
+            Debug.Log("Game Saved to: " + filePath);
         }
-
 
 
         public SaveData Load()
         {
-            if (databaseType == DatabaseType.MongoDB)
-            {
-                Debug.Log("Loading from MongoDB");
-                var collection = db.GetCollection<BsonDocument>(collectionName);
-
-                var filter = Builders<BsonDocument>.Filter.Eq("playerName", fileName); // Adjust based on your SaveData structure.
-                var document = collection.Find(filter).FirstOrDefault();
-                if (document != null)
-                {
-                    document.Remove("_id"); // Remove the _id field before converting to JSON
-                    var json = document.ToJson();
-                    Debug.Log("loading Json for player: " + fileName + " with content: " + json);
-
-                    SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-                    Debug.Log("Data loaded from MongoDB for player: " + fileName);
-                    return saveData;
-                }
-                else
-                {
-                    Debug.LogWarning("No data found for player: " + fileName);
-                    return null;
-                }
-            }
-            else if (File.Exists(filePath) && databaseType == DatabaseType.Local)
+            if (File.Exists(filePath) && databaseType == DatabaseType.Local)
             {
                 string retrievedData = File.ReadAllText(filePath);
                 SaveData saveData = JsonUtility.FromJson<SaveData>(retrievedData);
