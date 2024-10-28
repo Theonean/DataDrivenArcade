@@ -25,16 +25,9 @@ public class Leaderboard : MonoBehaviour
 
     private void LoadScores()
     {
-        if (GameManager.instance.arcadeMode || !DONOTCOMMIT_MongoConnector.isOnline)
-        {
-            print("Loading local scores");
-            LoadLocalScores();
-        }
-        else
-        {
-            print("Loading online scores from MongoDB");
-            LoadOnlineScores();
-        }
+        print("Loading local scores");
+        LoadLocalScores();
+       
 
         //print out all gathered data
         ShowScores("ALL");
@@ -50,40 +43,6 @@ public class Leaderboard : MonoBehaviour
             SaveData saveData = JsonUtility.FromJson<SaveData>(retrievedData);
             AddScores(saveData);
         }
-    }
-
-    private async void LoadOnlineScores()
-    {
-        string uri = "mongodb://ShapeShifters_poetrywar:56002aab95ab3ac337400c7136750b4a83c2962c@4uz.h.filess.io:27018/ShapeShifters_poetrywar";
-        var client = new MongoClient(uri);
-        var database = client.GetDatabase("ShapeShifters_poetrywar");
-        var collection = database.GetCollection<BsonDocument>("PlayersData");
-
-        var filter = new BsonDocument();
-        var findOptions = new FindOptions<BsonDocument> { NoCursorTimeout = false };
-
-        try
-        {
-            using var cursor = await collection.FindAsync(filter, findOptions);
-            while (await cursor.MoveNextAsync())
-            {
-                var batch = cursor.Current;
-                foreach (var document in batch)
-                {
-                    document.Remove("_id"); //Otherwise Unity will throw an error as it can't serialize an ObjectId (SaveData doesn't have that attribute)
-                    var json = document.ToJson();
-
-                    SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-                    AddScores(saveData);
-                }
-            }
-        }
-        catch
-        {
-            Debug.Log("Error while loading scores from database");
-            return;
-        }
-
     }
 
     private void AddScores(SaveData saveData)

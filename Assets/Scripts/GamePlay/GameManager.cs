@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
     private float[] joystickCooldowns = new float[2];
     private bool[] joystickMovedLastUpdate = new bool[2];
     private float joystickCooldownTime = 0.3f;
-    public TextMeshProUGUI coopObject;
-    public TextMeshProUGUI onlineStatusObject;
     public AnimationCurve fadeOutCurve;
     public AnimationCurve fadeInCurve;
     private AsyncOperation asyncLoad;
@@ -65,25 +63,6 @@ public class GameManager : MonoBehaviour
         if (gameModeData == null)
         {
             gameModeData = new GameModeData(GameModeType.CLASSIC);
-        }
-
-        if (gameState == CurrentScene.LOGIN)
-        {
-            coopObject = GameObject.Find("CoopMode").GetComponent<TextMeshProUGUI>();
-            coopObject.enabled = false;
-            onlineStatusObject = GameObject.Find("SaveFilesMode").GetComponent<TextMeshProUGUI>();
-            onlineStatusObject.enabled = false;
-
-            if (!arcadeMode && DONOTCOMMIT_MongoConnector.isOnline)
-            {
-                onlineStatusObject.enabled = true;
-                onlineStatusObject.text = "Online Mode ~ Scores uploaded";
-            }
-            else
-            {
-                onlineStatusObject.enabled = true;
-                onlineStatusObject.text = "Offline Mode ~ Scores saved locally";
-            }
         }
 
         if (!leavingSceneLeft && gameState == CurrentScene.WELCOME)
@@ -125,8 +104,6 @@ public class GameManager : MonoBehaviour
         {
             case CurrentScene.WELCOME:
                 Debug.Log("Switching to welcome");
-                coopObject.enabled = false;
-                onlineStatusObject.enabled = false;
 
                 // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
@@ -139,9 +116,6 @@ public class GameManager : MonoBehaviour
                 // Default set singleplayer mode to true, P1 has to manually switch to P2 mode
                 singlePlayer = true;
 
-                coopObject.enabled = true;
-                onlineStatusObject.enabled = true;
-
                 // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
@@ -150,8 +124,6 @@ public class GameManager : MonoBehaviour
                 break;
             case CurrentScene.GAMESELECTION:
                 Debug.Log("Switching to game selection");
-                coopObject.enabled = true;
-                onlineStatusObject.enabled = true;
 
                 // Checking to see where we come from
                 switch (gameState)
@@ -170,8 +142,6 @@ public class GameManager : MonoBehaviour
                 break;
             case CurrentScene.GAME:
                 SaveManager.singleton.SaveData();
-                coopObject.enabled = false;
-                onlineStatusObject.enabled = false;
 
                 Debug.Log("Switching to game");
 
@@ -249,11 +219,11 @@ public class GameManager : MonoBehaviour
             //Add a line when one input was given this frame
             if (lineIndexPressed.Count == 1)
             {
-                if(arcadeMode)
+                if (arcadeMode)
                 {
                     LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
                 }
-                else if(Input.GetButton("P" + i + "ToggleLineSelection"))
+                else if (Input.GetButton("P" + i + "ToggleLineSelection"))
                 {
                     LineInputEvent?.Invoke(new InputData(lineIndexPressed[0] + 3, i));
                 }
@@ -262,7 +232,7 @@ public class GameManager : MonoBehaviour
                     LineInputEvent?.Invoke(new InputData(lineIndexPressed[0], i));
                 }
                 //Dirty workaround to put in the control to toggle line selection (so you eihter place lines 1 to 3 or 4 to 6 depending on if lshift or rctrl is held)
-                
+
             }
 
             //Add a double line when two inputs were given this frame, either by one button being held and another pressed or two pressed this frame
@@ -276,8 +246,8 @@ public class GameManager : MonoBehaviour
 
                 DoubleLineInputEvent?.Invoke(new InputData(i));
             }
-            
-            if(Input.GetButtonUp("P" + i + "ToggleLineSelection"))
+
+            if (Input.GetButtonUp("P" + i + "ToggleLineSelection"))
             {
                 Debug.Log("Toggle Line Selection going up");
             }
@@ -359,17 +329,7 @@ public class GameManager : MonoBehaviour
             p2Name = playerName;
         }
 
-        //If both player names are the same, coop mode is activated
-        if (p1Name == p2Name)
-        {
-            coopObject.enabled = true;
-            coopObject.text = "Coop ~ scores combined";
-        }
-        else
-        {
-            coopObject.enabled = true;
-            coopObject.text = "1V1 ~ scores separate";
-        }
+        Debug.Log("Set player " + playernum + " name " + playerName);
     }
 
     //Round inputVector to nearest of -1,0 or 1
