@@ -4,6 +4,12 @@ using UnityEngine.Events;
 
 public class MainMenu : MonoBehaviour
 {
+    /*
+        Changed the way Main Menu and UI Works now.
+        Used to work so that both players have to be ready before the game starts.
+        Now first player decides how many players by clicking one or two player buttons (or not pressing anything -> 1p)
+        when P1 has clicked ready, the second player can start using the input.
+    */
     private GameManager gm;
     public TextMeshProUGUI waitingForPlayerText;
     [SerializeField]

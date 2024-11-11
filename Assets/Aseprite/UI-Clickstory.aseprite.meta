@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e9feeb89df0c79446b4b06d2c1e95475
+guid: a741b735b7d71434d9cc247afdd0581f
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: MainMenuReworkV1
+  - name: UI-Clickstory
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 4
       width: 1920
       height: 1080
-    spriteID: b7cf8e96185dc5847b52df905201f857
+    spriteID: 6ded548d48d8b20488da86acf0db0e3d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,7 +139,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: MainMenuReworkV1_Frame_1
+  - name: UI-Clickstory_Frame_1
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -150,7 +150,7 @@ ScriptedImporter:
       y: 1092
       width: 1920
       height: 1080
-    spriteID: 114d111632ee59045a6ea911a6bc3356
+    spriteID: 55a0344e5f7a57e478683e12d27e70fa
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -159,7 +159,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1092}
-  - name: MainMenuReworkV1_Frame_2
+  - name: UI-Clickstory_Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -170,7 +170,7 @@ ScriptedImporter:
       y: 2180
       width: 1920
       height: 1080
-    spriteID: 673f9d4baefce824a8c7a4d01130154a
+    spriteID: c85f74f696c4c5147963a03bb4620244
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -179,7 +179,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 2180}
-  - name: MainMenuReworkV1_Frame_3
+  - name: UI-Clickstory_Frame_4
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -190,7 +190,7 @@ ScriptedImporter:
       y: 3268
       width: 1920
       height: 1080
-    spriteID: 60ac80a5842a7e84985b04cb01a5bee3
+    spriteID: 4ab600fc65af6d546ae7e4572c37615f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -199,7 +199,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 3268}
-  - name: MainMenuReworkV1_Frame_4
+  - name: UI-Clickstory_Frame_5
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -210,7 +210,7 @@ ScriptedImporter:
       y: 4356
       width: 1920
       height: 1080
-    spriteID: 390a32b27cd12164884f93659ce0f0d3
+    spriteID: ef11efa4362e5114ab3dcf490a442a2c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -219,7 +219,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4356}
-  - name: MainMenuReworkV1_Frame_5
+  - name: UI-Clickstory_Frame_6
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -230,7 +230,7 @@ ScriptedImporter:
       y: 5444
       width: 1920
       height: 1080
-    spriteID: ab2144c29f6ded144bf3664fa98ff8c4
+    spriteID: 42d2a148a65615d49a37e2823bef6774
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -239,7 +239,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 5444}
-  - name: MainMenuReworkV1_Frame_6
+  - name: UI-Clickstory_Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -250,7 +250,7 @@ ScriptedImporter:
       y: 6532
       width: 1920
       height: 1080
-    spriteID: 3d6f119e1c81f224d8dc335f6f25e682
+    spriteID: 17e2dff025c47f04ab17e6195d552bb0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -259,71 +259,183 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 6532}
+  - name: UI-Clickstory_Frame_8
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1932
+      y: 4
+      width: 1920
+      height: 1080
+    spriteID: 7e938b597ec334446806b7fbe0b4ebdb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1932, y: 4}
+  - name: UI-Clickstory_Frame_0
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1932
+      y: 1092
+      width: 1920
+      height: 1080
+    spriteID: dfa2d6a0baf3fbc4cadb2029702dd7cf
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1932, y: 1092}
+  - name: UI-Clickstory_Frame_0
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1932
+      y: 2180
+      width: 1920
+      height: 1080
+    spriteID: dc2d641e33b68e6439b108c01467c540
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1932, y: 2180}
+  - name: UI-Clickstory_Frame_4
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1932
+      y: 3268
+      width: 1920
+      height: 1080
+    spriteID: 540f1eb024b880d4bb2d991d6c10b4d4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1932, y: 3268}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1551358257
-    name: MainMenuReworkV1
+    guid: 2051403670
+    name: UI-Clickstory
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: MainMenuReworkV1_Frame_0
-      frameIndex: 0
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: b7cf8e96185dc5847b52df905201f857
-    - name: MainMenuReworkV1_Frame_1
+    - name: UI-Clickstory_Frame_1
       frameIndex: 1
       cellRect:
         x: 0
         y: 0
         width: 1920
         height: 1080
-      spriteId: 114d111632ee59045a6ea911a6bc3356
-    - name: MainMenuReworkV1_Frame_2
+      spriteId: 6ded548d48d8b20488da86acf0db0e3d
+    - name: UI-Clickstory_Frame_2
       frameIndex: 2
       cellRect:
         x: 0
         y: 0
         width: 1920
         height: 1080
-      spriteId: 673f9d4baefce824a8c7a4d01130154a
-    - name: MainMenuReworkV1_Frame_3
+      spriteId: 55a0344e5f7a57e478683e12d27e70fa
+    - name: UI-Clickstory_Frame_3
       frameIndex: 3
       cellRect:
         x: 0
         y: 0
         width: 1920
         height: 1080
-      spriteId: 60ac80a5842a7e84985b04cb01a5bee3
-    - name: MainMenuReworkV1_Frame_4
-      frameIndex: 4
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 390a32b27cd12164884f93659ce0f0d3
-    - name: MainMenuReworkV1_Frame_5
+      spriteId: c85f74f696c4c5147963a03bb4620244
+    - name: UI-Clickstory_Frame_5
       frameIndex: 5
       cellRect:
         x: 0
         y: 0
         width: 1920
         height: 1080
-      spriteId: ab2144c29f6ded144bf3664fa98ff8c4
-    - name: MainMenuReworkV1_Frame_6
+      spriteId: 4ab600fc65af6d546ae7e4572c37615f
+    - name: UI-Clickstory_Frame_6
       frameIndex: 6
       cellRect:
         x: 0
         y: 0
         width: 1920
         height: 1080
-      spriteId: 3d6f119e1c81f224d8dc335f6f25e682
+      spriteId: ef11efa4362e5114ab3dcf490a442a2c
+    - name: UI-Clickstory_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 42d2a148a65615d49a37e2823bef6774
+    - name: UI-Clickstory_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 17e2dff025c47f04ab17e6195d552bb0
+    - name: UI-Clickstory_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 7e938b597ec334446806b7fbe0b4ebdb
+    - name: UI-Clickstory_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: dfa2d6a0baf3fbc4cadb2029702dd7cf
+    - name: UI-Clickstory_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: dc2d641e33b68e6439b108c01467c540
+    - name: UI-Clickstory_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 540f1eb024b880d4bb2d991d6c10b4d4
     linkedCells: []
     parentIndex: -1
   platformSettings: []

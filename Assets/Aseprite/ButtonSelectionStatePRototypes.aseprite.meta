@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a7d52e712c33c1b44a5fc816dd4d7191
+guid: dfee80daa38163d45a64999d7f72c856
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: UIButtonReskin
+  - name: ButtonSelectionStatePRototypes
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5754986, y: -0.15178572}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 385
-      height: 129
-    spriteID: fc3c7d4703fedaf4fa6ffe4d575310b4
+      width: 1053
+      height: 336
+    spriteID: 39a29e8f158ed8446a5558f7a38d36b3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,23 +142,23 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1815729680
-    name: UIButtonReskin
+    guid: 142705798
+    name: ButtonSelectionStatePRototypes
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: UIButtonReskin
+    - name: ButtonSelectionStatePRototypes
       frameIndex: 0
       cellRect:
         x: 0
-        y: 0
-        width: 385
-        height: 129
-      spriteId: fc3c7d4703fedaf4fa6ffe4d575310b4
+        y: 51
+        width: 1053
+        height: 336
+      spriteId: 39a29e8f158ed8446a5558f7a38d36b3
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 385, y: 129}
+  canvasSize: {x: 1212, y: 387}
