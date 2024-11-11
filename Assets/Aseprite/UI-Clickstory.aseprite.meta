@@ -348,78 +348,6 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: UI-Clickstory_Frame_1
-      frameIndex: 1
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 6ded548d48d8b20488da86acf0db0e3d
-    - name: UI-Clickstory_Frame_2
-      frameIndex: 2
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 55a0344e5f7a57e478683e12d27e70fa
-    - name: UI-Clickstory_Frame_3
-      frameIndex: 3
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: c85f74f696c4c5147963a03bb4620244
-    - name: UI-Clickstory_Frame_5
-      frameIndex: 5
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 4ab600fc65af6d546ae7e4572c37615f
-    - name: UI-Clickstory_Frame_6
-      frameIndex: 6
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: ef11efa4362e5114ab3dcf490a442a2c
-    - name: UI-Clickstory_Frame_7
-      frameIndex: 7
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 42d2a148a65615d49a37e2823bef6774
-    - name: UI-Clickstory_Frame_8
-      frameIndex: 8
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 17e2dff025c47f04ab17e6195d552bb0
-    - name: UI-Clickstory_Frame_9
-      frameIndex: 9
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: 7e938b597ec334446806b7fbe0b4ebdb
-    - name: UI-Clickstory_Frame_10
-      frameIndex: 10
-      cellRect:
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
-      spriteId: dfa2d6a0baf3fbc4cadb2029702dd7cf
     - name: UI-Clickstory_Frame_0
       frameIndex: 0
       cellRect:
@@ -427,9 +355,81 @@ ScriptedImporter:
         y: 0
         width: 1920
         height: 1080
-      spriteId: dc2d641e33b68e6439b108c01467c540
+      spriteId: 6ded548d48d8b20488da86acf0db0e3d
+    - name: UI-Clickstory_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 55a0344e5f7a57e478683e12d27e70fa
+    - name: UI-Clickstory_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: c85f74f696c4c5147963a03bb4620244
+    - name: UI-Clickstory_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 4ab600fc65af6d546ae7e4572c37615f
     - name: UI-Clickstory_Frame_4
       frameIndex: 4
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: ef11efa4362e5114ab3dcf490a442a2c
+    - name: UI-Clickstory_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 42d2a148a65615d49a37e2823bef6774
+    - name: UI-Clickstory_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 17e2dff025c47f04ab17e6195d552bb0
+    - name: UI-Clickstory_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: 7e938b597ec334446806b7fbe0b4ebdb
+    - name: UI-Clickstory_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: dfa2d6a0baf3fbc4cadb2029702dd7cf
+    - name: UI-Clickstory_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
+      spriteId: dc2d641e33b68e6439b108c01467c540
+    - name: UI-Clickstory_Frame_10
+      frameIndex: 10
       cellRect:
         x: 0
         y: 0

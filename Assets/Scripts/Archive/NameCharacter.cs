@@ -11,7 +11,7 @@ public class NameCharacter : MonoBehaviour
 
     */
 
-    public TextMeshPro characterText;
+    public TextMeshProUGUI characterText;
     private float invisibleTime = 0.25f;
     private float visibleTime = 0.6f;
     private float visibilityTimer;

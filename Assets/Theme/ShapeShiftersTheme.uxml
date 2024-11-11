@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-    <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+    <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-image: url(&apos;project://database/Assets/Textures/NewCreations/UITextures/UIButtonReskin.png?fileID=2800000&amp;guid=f04da42db04a04e4b912ce603a59ca62&amp;type=3#UIButtonReskin&apos;); -unity-background-scale-mode: scale-to-fit;" />
     <ui:Toggle label="Toggle" />
     <ui:Foldout text="Foldout" />
 </ui:UXML>

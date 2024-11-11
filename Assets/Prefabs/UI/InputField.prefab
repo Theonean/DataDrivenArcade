@@ -52,7 +52,7 @@ MonoBehaviour:
   onDisabledEvent:
     m_PersistentCalls:
       m_Calls: []
-  inputType: 0
+  inputType: 3
   value: 
   minMaxValue: {x: 0, y: 0}
   startValue: 

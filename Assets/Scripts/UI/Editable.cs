@@ -12,7 +12,7 @@ public enum InputDataType
     VECTOR2,
 }
 
-
+[ExecuteInEditMode]
 public class Editable : MonoBehaviour, ISaveable
 {
     /*

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class NameCreator : MonoBehaviour
 {
     //Class Description
@@ -33,6 +35,8 @@ public class NameCreator : MonoBehaviour
                 transform.position + new Vector3(i * interCharDistance, 0, -1) + startOffset,
                 Quaternion.identity)
                 .GetComponent<NameCharacter>();
+
+            nameCharacters[i].transform.SetParent(transform);
         }
     }
 
