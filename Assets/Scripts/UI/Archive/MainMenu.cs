@@ -102,7 +102,7 @@ public class MainMenu : MonoBehaviour
                     gameHelp.SetActive(false);
                     break;
                 case "QuitGame":
-                    if (gm.arcadeMode) GameManager.instance.SwitchScene(CurrentScene.WELCOME);
+                    if (gm.arcadeMode) GameManager.SwitchScene(SceneType.WELCOME);
                     else Application.Quit();
                     break;
             }
@@ -123,16 +123,16 @@ public class MainMenu : MonoBehaviour
 
         //Find both player names by searching for editable components
         string p1Name = GameObject.Find("P1NameInputField").GetComponent<Editable>().GetValue();
-        GameManager.instance.SetPlayerName(1, p1Name);
+        //GameManager.instance.SetPlayerName(1, p1Name);
         print("Player 1 name: " + p1Name);
 
         if (!GameManager.instance.singlePlayer)
         {
             string p2Name = GameObject.Find("P2NameInputField").GetComponent<Editable>().GetValue();
-            GameManager.instance.SetPlayerName(2, p2Name);
+            //GameManager.instance.SetPlayerName(2, p2Name);
             print("Player 2 name: " + p2Name);
         }
 
-        GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
+        GameManager.SwitchScene(SceneType.GAMESELECTION);
     }
 }

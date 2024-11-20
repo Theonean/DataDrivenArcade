@@ -66,7 +66,7 @@ public class GameSelection : MonoBehaviour
             switch (playersSelectedActions[0])
             {
                 case "GoBack":
-                    GameManager.instance.SwitchScene(CurrentScene.LOGIN);
+                    GameManager.SwitchScene(SceneType.LOGIN);
                     break;
                 case "ClassicInfo":
                     infoPanelTitle.text = "Classic Mode Description";
@@ -90,13 +90,13 @@ public class GameSelection : MonoBehaviour
                     //Start the game with the game mode data initialized to classic
                     switchingScenes = true;
                     gm.gameModeData = new GameModeData(GameModeType.CLASSIC);
-                    GameManager.instance.SwitchScene(CurrentScene.GAME);
+                    GameManager.SwitchScene(SceneType.GAME);
                     break;
                 case "GridStart":
                     //Start the game with the game mode data initialized to grid
                     switchingScenes = true;
                     gm.gameModeData = new GameModeData(GameModeType.GRID);
-                    GameManager.instance.SwitchScene(CurrentScene.GAME);
+                    GameManager.SwitchScene(SceneType.GAME);
                     break;
                 //Open custom game settings
                 case "CustomStart":
@@ -129,7 +129,7 @@ public class GameSelection : MonoBehaviour
 
                     print("Custom game settings: " + gm.gameModeData.ToString());
 
-                    GameManager.instance.SwitchScene(CurrentScene.GAME);
+                    GameManager.SwitchScene(SceneType.GAME);
                     break;
             }
         }

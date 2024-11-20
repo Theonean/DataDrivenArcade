@@ -30,23 +30,30 @@ public class Leaderboard : MonoBehaviour
        
 
         //print out all gathered data
-        ShowScores("ALL");
+        ShowScores("CLASSIC");
     }
 
     private void LoadLocalScores()
     {
         string[] saveFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt");
         print("Found " + saveFiles.Length + " local save files at " + Application.persistentDataPath);
+        int i = 0;
         foreach (string fileName in saveFiles)
         {
             string retrievedData = File.ReadAllText(Path.Combine(Application.persistentDataPath, fileName));
+            //Print out the retrieved data
+            print(i + " | Retrieved data: " + retrievedData + " from file: " + fileName);
             SaveData saveData = JsonUtility.FromJson<SaveData>(retrievedData);
             AddScores(saveData);
+            i++;
         }
     }
 
     private void AddScores(SaveData saveData)
     {
+        //Print out the saved data
+        print("Player name: " + saveData.playerName);
+        print("Scores: " + saveData.scores.Count);
         if (saveData.scores.Count > 0)
         {
             foreach (GameModeType gameMode in Enum.GetValues(typeof(GameModeType)))
@@ -92,7 +99,7 @@ public class Leaderboard : MonoBehaviour
     {
         leaderboardText.text = "";
 
-        int maxScores = 15;
+        int maxScores = 10;
         int scoreI = 0;
         foreach ((string, Score) score in scores)
         {

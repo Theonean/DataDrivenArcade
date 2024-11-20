@@ -258,7 +258,7 @@ public class GameModeManager : MonoBehaviour
                 case "Quit":
                     //Quit the game
                     print("Quitting Game");
-                    GameManager.instance.SwitchScene(CurrentScene.GAMESELECTION);
+                    GameManager.SwitchScene(SceneType.GAMESELECTION);
                     break;
             }
         }

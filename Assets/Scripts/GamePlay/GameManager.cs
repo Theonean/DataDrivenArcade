@@ -7,21 +7,29 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public enum CurrentScene
+// BRIAN: Add enum for playermode (singleplayer, multiplayer)
+
+
+public enum SceneType
 {
     WELCOME,
     LOGIN,
     GAMESELECTION,
     GAME,
-    WAITFORSCENELOAD
+    //NEW SCENES; KEEP OLD ONES FOR NOW
+    MAINMENU01,
+    LEADERBOARD02,
+    PLAYERAMOUNTSELECTION10,
+    PLAYER1NAME11,
+    PLAYER2NAME12,
+    SELECTGAMEMODE20,
+    GAME30
 }
-
-// BRIAN: Add enum for playermode (singleplayer, multiplayer)
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public CurrentScene gameState; //REWORK, call over instance instead of static
+    public SceneType gameState; //REWORK, call over instance instead of static
     public bool arcadeMode = false;
     public bool singlePlayer = false; //BRIAN: if you make this an int, you can use it for savemanager array sizes
     public bool coopMode = true; //Start with true because both inputfields are initialized to AAA
@@ -65,7 +73,7 @@ public class GameManager : MonoBehaviour
             gameModeData = new GameModeData(GameModeType.CLASSIC);
         }
 
-        if (!leavingSceneLeft && gameState == CurrentScene.WELCOME)
+        if (!leavingSceneLeft && gameState == SceneType.WELCOME)
         {
             print("Fading scene in manually on first load of GM");
             StartCoroutine(FadeSceneIn());
@@ -74,44 +82,54 @@ public class GameManager : MonoBehaviour
         print("GameManager Awake");
     }
 
-    public void SwitchScene(string sceneName)
+    public static void SwitchScene(string sceneName)
     {
+        //Uüdate swoitch case to new scenes
         switch (sceneName)
         {
-            case "00Welcome":
-                SwitchScene(CurrentScene.WELCOME);
+            case "MainMenu01":
+                SwitchScene(SceneType.MAINMENU01);
                 break;
-            case "01MainMenu":
-                SwitchScene(CurrentScene.LOGIN);
+            case "Leaderboard02":
+                SwitchScene(SceneType.LEADERBOARD02);
                 break;
-            case "02Selection":
-                SwitchScene(CurrentScene.GAMESELECTION);
+            case "PlayerAmountSelection10":
+                SwitchScene(SceneType.PLAYERAMOUNTSELECTION10);
                 break;
-            case "03Game":
-                SwitchScene(CurrentScene.GAME);
+            case "Player1Name11":
+                SwitchScene(SceneType.PLAYER1NAME11);
+                break;
+            case "Player2Name12":
+                SwitchScene(SceneType.PLAYER2NAME12);
+                break;
+            case "SelectGameMode20":
+                SwitchScene(SceneType.SELECTGAMEMODE20);
+                break;
+            case "Game30":
+                SwitchScene(SceneType.GAME);
                 break;
             default:
-                Debug.LogWarning("No scene specified for switch");
+                Debug.LogError("Scene not found: " + sceneName);
                 break;
         }
     }
 
-
-    public void SwitchScene(CurrentScene newState)
+    public static void SwitchScene(SceneType newState)
     {
         int targetBuildIndex = -1;
         switch (newState)
         {
-            case CurrentScene.WELCOME:
+            /*
+            case SceneType.WELCOME:
                 Debug.Log("Switching to welcome");
 
                 // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
-                asyncLoad = SceneManager.LoadSceneAsync("00Welcome");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("00Welcome");
                 targetBuildIndex = 0;
                 break;
-            case CurrentScene.LOGIN:
+            case SceneType.LOGIN:
                 Debug.Log("Switching to login");
                 // Default set singleplayer mode to true, P1 has to manually switch to P2 mode
                 singlePlayer = true;
@@ -119,61 +137,98 @@ public class GameManager : MonoBehaviour
                 // Deinitiate savemanager to stop from loading nonexistant player data (Welcome and MainMenu are not logged in yet)
                 SaveManager.singleton.DeInitiate();
 
-                asyncLoad = SceneManager.LoadSceneAsync("01MainMenu");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("01MainMenu");
                 targetBuildIndex = 1;
                 break;
-            case CurrentScene.GAMESELECTION:
+            case SceneType.GAMESELECTION:
                 Debug.Log("Switching to game selection");
 
                 // Checking to see where we come from
                 switch (gameState)
                 {
-                    case CurrentScene.LOGIN:
+                    case SceneType.LOGIN:
                         SaveManager.singleton.Initiate(p1Name, 1);
                         SaveManager.singleton.Initiate(p2Name, 2);
                         break;
-                    case CurrentScene.GAME:
+                    case SceneType.GAME:
                         SaveManager.singleton.SaveData();
                         break;
                 }
 
-                asyncLoad = SceneManager.LoadSceneAsync("02Selection");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("02Selection");
                 targetBuildIndex = 2;
                 break;
-            case CurrentScene.GAME:
+            case SceneType.GAME:
                 SaveManager.singleton.SaveData();
 
                 Debug.Log("Switching to game");
 
-                asyncLoad = SceneManager.LoadSceneAsync("03Game");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("03Game");
                 targetBuildIndex = 3;
+                break;
+                */
+            case SceneType.MAINMENU01:
+                Debug.Log("Switching to MainMenu01");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("01_MainMenu");
+                targetBuildIndex = 1;
+                break;
+            case SceneType.LEADERBOARD02:
+
+                Debug.Log("Switching to Leaderboard02");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("02_Leaderboard");
+                targetBuildIndex = 2;
+                break;
+            case SceneType.PLAYERAMOUNTSELECTION10:
+                Debug.Log("Switching to PlayerAmountSelection10");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("10_PlayerAmountSelection");
+                targetBuildIndex = 3;
+                break;
+            case SceneType.PLAYER1NAME11:
+                Debug.Log("Switching to Player1Name11");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("11_Player1Name");
+                targetBuildIndex = 4;
+                break;
+            case SceneType.PLAYER2NAME12:
+                Debug.Log("Switching to Player2Name12");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("12_Player2Name");
+                targetBuildIndex = 5;
+                break;
+            case SceneType.SELECTGAMEMODE20:
+                Debug.Log("Switching to SelectGameMode20");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("20_SelectGameMode");
+                targetBuildIndex = 6;
+                break;
+            case SceneType.GAME30:
+                Debug.Log("Switching to Game30");
+                instance.asyncLoad = SceneManager.LoadSceneAsync("30_Game");
+                targetBuildIndex = 7;
                 break;
         }
 
         //Check if build index of next scene is lower than current scene, if yes leaving scene to the left
         if (targetBuildIndex < SceneManager.GetActiveScene().buildIndex)
         {
-            leavingSceneLeft = true;
+            instance.leavingSceneLeft = true;
         }
         else
         {
-            leavingSceneLeft = false;
+            instance.leavingSceneLeft = false;
         }
 
-        asyncLoad.allowSceneActivation = false; // Stop automatic loading of next scene
-        StartCoroutine(LoadSceneAndFadeIn());
+        instance.asyncLoad.allowSceneActivation = false; // Stop automatic loading of next scene
+        instance.StartCoroutine(instance.LoadSceneAndFadeIn());
 
-        // Changing to requested state for currentscene
-        gameState = newState;
+        // Changing to requested state for SceneType
+        instance.gameState = newState;
     }
 
     private IEnumerator LoadSceneAndFadeIn()
     {
         yield return StartCoroutine(FadeSceneOut());
 
-        asyncLoad.allowSceneActivation = true;
+        instance.asyncLoad.allowSceneActivation = true;
 
-        yield return new WaitUntil(() => asyncLoad.isDone);
+        yield return new WaitUntil(() => instance.asyncLoad.isDone);
 
         // Wait for the first frame to ensure the scene is fully initialized
         yield return null;
@@ -281,32 +336,14 @@ public class GameManager : MonoBehaviour
                 joystickCooldowns[i - 1] -= Time.deltaTime;
             }
         }
-
-        //Insert Coin Buttons
-        if (Input.GetButtonDown("InsertCoinKeyboard"))
-        {
-            InsertCoinPressed?.Invoke(false);
-            print("Insert Coin Pressed");
-        }
-        else if (Input.GetButtonDown("InsertCoinArcade"))
-        {
-            InsertCoinPressed?.Invoke(true);
-        }
-
-        //Player 1 and 2 Buttons
-        if (Input.GetAxis("SingleOrMultiplayer") != 0f)
-        {
-            if (Input.GetAxis("SingleOrMultiplayer") < 0)
-            {
-                SinglePlayerPressed?.Invoke();
-            }
-            else
-            {
-                MultiplayerPressed?.Invoke();
-            }
-
-        }
     }
+
+    public void SetSingleplayer(bool singlePlayer)
+    {
+        this.singlePlayer = singlePlayer;
+        SwitchScene(SceneType.PLAYER1NAME11);
+    }
+
     public string GetPlayerName(int playerNum)
     {
         if (playerNum == 1) return p1Name;
@@ -318,19 +355,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerName(int playernum, string playerName)
+    public void SetPlayer1Name()
     {
-        if (playernum == 1)
-        {
-            p1Name = playerName;
-        }
-        else if (playernum == 2)
-        {
-            p2Name = playerName;
-        }
+        //Find NameCreator in scene and get Name
+        string playerName = GameObject.Find("CustomNameInput").GetComponent<NameCreator>().GetName();
+        p1Name = playerName;
 
-        Debug.Log("Set player " + playernum + " name " + playerName);
+        Debug.Log("Set player 1 name " + playerName);
     }
+
+    public void SetPlayer2Name()
+    {
+        //Find NameCreator in scene and get Name
+        string playerName = GameObject.Find("CustomNameInput").GetComponent<NameCreator>().GetName();
+        p2Name = playerName;
+
+        Debug.Log("Set player 1 name " + playerName);
+    }
+
 
     //Round inputVector to nearest of -1,0 or 1
     private Vector2 ParseInput(Vector2 input)
@@ -365,7 +407,7 @@ public class GameManager : MonoBehaviour
         Color startColor = Color.clear;
         Color endColor = Color.black;
 
-        while (asyncLoad.progress < 0.9f || elapsedTime < minTime)
+        while (instance.asyncLoad.progress < 0.9f || elapsedTime < minTime)
         {
             float t = fadeOutCurve.Evaluate(elapsedTime / minTime);
             t *= 1.2f; // Speed up the fade out so evaluationcurve overshoots and we actually reach 100 opacity
@@ -379,7 +421,7 @@ public class GameManager : MonoBehaviour
         print("Scene Fade out Complete after " + elapsedTime + " seconds");
 
         //Allow scene activation during black screen
-        asyncLoad.allowSceneActivation = true;
+        instance.asyncLoad.allowSceneActivation = true;
     }
 
     /// <summary>
@@ -430,6 +472,11 @@ public class GameManager : MonoBehaviour
         transitionOverlay.enabled = false;
 
         Debug.Log("Scene Fade-in complete.");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
 }

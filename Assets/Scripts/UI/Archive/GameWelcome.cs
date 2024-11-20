@@ -15,6 +15,6 @@ public class GameWelcome : MonoBehaviour
 
     private void InsertCoinPressed(bool isArcadeMode)
     {
-        gm.SwitchScene(CurrentScene.LOGIN);
+        GameManager.SwitchScene(SceneType.LOGIN);
     }
 }

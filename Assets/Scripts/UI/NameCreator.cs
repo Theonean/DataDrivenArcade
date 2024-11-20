@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class NameCreator : MonoBehaviour
 {
     //Class Description
@@ -47,6 +46,8 @@ public class NameCreator : MonoBehaviour
         if (selected)
         {
             gm.JoystickInputEvent.AddListener(ChangeLetter);
+            //Disable event system for changing UI Selection
+            
         }
         else
         {

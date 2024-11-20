@@ -36,7 +36,7 @@ public class PlayersAFKDetector : MonoBehaviour
             if (afkTimer <= 0f)
             {
                 afk = true;
-                gm.SwitchScene(targetScene);
+                GameManager.SwitchScene(targetScene);
             }
             else if (afkTimer <= warningTime)
             {

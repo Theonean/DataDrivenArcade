@@ -75,7 +75,7 @@ public class MainMenuSelectionHandler : MonoBehaviour
     public void SetReadyToPlay()
     {
         ChangeLoginState(LoginScreenPlayerState.READYTOPLAY);
-        gm.SetPlayerName(playerNum, nameCreator.GetName());
+        //gm.SetPlayerName(playerNum, nameCreator.GetName());
         print("Ready to play for player " + playerNum);
     }
 
