@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: afc00175d4432694cb6386e758d49499
+guid: 5bac093044c5bb647a92a2df6f12cc4b
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: PlayerWorkbench
+  - name: Background_Pixelart
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -128,9 +128,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 32
-      height: 32
-    spriteID: f1e41bea0b72da346b0cf6b32307a90b
+      width: 240
+      height: 135
+    spriteID: eefe45abf4bfb0746ae0b19ee3f5c50f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,23 +142,23 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -290937968
-    name: PlayerWorkbench
+    guid: -460405746
+    name: Background_Pixelart
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: PlayerWorkbench
+    - name: Background_Pixelart
       frameIndex: 0
       cellRect:
         x: 0
         y: 0
-        width: 32
-        height: 32
-      spriteId: f1e41bea0b72da346b0cf6b32307a90b
+        width: 240
+        height: 135
+      spriteId: eefe45abf4bfb0746ae0b19ee3f5c50f
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
+  canvasSize: {x: 240, y: 135}
