@@ -32,7 +32,6 @@ public class GameModeManager : MonoBehaviour
     [Header("Go Again Inbetween Rounds")]
     public GameObject goAgainObject;
     public TextMeshProUGUI goAgainTitleText;
-    public JoystickSelectable[] startSelectablesGoAgain = new JoystickSelectable[2];
     private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
     [Header("Game Mode Data")]
     public ChallengeManager challengeManager;
@@ -176,10 +175,6 @@ public class GameModeManager : MonoBehaviour
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
                 goAgainTitleText.text = "Round Over! \n Play Again?";
                 goAgainObject.SetActive(true);
-                foreach (JoystickSelectable js in startSelectablesGoAgain)
-                {
-                    js.Selected();
-                }
 
                 countdownRoundTimer.text = roundTime.ToString();
                 timeLeftRound = roundTime;
@@ -225,10 +220,6 @@ public class GameModeManager : MonoBehaviour
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
                 goAgainTitleText.text = "Continue?";
                 goAgainObject.SetActive(true);
-                foreach (JoystickSelectable js in startSelectablesGoAgain)
-                {
-                    js.Selected();
-                }
             }
         }
     }

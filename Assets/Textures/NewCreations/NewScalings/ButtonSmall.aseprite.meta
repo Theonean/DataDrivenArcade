@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aecb53ec4cefcf647a822403c5b0a9e7
+guid: 42273c4db42e78443a268a5b97bafe56
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638687559834143012
+  platformSettingsDirtyTick: 638687553801002974
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -128,9 +128,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 40
+      width: 20
       height: 20
-    spriteID: 5b5bd776b2d72984cbfd13561981a4da
+    spriteID: c1264b5f4bfe8dd40bacb66b7d60f2c7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,9 +148,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 32
-      width: 40
+      width: 20
       height: 20
-    spriteID: ca7996b10c54d0842a0aa48f52e64274
+    spriteID: a5142c5291613534e98951eb161071b5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -166,11 +166,11 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 60
-      width: 40
+      x: 32
+      y: 4
+      width: 20
       height: 20
-    spriteID: c4cf272066ac7f640a0a43123446a592
+    spriteID: 8ecb554b5ce2cfd45a096136c4502f55
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -178,7 +178,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 60}
+    uvTransform: {x: 32, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -193,25 +193,25 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 0
-        width: 40
+        width: 20
         height: 20
-      spriteId: 5b5bd776b2d72984cbfd13561981a4da
+      spriteId: c1264b5f4bfe8dd40bacb66b7d60f2c7
     - name: Layer_Frame_1
       frameIndex: 1
       cellRect:
         x: 0
         y: 0
-        width: 40
+        width: 20
         height: 20
-      spriteId: ca7996b10c54d0842a0aa48f52e64274
+      spriteId: a5142c5291613534e98951eb161071b5
     - name: Layer_Frame_2
       frameIndex: 2
       cellRect:
         x: 0
         y: 0
-        width: 40
+        width: 20
         height: 20
-      spriteId: c4cf272066ac7f640a0a43123446a592
+      spriteId: 8ecb554b5ce2cfd45a096136c4502f55
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -253,4 +253,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 40, y: 20}
+  canvasSize: {x: 20, y: 20}
