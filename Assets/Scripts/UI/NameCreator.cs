@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Drawing.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NameCreator : MonoBehaviour
 {
@@ -12,13 +11,18 @@ public class NameCreator : MonoBehaviour
     this Class functions as an intermediary between all the chars and the MainMenu Class 
     */
     public bool selected = false;
+    //FLAG BOOLEAN TO LATER USE WHEN SWITCHING BETWEEN CONTROLLER / KEYBOARD INPUT
+    public bool INPUTWITHKEYBOARD = true;
     public int nameLength = 8;
     public GameObject nameCharacterPrefab;
     private GameManager gm;
     private NameCharacter[] nameCharacters;
     private float interCharDistance = 0.3f;
     private int selectedNameCharIndex = 0;
+    public Image buttonImage;
     public int playerNum;
+    public Sprite editingNameSprite;
+    public Sprite defaultNameSprite;
 
     void Start()
     {
@@ -36,7 +40,41 @@ public class NameCreator : MonoBehaviour
                 .GetComponent<NameCharacter>();
 
             nameCharacters[i].transform.SetParent(transform);
+            nameCharacters[i].transform.localScale = Vector3.one;
         }
+    }
+
+    void Update()
+    {
+        if (selected && INPUTWITHKEYBOARD && Input.inputString.Length > 0)
+        {
+            //Take any character input and change the character at the selected index, move the selected index to the right
+            char input = Input.inputString[0];
+            if (IsValidInput(input))
+            {
+                nameCharacters[selectedNameCharIndex].SetCharacter(input);
+                MoveCharacterSelectionForward();
+
+            }//Otherwise if backspace is pressed, remove the last character
+            else if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                nameCharacters[selectedNameCharIndex].SetCharacter('X');
+                MoveCharacterSelectionBackward();
+            }//On ENTER, save name and continue scene
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                //Deselect current char so it doesn't blink before scene change
+                ToggleSelected();
+
+                //Save and change scene
+                SaveName();
+            }
+        }
+    }
+
+    private bool IsValidInput(char input)
+    {
+        return (input >= 'a' && input <= 'z') || (input >= 'A' && input <= 'Z');
     }
 
     public void ToggleSelected()
@@ -45,16 +83,43 @@ public class NameCreator : MonoBehaviour
         print("NameCreator selected: " + selected);
         if (selected)
         {
-            gm.JoystickInputEvent.AddListener(ChangeLetter);
-            //Disable event system for changing UI Selection
-            
+            if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.AddListener(ChangeLetter);
+            //Set source image to editing name sprite
+            buttonImage.sprite = editingNameSprite;
         }
         else
         {
-            gm.JoystickInputEvent.RemoveListener(ChangeLetter);
+            //Disable event system for changing UI Selection
+            if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
+            //Set source image to default name sprite
+            buttonImage.sprite = defaultNameSprite;
         }
 
         nameCharacters[selectedNameCharIndex].ToggleSelected();
+    }
+
+    public void SaveName()
+    {
+        //Deselect button
+        selected = false;
+        if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
+        nameCharacters[selectedNameCharIndex].ToggleSelected();
+
+        //Set source image to default name sprite
+        buttonImage.sprite = defaultNameSprite;
+
+        //Save name
+        gm.SetPlayerName(playerNum, GetName());
+
+        //change scene, if singleplayer switch to game selection, otherwise to player 2 name input
+        if (gm.singlePlayer || gm.gameState == SceneType.PLAYER2NAME12)
+        {
+            GameManager.SwitchScene(SceneType.SELECTGAMEMODE20);
+        }
+        else
+        {
+            GameManager.SwitchScene(SceneType.PLAYER2NAME12);
+        }
     }
 
     public string GetName()
@@ -82,22 +147,32 @@ public class NameCreator : MonoBehaviour
 
             if (iData.joystickDirection.x == 1)
             {
-                if (selectedNameCharIndex < nameLength - 1)
-                {
-                    nameCharacters[selectedNameCharIndex].ToggleSelected();
-                    selectedNameCharIndex++;
-                    nameCharacters[selectedNameCharIndex].ToggleSelected();
-                }
+                MoveCharacterSelectionForward();
             }
             else if (iData.joystickDirection.x == -1)
             {
-                if (selectedNameCharIndex > 0)
-                {
-                    nameCharacters[selectedNameCharIndex].ToggleSelected();
-                    selectedNameCharIndex--;
-                    nameCharacters[selectedNameCharIndex].ToggleSelected();
-                }
+                MoveCharacterSelectionBackward();
             }
+        }
+
+    }
+
+    private void MoveCharacterSelectionForward()
+    {
+        if (selectedNameCharIndex < nameLength - 1)
+        {
+            nameCharacters[selectedNameCharIndex].ToggleSelected();
+            selectedNameCharIndex++;
+            nameCharacters[selectedNameCharIndex].ToggleSelected();
+        }
+    }
+    private void MoveCharacterSelectionBackward()
+    {
+        if (selectedNameCharIndex > 0)
+        {
+            nameCharacters[selectedNameCharIndex].ToggleSelected();
+            selectedNameCharIndex--;
+            nameCharacters[selectedNameCharIndex].ToggleSelected();
         }
     }
 }

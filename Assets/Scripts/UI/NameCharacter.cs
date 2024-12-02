@@ -12,6 +12,7 @@ public class NameCharacter : MonoBehaviour
     */
 
     public TextMeshProUGUI characterText;
+    public Color defaultColor = Color.white;
     private float invisibleTime = 0.25f;
     private float visibleTime = 0.6f;
     private float visibilityTimer;
@@ -29,7 +30,7 @@ public class NameCharacter : MonoBehaviour
 
         if (!selected)
         {
-            characterText.color = Color.black;
+            characterText.color = defaultColor;
         }
         else
         {
@@ -57,6 +58,12 @@ public class NameCharacter : MonoBehaviour
         SetVisibility(true);
     }
 
+    public void SetCharacter(int charInt)
+    {
+        characterText.text = ((char)charInt).ToString();
+        SetVisibility(true);
+    }
+
     public string GetCharacter()
     {
         return characterText.text;
@@ -81,6 +88,6 @@ public class NameCharacter : MonoBehaviour
 
         //Toggle visibility
         visible = targetVisibility;
-        characterText.color = visible ? Color.white : Color.clear;
+        characterText.color = visible ? defaultColor : Color.clear;
     }
 }

@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 3134950222534165060}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &768881953236955050
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 1953962521824279172}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2703428614913610963
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 1488915059996199404}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &3197224192122282442
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,9 +573,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 0
+  INPUTWITHKEYBOARD: 1
   nameLength: 8
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
+  buttonImage: {fileID: 0}
   playerNum: 0
+  editingNameSprite: {fileID: 21300000, guid: 964b079ec58d85d49ac2a977fb352264, type: 3}
+  defaultNameSprite: {fileID: 21300000, guid: f04da42db04a04e4b912ce603a59ca62, type: 3}
 --- !u!114 &4694710550225083336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,6 +1268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 7186303255871041232}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5854024909900785477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1446,6 +1454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 4759927358366077273}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5961407952586375128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1856,6 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 1585451150125803043}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7813559773707048350
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,6 +2126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 3036622448078880288}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &9012536017198410141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2167,3 +2178,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 4963362919921882978}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}

@@ -82,6 +82,27 @@ public class GameManager : MonoBehaviour
         print("GameManager Awake");
     }
 
+    public static void SetGameMode(string gameMode)
+    {
+        switch (gameMode)
+        {
+            case "Classic":
+                instance.gameModeData = new GameModeData(GameModeType.CLASSIC);
+                SwitchScene(SceneType.GAME30);
+                break;
+            case "Grid":
+                instance.gameModeData = new GameModeData(GameModeType.GRID);
+                SwitchScene(SceneType.GAME30);
+                break;
+            case "Custom":
+                instance.gameModeData = new GameModeData(GameModeType.CUSTOM);
+                SwitchScene(SceneType.GAME30);
+                break;
+            default:
+                Debug.LogError("Invalid game mode: " + gameMode);
+                break;
+        }
+    }
     public static void SwitchScene(string sceneName)
     {
         //Uüdate swoitch case to new scenes
@@ -101,6 +122,13 @@ public class GameManager : MonoBehaviour
                 break;
             case "Player2Name12":
                 SwitchScene(SceneType.PLAYER2NAME12);
+                break;
+            case "PlayerNameInput":
+                if (instance.singlePlayer)
+                    SwitchScene(SceneType.PLAYER1NAME11);
+                else
+                    SwitchScene(SceneType.PLAYER2NAME12);
+
                 break;
             case "SelectGameMode20":
                 SwitchScene(SceneType.SELECTGAMEMODE20);
@@ -195,11 +223,26 @@ public class GameManager : MonoBehaviour
                 break;
             case SceneType.SELECTGAMEMODE20:
                 Debug.Log("Switching to SelectGameMode20");
+                // Checking to see where we come from
+                switch (instance.gameState)
+                {
+                    case SceneType.PLAYER2NAME12:
+                        SaveManager.singleton.Initiate(instance.p1Name, 1);
+                        SaveManager.singleton.Initiate(instance.p2Name, 2);
+                        break;
+                    case SceneType.PLAYER1NAME11:
+                        SaveManager.singleton.Initiate(instance.p1Name, 1);
+                        break;
+                    case SceneType.GAME:
+                        SaveManager.singleton.SaveData();
+                        break;
+                }
                 instance.asyncLoad = SceneManager.LoadSceneAsync("20_SelectGameMode");
                 targetBuildIndex = 6;
                 break;
             case SceneType.GAME30:
                 Debug.Log("Switching to Game30");
+                SaveManager.singleton.SaveData();
                 instance.asyncLoad = SceneManager.LoadSceneAsync("30_Game");
                 targetBuildIndex = 7;
                 break;
@@ -355,13 +398,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetPlayer1Name()
+    public void SetPlayerName(int playerNum, string playerName)
     {
-        //Find NameCreator in scene and get Name
-        string playerName = GameObject.Find("CustomNameInput").GetComponent<NameCreator>().GetName();
-        p1Name = playerName;
+        if (playerNum == 1)
+        {
+            p1Name = playerName;
+        }
+        else if (playerNum == 2)
+        {
+            p2Name = playerName;
+        }
+        else
+        {
+            Debug.LogError("Error in SetPlayerName, invalid playerNum " + playerNum);
+        }
 
-        Debug.Log("Set player 1 name " + playerName);
+        Debug.Log("Set player " + playerNum + " name " + playerName);
     }
 
     public void SetPlayer2Name()
