@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameWelcome : MonoBehaviour
@@ -10,11 +8,12 @@ public class GameWelcome : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        gm.InsertCoinPressed.AddListener(InsertCoinPressed);
+        //gm.InsertCoinPressed.AddListener(InsertCoinPressed);
+        Debug.LogError("Repair Input System");
     }
 
     private void InsertCoinPressed(bool isArcadeMode)
     {
-        GameManager.SwitchScene(SceneType.LOGIN);
+        //GameManager.SwitchScene(SceneType.LOGIN);
     }
 }

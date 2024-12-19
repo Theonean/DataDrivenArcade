@@ -32,10 +32,9 @@ public class NameCharacter : MonoBehaviour
         {
             characterText.color = defaultColor;
         }
-        else
-        {
-            SetVisibility(true);
-        }
+
+        SetVisibility(true);
+
     }
 
     //Handles setting the character either up or down

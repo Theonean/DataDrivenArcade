@@ -26,8 +26,10 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        gm.SinglePlayerPressed.AddListener(() => ToggleSingleOrMultiplayer(true));
-        gm.MultiplayerPressed.AddListener(() => ToggleSingleOrMultiplayer(false));
+
+        //gm.SinglePlayerPressed.AddListener(() => ToggleSingleOrMultiplayer(true));
+        //gm.MultiplayerPressed.AddListener(() => ToggleSingleOrMultiplayer(false));
+        Debug.LogError("Repair Input System");
 
         foreach (JoystickSelectable js in startSelected)
         {
@@ -102,8 +104,8 @@ public class MainMenu : MonoBehaviour
                     gameHelp.SetActive(false);
                     break;
                 case "QuitGame":
-                    if (gm.arcadeMode) GameManager.SwitchScene(SceneType.WELCOME);
-                    else Application.Quit();
+                    //if (gm.arcadeMode) GameManager.SwitchScene(SceneType.WELCOME);
+                    //else Application.Quit();
                     break;
             }
         }
@@ -133,6 +135,6 @@ public class MainMenu : MonoBehaviour
             print("Player 2 name: " + p2Name);
         }
 
-        GameManager.SwitchScene(SceneType.GAMESELECTION);
+        //GameManager.SwitchScene(SceneType.GAMESELECTION);
     }
 }

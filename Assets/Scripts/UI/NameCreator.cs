@@ -1,5 +1,8 @@
 using System.Drawing.Text;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class NameCreator : MonoBehaviour
@@ -15,6 +18,8 @@ public class NameCreator : MonoBehaviour
     public bool INPUTWITHKEYBOARD = true;
     public int nameLength = 8;
     public GameObject nameCharacterPrefab;
+    public InputActionReference navigateAction;
+    public InputActionReference submitAction;
     private GameManager gm;
     private NameCharacter[] nameCharacters;
     private float interCharDistance = 0.3f;
@@ -23,6 +28,7 @@ public class NameCreator : MonoBehaviour
     public int playerNum;
     public Sprite editingNameSprite;
     public Sprite defaultNameSprite;
+    private string lastInput = "";
 
     void Start()
     {
@@ -42,32 +48,27 @@ public class NameCreator : MonoBehaviour
             nameCharacters[i].transform.SetParent(transform);
             nameCharacters[i].transform.localScale = Vector3.one;
         }
+
+        submitAction.action.performed += ctx => ToggleSelected(ctx);
     }
 
     void Update()
     {
-        if (selected && INPUTWITHKEYBOARD && Input.inputString.Length > 0)
+        if (selected && INPUTWITHKEYBOARD && UnityEngine.Input.inputString.Length > 0)
         {
             //Take any character input and change the character at the selected index, move the selected index to the right
-            char input = Input.inputString[0];
+            char input = UnityEngine.Input.inputString[0];
             if (IsValidInput(input))
             {
+                lastInput = input.ToString();
                 nameCharacters[selectedNameCharIndex].SetCharacter(input);
                 MoveCharacterSelectionForward();
 
             }//Otherwise if backspace is pressed, remove the last character
-            else if (Input.GetKeyDown(KeyCode.Backspace))
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
             {
                 nameCharacters[selectedNameCharIndex].SetCharacter('X');
                 MoveCharacterSelectionBackward();
-            }//On ENTER, save name and continue scene
-            else if (Input.GetKeyDown(KeyCode.Return))
-            {
-                //Deselect current char so it doesn't blink before scene change
-                ToggleSelected();
-
-                //Save and change scene
-                SaveName();
             }
         }
     }
@@ -77,22 +78,42 @@ public class NameCreator : MonoBehaviour
         return (input >= 'a' && input <= 'z') || (input >= 'A' && input <= 'Z');
     }
 
-    public void ToggleSelected()
+    public void ToggleSelected(InputAction.CallbackContext ctx)
     {
+        if (EventSystem.current.currentSelectedGameObject != transform.parent.gameObject && !selected)
+        {
+            Debug.Log("Name Input Not selected, do nothing");
+            return;
+        }
+
+        if (!ctx.performed)
+        {
+            Debug.Log("Action not performed, do nothing");
+            return;
+        }
+
         selected = !selected;
         print("NameCreator selected: " + selected);
         if (selected)
         {
-            if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.AddListener(ChangeLetter);
             //Set source image to editing name sprite
             buttonImage.sprite = editingNameSprite;
+            ToggleUIElements(false);
+
+            //Subscribe to the ShapeShifterControls "Navigate" UI Event and bind it to changeLetter function
+            navigateAction.action.performed += ctx => ChangeLetter(ctx);
         }
         else
         {
-            //Disable event system for changing UI Selection
-            if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
-            //Set source image to default name sprite
+            //Desubscribe
+            navigateAction.action.performed -= ctx => ChangeLetter(ctx);
+            Debug.Log("Deselected NameCreator and desubscribed from navigateAction");
+
+            ToggleUIElements(true);
+
             buttonImage.sprite = defaultNameSprite;
+
+            EventSystem.current.SetSelectedGameObject(transform.parent.gameObject);
         }
 
         nameCharacters[selectedNameCharIndex].ToggleSelected();
@@ -102,23 +123,24 @@ public class NameCreator : MonoBehaviour
     {
         //Deselect button
         selected = false;
-        if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
+        //if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
+        Debug.LogError("Repair Input System");
+
         nameCharacters[selectedNameCharIndex].ToggleSelected();
 
-        //Set source image to default name sprite
-        buttonImage.sprite = defaultNameSprite;
+        //EventSystem.current.SetSelectedGameObject(transform.parent.gameObject);
 
         //Save name
         gm.SetPlayerName(playerNum, GetName());
 
         //change scene, if singleplayer switch to game selection, otherwise to player 2 name input
-        if (gm.singlePlayer || gm.gameState == SceneType.PLAYER2NAME12)
+        if (gm.singlePlayer || SceneHandler.Instance.currentScene == SceneType.PLAYER2NAME12)
         {
-            GameManager.SwitchScene(SceneType.SELECTGAMEMODE20);
+            SceneHandler.Instance.SwitchScene(SceneType.SELECTGAMEMODE20);
         }
         else
         {
-            GameManager.SwitchScene(SceneType.PLAYER2NAME12);
+            SceneHandler.Instance.SwitchScene(SceneType.PLAYER2NAME12);
         }
     }
 
@@ -132,28 +154,36 @@ public class NameCreator : MonoBehaviour
         return name;
     }
 
-    private void ChangeLetter(InputData iData)
+    private void ChangeLetter(InputAction.CallbackContext ctx)
     {
-        if (iData.playerNum == playerNum)
-        {        //Input Up/Down changes the letter and Input right/left changes the selected index
-            if (iData.joystickDirection.y == 1)
-            {
-                nameCharacters[selectedNameCharIndex].SetCharacter(true);
-            }
-            else if (iData.joystickDirection.y == -1)
-            {
-                nameCharacters[selectedNameCharIndex].SetCharacter(false);
-            }
-
-            if (iData.joystickDirection.x == 1)
-            {
-                MoveCharacterSelectionForward();
-            }
-            else if (iData.joystickDirection.x == -1)
-            {
-                MoveCharacterSelectionBackward();
-            }
+        if (!selected)
+        {
+            return;
         }
+
+        Vector2 direction = ctx.ReadValue<Vector2>();
+        if (direction.x == 1)
+        {
+            MoveCharacterSelectionForward();
+        }
+        else if (direction.x == -1)
+        {
+            MoveCharacterSelectionBackward();
+        }
+
+        //TODO: FIX BUG: UI Navigate also uses A and D but we want to use it for name input (moves selection and writes character at same time otherwise)
+
+        //Input Up/Down changes the letter and Input right/left changes the selected index
+        if (direction.y == 1)
+        {
+            nameCharacters[selectedNameCharIndex].SetCharacter(true);
+        }
+        else if (direction.y == -1)
+        {
+            nameCharacters[selectedNameCharIndex].SetCharacter(false);
+        }
+
+
 
     }
 
@@ -173,6 +203,14 @@ public class NameCreator : MonoBehaviour
             nameCharacters[selectedNameCharIndex].ToggleSelected();
             selectedNameCharIndex--;
             nameCharacters[selectedNameCharIndex].ToggleSelected();
+        }
+    }
+    private void ToggleUIElements(bool isActive)
+    {
+        Button[] buttons = FindObjectsOfType<Button>();
+        foreach (var button in buttons)
+        {
+            button.interactable = isActive;
         }
     }
 }

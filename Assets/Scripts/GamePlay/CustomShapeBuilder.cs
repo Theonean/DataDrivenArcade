@@ -227,7 +227,7 @@ public class CustomShapeBuilder : MonoBehaviour
 
         textureObject.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Adjust rotation to align with Unity's coordinate system
 
-        if(numSides == 2) textureObject.transform.rotation = Quaternion.Euler(0, 0, angle); //Adjust for two sided
+        if (numSides == 2) textureObject.transform.rotation = Quaternion.Euler(0, 0, angle); //Adjust for two sided
 
         //scale textureobject.y to the correct length of nodeDir
         float nodeDirLength = nodeDir.magnitude;
@@ -288,7 +288,6 @@ public class CustomShapeBuilder : MonoBehaviour
         {
             //print("DeHighlighting line " + lineIndex + " with code: " + shapeCode[lineIndex].ToString());
             line.sprite = lineTextures[int.Parse(shapeCode[lineIndex].ToString())];
-
         }
     }
 
@@ -313,9 +312,6 @@ public class CustomShapeBuilder : MonoBehaviour
 
         StartCoroutine(sap.PlayShapeCode(shapeCode));
         flashingRoutine = StartCoroutine(FlashHighlight());
-
-        //Subscribe to the event
-        GameManager.instance.LineInputEvent.AddListener(HighlightNextLine);
     }
 
     public void EndLineHighlight()
@@ -348,8 +344,6 @@ public class CustomShapeBuilder : MonoBehaviour
 
             iZ++;
         }
-
-        GameManager.instance.LineInputEvent.RemoveListener(HighlightNextLine);
     }
 
     //Flash the highlighted line on and off
@@ -374,26 +368,17 @@ public class CustomShapeBuilder : MonoBehaviour
         return selectState == SelectState.SELECTED || selectState == SelectState.LOCKEDSELECTED;
     }
 
-    public void HighlightNextLine(InputData iData)
+    public void HighlightNextLine()
     {
-        if (iData.playerNum == playerNum)
+        if (selectState == SelectState.SELECTED)
         {
-            if (selectState == SelectState.SELECTED)
-            {
-                //print("Highlighting next line for player: " + iData.playerNum + " at index: " + highlightedLineIndex + " with sides: " + numSides + " and code: " + shapeCode);
-                SetLineHighlight(highlightedLineIndex, false);
-                ModifyLineZDepth(false, highlightedLineIndex);
-                highlightedLineIndex = highlightedLineIndex == numSides - 1 ? 0 : highlightedLineIndex + 1;
-                SetLineHighlight(highlightedLineIndex, true);
-                ModifyLineZDepth(true, highlightedLineIndex);
-            }
+            //print("Highlighting next line for player: " + iData.playerNum + " at index: " + highlightedLineIndex + " with sides: " + numSides + " and code: " + shapeCode);
+            SetLineHighlight(highlightedLineIndex, false);
+            ModifyLineZDepth(false, highlightedLineIndex);
+            highlightedLineIndex = highlightedLineIndex == numSides - 1 ? 0 : highlightedLineIndex + 1;
+            SetLineHighlight(highlightedLineIndex, true);
+            ModifyLineZDepth(true, highlightedLineIndex);
         }
-    }
-
-    private void OnDisable()
-    {
-        if (playerNum != 0)
-            GameManager.instance.LineInputEvent.RemoveListener(HighlightNextLine);
     }
 }
 

@@ -3,7 +3,6 @@ using System.ComponentModel;
 using SaveSystem;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 
 [System.Serializable]
@@ -35,6 +34,7 @@ public class PlayerManager : MonoBehaviour
     //AND THATS EXACTLY HOW WE GOT HERE TO A BROKENASS CLASS THAT DOESN'T KNOW WHAT IT IS
 
     public int playerNum;
+    public bool isKeyboardMode = false;
     public GameModeManager gameModeManager;
     public ChallengeManager challengeManager;
 
@@ -97,10 +97,6 @@ public class PlayerManager : MonoBehaviour
 
         selectedFactory = challengeFactories[(int)selectedFactoryStartIndex.y].list[(int)selectedFactoryStartIndex.x];
 
-        gm.LineInputEvent.AddListener(TryAddLine);
-        gm.DoubleLineInputEvent.AddListener(ReinitializePlayer);
-
-
         //print("PlayerManager Start");
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
@@ -114,26 +110,62 @@ public class PlayerManager : MonoBehaviour
         playerInfoManager.SetCombo(combo);
 
         //activate the selection manager and pass it the starting index of the selected factory
-        GetComponentInChildren<SelectionManager>().Activate(selectedFactoryStartIndex);
+        selectionManager.Activate(selectedFactoryStartIndex);
         playerReady = true;
     }
 
     public void UnreadyPlayer()
     {
-        gm.LineInputEvent.RemoveListener(TryAddLine);
-        gm.DoubleLineInputEvent.RemoveListener(ReinitializePlayer);
-
         selectedFactory.shapeBuilder.EndLineHighlight();
 
-        GetComponentInChildren<SelectionManager>().Deactivate();
+        selectionManager.Deactivate();
         playerReady = false;
     }
+
+    public void OnCreateLine1()
+    {
+        if (playerReady)
+            TryAddLine(new InputData(0, playerNum));
+    }
+
+    public void OnCreateLine2()
+    {
+        if (playerReady) TryAddLine(new InputData(1, playerNum));
+    }
+
+    public void OnCreateLine3()
+    {
+        if (playerReady) TryAddLine(new InputData(2, playerNum));
+    }
+
+    public void OnCreateLine4()
+    {
+        if (playerReady) TryAddLine(new InputData(3, playerNum));
+    }
+
+    public void OnCreateLine5()
+    {
+        if (playerReady) TryAddLine(new InputData(4, playerNum));
+    }
+
+    public void OnCreateLine6()
+    {
+        if (playerReady) TryAddLine(new InputData(5, playerNum));
+    }
+
+    public void OnResetShape() => ReinitializePlayer(new InputData(playerNum));
+    public void OnMoveLeft() => selectionManager.TryMoveSelection(Vector2.left);
+    public void OnMoveRight() => selectionManager.TryMoveSelection(Vector2.right);
+    public void OnMoveUp() => selectionManager.TryMoveSelection(Vector2.up);
+    public void OnMoveDown() => selectionManager.TryMoveSelection(Vector2.down);
 
     private void TryAddLine(InputData iData)
     {
         //When event comes from the right Player and the selected factory is not locked (ie. Animating)
         if (iData.playerNum == playerNum && !selectedFactory.shapeBuilder.IsLocked())
         {
+            selectedFactory.shapeBuilder.HighlightNextLine();
+
             //Stop playing audio on sap so theres not as much overlapping sounds
             selectedFactory.shapeBuilder.sap.StopCurrentAudio();
 
@@ -150,7 +182,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FinishedShape()
     {
-        selectedFactory.shapeBuilder.HighlightNextLine(new InputData(playerNum));
+        selectedFactory.shapeBuilder.HighlightNextLine();
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
 
         StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode()));
@@ -327,14 +359,4 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
-
-    private void OnDisable()
-    {
-        if (playerReady)
-        {
-            gm.LineInputEvent.RemoveListener(TryAddLine);
-            gm.DoubleLineInputEvent.RemoveListener(ReinitializePlayer);
-        }
-    }
-
 }

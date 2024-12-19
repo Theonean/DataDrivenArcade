@@ -1,13 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing.Text;
-using System.Security.Policy;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public enum LoginScreenPlayerState
 {
@@ -42,8 +34,10 @@ public class MainMenuSelectionHandler : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        gm.LineInputEvent.AddListener(TryEnterNameInput);
-        gm.JoystickInputEvent.AddListener(TryChangeSelection);
+        
+        //gm.LineInputEvent.AddListener(TryEnterNameInput);
+        //gm.JoystickInputEvent.AddListener(TryChangeSelection);
+        Debug.LogError("Repair Input System");
 
         //Instance and set selection to first element of array
         currentSelectedBG = Instantiate(uiSelectionPrefab, nameCreator.transform.position, Quaternion.identity);
@@ -94,12 +88,12 @@ public class MainMenuSelectionHandler : MonoBehaviour
             {
                 case LoginScreenPlayerState.NAME_SELECTED:
                     ChangeLoginState(LoginScreenPlayerState.NAME_INPUTTING);
-                    nameCreator.ToggleSelected();
+                    //nameCreator.ToggleSelected();
                     print("Inputting name for player " + playerNum);
                     break;
                 case LoginScreenPlayerState.NAME_INPUTTING:
                     ChangeLoginState(LoginScreenPlayerState.NAME_SELECTED);
-                    nameCreator.ToggleSelected();
+                    //nameCreator.ToggleSelected();
                     print("Canceled Inputting name for player " + playerNum);
                     break;
             }

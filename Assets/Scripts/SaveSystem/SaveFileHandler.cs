@@ -1,25 +1,17 @@
-using System;
 using System.IO;
-using MongoDB.Driver;
-using MongoDB.Bson;
 using UnityEngine;
 
 namespace SaveSystem
 {
     public enum DatabaseType
     {
-        Local,
-        MongoDB
+        Local
     }
     public class SaveFileHandler
     {
         string filePath;
         string fileName;
         DatabaseType databaseType;
-        string uri = "mongodb://ShapeShifters_poetrywar:56002aab95ab3ac337400c7136750b4a83c2962c@4uz.h.filess.io:27018/ShapeShifters_poetrywar";
-        MongoClient dbClient;
-        IMongoDatabase db;
-        string collectionName = "PlayersData";
 
         public SaveFileHandler(string fileName)
         {

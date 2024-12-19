@@ -5,6 +5,8 @@ using System.Linq;
 using SaveSystem;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
 
 public enum GameModeState
@@ -30,6 +32,7 @@ public class GameModeManager : MonoBehaviour
     private float countdownStart = 3.5f;
     private float timeLeftStart = 0f;
     [Header("Go Again Inbetween Rounds")]
+    public InputActionReference togglePauseAction;
     public GameObject goAgainObject;
     public TextMeshProUGUI goAgainTitleText;
     private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
@@ -83,6 +86,10 @@ public class GameModeManager : MonoBehaviour
                 obj.SetActive(false);
             }
         }
+
+        togglePauseAction.action.Enable();
+        togglePauseAction.action.performed += ctx => TogglePauseMenu();
+
     }
 
 
@@ -120,22 +127,6 @@ public class GameModeManager : MonoBehaviour
 
                     SaveManager.singleton.playersData[0].roundsPlayed += 1;
                     SaveManager.singleton.playersData[0].scores.Add(new Score(p1.score, gameModeData.gameMode, gm.GetPlayerName(1)));
-                }
-                //In coop mode, save Player 1 Data but set both players visually
-                else if (gm.coopMode)
-                {
-                    int score = p1.score + p2.score;
-
-                    Debug.Log("Round Ended in Coop or Single Mode - Total Score: " + score);
-
-                    //Update score visually at end of round so players can see combined score
-                    p1.score = score;
-                    p1.playerInfoManager.SetScore(score);
-                    p2.score = score;
-                    p2.playerInfoManager.SetScore(score);
-
-                    SaveManager.singleton.playersData[0].roundsPlayed += 1;
-                    SaveManager.singleton.playersData[0].scores.Add(new Score(score, gameModeData.gameMode, gm.GetPlayerName(1), true));
                 }
                 //Otherwise we are in versus mode, save scores for both players
                 else
@@ -199,27 +190,49 @@ public class GameModeManager : MonoBehaviour
 
         //QUIT / Continue Menu
         //Check if insert coin button has been pressed -> open the quit / continue menu, menu should not be open / closable when the round has ended
-        if (Input.GetButtonDown("InsertCoinArcade") || Input.GetButtonDown("InsertCoinKeyboard") && gameModeState != GameModeState.COUNTDOWN)
+        //if (Input.GetButtonDown("InsertCoinArcade") || Input.GetButtonDown("InsertCoinKeyboard") && gameModeState != GameModeState.COUNTDOWN)
+    }
+
+    public void TogglePauseMenu()
+    {
+        if (gameModeState == GameModeState.COUNTDOWN)
         {
-            //If pressed while the menu is open, simply close it and contine round after 3 second wait
-            if (gameModeState == GameModeState.CHOOSINGANOTHERROUND)
+            return;
+        }
+
+
+        //If pressed while the menu is open, simply close it and contine round after 3 second wait
+        if (gameModeState == GameModeState.CHOOSINGANOTHERROUND)
+        {
+            goAgainObject.SetActive(false);
+            timeLeftStart = countdownStart;
+            gameModeState = GameModeState.COUNTDOWN;
+            countdownStartTime.enabled = true;
+            timeLeftRound = timeLeftBeforePause;
+            countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
+
+            //BUGFIX: Player Input Component was found to disable Canvas Interaction somehow, so as a workaround it gets disabled when UI Interaction should be possible
+            Debug.LogError("FindObjectsOfType slow and dirty, refactor this");
+            foreach (PlayerInput iV in FindObjectsOfType<MonoBehaviour>(true).OfType<PlayerInput>())
             {
-                goAgainObject.SetActive(false);
-                timeLeftStart = countdownStart;
-                gameModeState = GameModeState.COUNTDOWN;
-                countdownStartTime.enabled = true;
-                timeLeftRound = timeLeftBeforePause;
-                countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
+                iV.enabled = true;
             }
-            //Open the menu 
-            else
+        }
+        //Open the menu 
+        else
+        {
+            timeLeftBeforePause = timeLeftRound;
+            p1.UnreadyPlayer();
+            if (!gm.singlePlayer) p2.UnreadyPlayer();
+            gameModeState = GameModeState.CHOOSINGANOTHERROUND;
+            goAgainTitleText.text = "Continue?";
+            goAgainObject.SetActive(true);
+
+            //BUGFIX: Player Input Component was found to disable Canvas Interaction somehow, so as a workaround it gets disabled when UI Interaction should be possible
+            Debug.LogError("FindObjectsOfType slow and dirty, refactor this");
+            foreach (PlayerInput iV in FindObjectsOfType<MonoBehaviour>(true).OfType<PlayerInput>())
             {
-                timeLeftBeforePause = timeLeftRound;
-                p1.UnreadyPlayer();
-                if (!gm.singlePlayer) p2.UnreadyPlayer();
-                gameModeState = GameModeState.CHOOSINGANOTHERROUND;
-                goAgainTitleText.text = "Continue?";
-                goAgainObject.SetActive(true);
+                iV.enabled = false;
             }
         }
     }
@@ -249,7 +262,7 @@ public class GameModeManager : MonoBehaviour
                 case "Quit":
                     //Quit the game
                     print("Quitting Game");
-                    GameManager.SwitchScene(SceneType.GAMESELECTION);
+                    SceneHandler.Instance.SwitchScene(SceneType.SELECTGAMEMODE20);
                     break;
             }
         }

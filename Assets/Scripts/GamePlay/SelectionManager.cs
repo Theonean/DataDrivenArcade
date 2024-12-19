@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.U2D;
+using UnityEngine.InputSystem;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -48,7 +44,7 @@ public class SelectionManager : MonoBehaviour
             factoryIndex = startIndex;
 
             selectionSprite.SetActive(true);
-            MoveSelection(factoryIndex);
+            SetSelection(factoryIndex);
 
             //Workaround to make it not scale up each round when the game resets
             if (!scaleSet)
@@ -66,12 +62,10 @@ public class SelectionManager : MonoBehaviour
         }
 
         active = true;
-        GameManager.instance.JoystickInputEvent.AddListener(JoystickInput);
     }
 
     public void Deactivate()
     {
-        GameManager.instance.JoystickInputEvent.RemoveListener(JoystickInput);
         active = false;
         //Hide selector
         selectionSprite.SetActive(false);
@@ -81,16 +75,15 @@ public class SelectionManager : MonoBehaviour
     public void ResetSelection(Vector2 startIndex)
     {
         factoryIndex = startIndex;
-        MoveSelection(factoryIndex);
+        SetSelection(factoryIndex);
     }
 
-    // Update is called once per frame
-    void JoystickInput(InputData iData)
+    public void TryMoveSelection(Vector2 moveDirection)
     {
-        if (!isClassic && active && iData.playerNum == playerNum)
+        if (!isClassic && active)
         {
             //Save Input Direction
-            inputDir = iData.joystickDirection;
+            inputDir = moveDirection;
 
             //print("Input: " + inputDir);
 
@@ -103,7 +96,7 @@ public class SelectionManager : MonoBehaviour
             Vector2 tempFactoryIndex = factoryIndex + inputDir;
             if (CheckMoveValidity(tempFactoryIndex))
             {
-                MoveSelection(tempFactoryIndex);
+                SetSelection(tempFactoryIndex);
             }
             else
             {
@@ -111,7 +104,7 @@ public class SelectionManager : MonoBehaviour
                 tempFactoryIndex += inputDir;
                 if (CheckMoveValidity(tempFactoryIndex))
                 {
-                    MoveSelection(tempFactoryIndex);
+                    SetSelection(tempFactoryIndex);
                 }
                 else
                 {
@@ -125,7 +118,7 @@ public class SelectionManager : MonoBehaviour
                         tempFactoryIndex.y -= 1;
                         if (CheckMoveValidity(tempFactoryIndex))
                         {
-                            MoveSelection(tempFactoryIndex);
+                            SetSelection(tempFactoryIndex);
                         }
                         else
                         {
@@ -133,7 +126,7 @@ public class SelectionManager : MonoBehaviour
                             tempFactoryIndex.y += 2;
                             if (CheckMoveValidity(tempFactoryIndex))
                             {
-                                MoveSelection(tempFactoryIndex);
+                                SetSelection(tempFactoryIndex);
                             }
                             else
                             {
@@ -147,14 +140,14 @@ public class SelectionManager : MonoBehaviour
                         tempFactoryIndex.x += 1;
                         if (CheckMoveValidity(tempFactoryIndex))
                         {
-                            MoveSelection(tempFactoryIndex);
+                            SetSelection(tempFactoryIndex);
                         }
                         else
                         {
                             tempFactoryIndex.x -= 2;
                             if (CheckMoveValidity(tempFactoryIndex))
                             {
-                                MoveSelection(tempFactoryIndex);
+                                SetSelection(tempFactoryIndex);
                             }
                             else
                             {
@@ -167,7 +160,7 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-    private void MoveSelection(Vector2 gridPos)
+    private void SetSelection(Vector2 gridPos)
     {
         factoryIndex = gridPos;
         playerManager.UpdateSelectedFactory(factoryIndex);

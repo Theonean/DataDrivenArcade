@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Archive;
 
 namespace Archive
 {
@@ -37,7 +34,9 @@ public class GameSelectionPlayerInput : MonoBehaviour
         playerManager = GetComponentInChildren<PlayerManager>();
         challengeFactory = GetComponentInChildren<ChallengeFactory>();
         gm = GameManager.instance;
-        gm.JoystickInputEvent.AddListener(MoveSelection);
+
+        //gm.JoystickInputEvent.AddListener(MoveSelection);
+        Debug.LogError("Repair Input System");
 
         selectables = new GameObject[] {
             gameModes[0].gameObject,

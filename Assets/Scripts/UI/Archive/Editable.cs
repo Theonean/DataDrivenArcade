@@ -87,12 +87,14 @@ public class Editable : MonoBehaviour, ISaveable
 
     public void Activate()
     {
-        gm.LineInputEvent.AddListener(ButtonPressed);
+        //gm.LineInputEvent.AddListener(ButtonPressed);
+        Debug.LogError("Repair Input System");
     }
 
     public void Deactivate()
     {
-        gm.LineInputEvent.RemoveListener(ButtonPressed);
+        //gm.LineInputEvent.RemoveListener(ButtonPressed);
+        Debug.LogError("Repair Input System");
     }
 
     private void ButtonPressed(InputData iData)
@@ -112,11 +114,13 @@ public class Editable : MonoBehaviour, ISaveable
         //print("NameCreator editing: " + editing);
         if (editing)
         {
-            gm.JoystickInputEvent.AddListener(ChangeValue);
+            //gm.JoystickInputEvent.AddListener(ChangeValue);
+            Debug.LogError("Repair Input System");
         }
         else
         {
-            gm.JoystickInputEvent.RemoveListener(ChangeValue);
+            //gm.JoystickInputEvent.RemoveListener(ChangeValue);
+            Debug.LogError("Repair Input System");
         }
 
         nameCharacters[editingNameCharIndex].ToggleSelected();

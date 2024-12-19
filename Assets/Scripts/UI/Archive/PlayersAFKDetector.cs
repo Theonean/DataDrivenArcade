@@ -15,6 +15,7 @@ public class PlayersAFKDetector : MonoBehaviour
     private void Start()
     {
         gm = GameManager.instance;
+        /*
         gm.LineInputEvent.AddListener(InputReceived);
         gm.LineReleasedEvent.AddListener(InputReceived);
         gm.JoystickInputEvent.AddListener(InputReceived);
@@ -22,13 +23,15 @@ public class PlayersAFKDetector : MonoBehaviour
         gm.InsertCoinPressed.AddListener(InputReceived);
         gm.SinglePlayerPressed.AddListener(InputReceived);
         gm.MultiplayerPressed.AddListener(InputReceived);
+        */
+        Debug.LogError("Repair Input System");
         afkTimer = AFKWaitTime;
     }
 
     private void Update()
     {
         //No AFK Checking in regular desktop mode, players should be able to chill if they want
-        if(!gm.arcadeMode) return;
+        if (!gm.arcadeMode) return;
 
         if (afkTimer > 0f && !afk)
         {
@@ -36,7 +39,8 @@ public class PlayersAFKDetector : MonoBehaviour
             if (afkTimer <= 0f)
             {
                 afk = true;
-                GameManager.SwitchScene(targetScene);
+                //SceneHandler.Instance.SwitchScene(targetScene);
+                Debug.LogError("Broken Scene Handler Statement");
             }
             else if (afkTimer <= warningTime)
             {

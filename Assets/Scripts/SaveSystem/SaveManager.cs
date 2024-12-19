@@ -76,7 +76,7 @@ namespace SaveSystem
             {
                 LoadData(1);
 
-                if (GameManager.instance.singlePlayer || GameManager.instance.coopMode) return;
+                if (GameManager.instance.singlePlayer) return;
                 LoadData(2);
             }
         }
@@ -94,8 +94,8 @@ namespace SaveSystem
         {
             SaveData(1);
 
-            //Player 2 doesn't get saved in singleplayer or coop mode
-            if (GameManager.instance.singlePlayer || GameManager.instance.coopMode) return;
+            //Player 2 doesn't get saved in singleplayer mode
+            if (GameManager.instance.singlePlayer) return;
             
             SaveData(2);
         }

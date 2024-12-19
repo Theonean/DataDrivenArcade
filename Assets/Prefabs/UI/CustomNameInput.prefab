@@ -578,8 +578,8 @@ MonoBehaviour:
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
   buttonImage: {fileID: 0}
   playerNum: 0
-  editingNameSprite: {fileID: 21300000, guid: 964b079ec58d85d49ac2a977fb352264, type: 3}
-  defaultNameSprite: {fileID: 21300000, guid: f04da42db04a04e4b912ce603a59ca62, type: 3}
+  editingNameSprite: {fileID: 2800944074620387919, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
+  defaultNameSprite: {fileID: 1189447796280692009, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
 --- !u!114 &4694710550225083336
 MonoBehaviour:
   m_ObjectHideFlags: 0

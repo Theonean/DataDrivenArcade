@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8561a12f3885c8b42823a80d1a6edc29, type: 3}
+  m_Name: SceneTransitions
+  m_EditorClassIdentifier: 
+  sceneTransitionsData:
+  - sceneName: 0
+    fadeInDirection: {x: 0, y: -1}
+    fadeOutDirection: {x: 1, y: 0}
+  - sceneName: 1
+    fadeInDirection: {x: 0, y: 1}
+    fadeOutDirection: {x: 0, y: 1}
+  - sceneName: 2
+    fadeInDirection: {x: -1, y: 0}
+    fadeOutDirection: {x: 1, y: 1}
+  - sceneName: 3
+    fadeInDirection: {x: -1, y: -1}
+    fadeOutDirection: {x: 1, y: 1}
+  - sceneName: 4
+    fadeInDirection: {x: -1, y: -1}
+    fadeOutDirection: {x: 1, y: 1}
+  - sceneName: 5
+    fadeInDirection: {x: 0, y: -1}
+    fadeOutDirection: {x: 1, y: 0}
+  - sceneName: 6
+    fadeInDirection: {x: -1, y: 0}
+    fadeOutDirection: {x: -1, y: 0}

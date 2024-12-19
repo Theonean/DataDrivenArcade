@@ -87,7 +87,10 @@ public class JoystickSelectable : MonoBehaviour
     {
         SelectedEvent?.Invoke();
         SelectionChangeEvent?.Invoke(controlledByPlayer, "");
-        gm.JoystickInputEvent.AddListener(MoveSelection);
+        
+        //gm.JoystickInputEvent.AddListener(MoveSelection);
+        Debug.LogError("Repair Input System");
+        
         selectionState = SelectionState.Selected;
         switch (animationOnSelection)
         {
@@ -169,7 +172,9 @@ public class JoystickSelectable : MonoBehaviour
     public void Deselected()
     {
         //print("Deselecteed");
-        gm.JoystickInputEvent.RemoveListener(MoveSelection);
+        //gm.JoystickInputEvent.RemoveListener(MoveSelection);
+        Debug.LogError("Repair Input System");
+        
         DeselectedEvent?.Invoke();
         SelectionChangeEvent?.Invoke(controlledByPlayer, "Empty");
         selectionState = SelectionState.Unselected;

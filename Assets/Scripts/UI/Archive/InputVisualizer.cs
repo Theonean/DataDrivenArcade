@@ -39,12 +39,13 @@ public class InputVisualizer : MonoBehaviour
         timeUntilIdleJoystick = timeUntilIdle;
 
         //Joystick Events
-        gm.JoystickInputEvent.AddListener(OnJoystickInput);
-        gm.JoystickReleasedEvent.AddListener(OnJoystickReleased);
+        //gm.JoystickInputEvent.AddListener(OnJoystickInput);
+        //gm.JoystickReleasedEvent.AddListener(OnJoystickReleased);
 
         //Button Events
-        gm.LineInputEvent.AddListener((iData) => OnButtonInput(iData, "Pressed"));
-        gm.LineReleasedEvent.AddListener((iData) => OnButtonInput(iData, "Released"));
+        //gm.LineInputEvent.AddListener((iData) => OnButtonInput(iData, "Pressed"));
+        //gm.LineReleasedEvent.AddListener((iData) => OnButtonInput(iData, "Released"));
+        Debug.LogError("Repair Input System");
 
         //Find the animators in the scene
         joystickAnimator = GetComponentsInChildren<Animator>().Where(a => a.gameObject.name == "Joystick").First();
@@ -91,7 +92,8 @@ public class InputVisualizer : MonoBehaviour
         if (playernum == 1)
         {
             print("Player 1 pressed line on UI " + lineNum);
-            gm.LineInputEvent.Invoke(new InputData(lineNum, 1));
+            //gm.LineInputEvent.Invoke(new InputData(lineNum, 1));
+            Debug.LogError("Repair Input System");
         }
     }
 
