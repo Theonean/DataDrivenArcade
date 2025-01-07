@@ -1,5 +1,3 @@
-using System.Drawing.Text;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -80,6 +78,12 @@ public class NameCreator : MonoBehaviour
 
     public void ToggleSelected(InputAction.CallbackContext ctx)
     {
+        //BUGFIX: Prevents trying to acces unloaded eventsystem Objects on keypress during scene transitions
+        if (SceneHandler.Instance.nextScene == SceneType.EMPTY)
+        {
+            return;
+        }
+
         if (EventSystem.current.currentSelectedGameObject != transform.parent.gameObject && !selected)
         {
             Debug.Log("Name Input Not selected, do nothing");
@@ -123,8 +127,6 @@ public class NameCreator : MonoBehaviour
     {
         //Deselect button
         selected = false;
-        //if (!INPUTWITHKEYBOARD) gm.JoystickInputEvent.RemoveListener(ChangeLetter);
-        Debug.LogError("Repair Input System");
 
         nameCharacters[selectedNameCharIndex].ToggleSelected();
 
@@ -162,16 +164,16 @@ public class NameCreator : MonoBehaviour
         }
 
         Vector2 direction = ctx.ReadValue<Vector2>();
-        if (direction.x == 1)
+        //Exclude 'a' and 'd' from navigation because we don't want to move selected character with A/D when inputting name
+        if (direction.x == 1 && ctx.control.name != "d")
         {
             MoveCharacterSelectionForward();
-        }
-        else if (direction.x == -1)
+        }//Check direction left and not 'a'
+        else if (direction.x == -1 && ctx.control.name != "a")
         {
             MoveCharacterSelectionBackward();
         }
 
-        //TODO: FIX BUG: UI Navigate also uses A and D but we want to use it for name input (moves selection and writes character at same time otherwise)
 
         //Input Up/Down changes the letter and Input right/left changes the selected index
         if (direction.y == 1)

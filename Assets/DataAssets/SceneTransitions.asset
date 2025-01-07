@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: SceneTransitions
   m_EditorClassIdentifier: 
   sceneTransitionsData:
-  - sceneName: 0
+  - sceneName: 1
     fadeInDirection: {x: 0, y: -1}
     fadeOutDirection: {x: 1, y: 0}
-  - sceneName: 1
+  - sceneName: 0
     fadeInDirection: {x: 0, y: 1}
     fadeOutDirection: {x: 0, y: 1}
   - sceneName: 2
     fadeInDirection: {x: -1, y: 0}
-    fadeOutDirection: {x: 1, y: 1}
+    fadeOutDirection: {x: 0, y: 1}
   - sceneName: 3
-    fadeInDirection: {x: -1, y: -1}
-    fadeOutDirection: {x: 1, y: 1}
+    fadeInDirection: {x: 0, y: -1}
+    fadeOutDirection: {x: 0, y: 1}
   - sceneName: 4
-    fadeInDirection: {x: -1, y: -1}
-    fadeOutDirection: {x: 1, y: 1}
+    fadeInDirection: {x: 0, y: -1}
+    fadeOutDirection: {x: 0, y: 1}
   - sceneName: 5
     fadeInDirection: {x: 0, y: -1}
     fadeOutDirection: {x: 1, y: 0}
