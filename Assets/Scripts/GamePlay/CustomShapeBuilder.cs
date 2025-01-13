@@ -41,8 +41,8 @@ public class CustomShapeBuilder : MonoBehaviour
     public int currNodePathID = 0;
 
     //Variables needed for texture scaling
-    private float textureHeightPixel = 32;
-    private float texturePixelsPerUnityUnit = 100;
+    private float textureHeightPixel = 10;
+    private float texturePixelsPerUnityUnit = 12.5f;
     private float textureHeightUnityUnit;
 
     //Variables needed for outline generation
@@ -207,11 +207,11 @@ public class CustomShapeBuilder : MonoBehaviour
 
             if (currentNodeNum == 0)
             {
-                textureObject.transform.localPosition += new Vector3(0, textureHeightUnityUnit * +0.5f, 0);
+                textureObject.transform.localPosition = new Vector3(0, 0.2f, 0);
             }
             else
             {
-                textureObject.transform.localPosition += new Vector3(0, textureHeightUnityUnit * -0.5f, 0);
+                textureObject.transform.localPosition += new Vector3(0,-0.2f, 0);
             }
         }
 
@@ -232,7 +232,11 @@ public class CustomShapeBuilder : MonoBehaviour
         //scale textureobject.y to the correct length of nodeDir
         float nodeDirLength = nodeDir.magnitude;
         float textureLengthModifier = nodeDirLength / textureHeightUnityUnit;
-        textureObject.transform.localScale = new Vector3(1, textureLengthModifier, 1);
+        textureObject.transform.localScale = new Vector3(textureLengthModifier / 2f, textureLengthModifier / 2f, 1);
+
+        //Create debug information to make the calculation of the scale more traceable
+        print("nodeDirLength: " + nodeDirLength + " textureHeightUnityUnit: " + textureHeightUnityUnit + " textureLengthModifier: " + textureLengthModifier);
+        
 
         //print("linecode: " + lineCode.ToString());
         //Use random code variable to determine which texture to use

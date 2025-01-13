@@ -568,7 +568,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""id"": ""673bcbe4-a443-4381-9a4e-60a416c12648"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -577,7 +577,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""id"": ""33176d32-d882-434a-a71f-5088ba728d88"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -586,7 +586,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""id"": ""a3ee9970-62e3-433d-8761-d72659261078"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -595,7 +595,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""id"": ""669ee90b-fd6f-41aa-bae9-be6b1b4d9037"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -613,8 +613,8 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1d0d9995-688e-470d-a2be-ac53cc03eb0a"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""b0ea3d26-ba22-43db-867f-50e2abd0013a"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -635,8 +635,8 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""77cc45d9-0ad8-4431-8a29-c35b0a8da703"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""054a070d-3fc1-46a0-ade7-4894fe7b67a2"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -657,8 +657,8 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c207b0af-cc72-43e1-ab65-8908f05fe04f"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""bfe37a71-c2a9-4b43-907d-e69b587536e3"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -745,6 +745,17 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""804f7550-821b-47ec-95fa-fcf68a417836"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""CreateLine4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6ede7796-1e12-4201-a9b6-31c61402ea60"",
                     ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
@@ -822,6 +833,17 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d92a7a3c-7c47-4793-a304-c2694997fc28"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""CreateLine5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""24f9abf1-2cea-4b11-9459-21e3e917f0ea"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
@@ -896,6 +918,17 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""action"": ""CreateLine6"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""447dd8aa-13a4-41f9-824f-ad6b29cc9ba8"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""CreateLine6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",

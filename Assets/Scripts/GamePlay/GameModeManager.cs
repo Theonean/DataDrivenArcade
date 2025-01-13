@@ -73,7 +73,7 @@ public class GameModeManager : MonoBehaviour
         goAgainObject.SetActive(false);
 
         //Get all inputvisualizer and activate them
-        foreach (InputVisualizer iV in FindObjectsOfType<MonoBehaviour>(true).OfType<InputVisualizer>())
+        foreach (NewVisualizer iV in FindObjectsOfType<MonoBehaviour>(true).OfType<NewVisualizer>())
         {
             iV.ToggleActive(true);
         }

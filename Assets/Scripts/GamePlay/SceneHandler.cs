@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public enum SceneType
 {
-    MAINMENU01 = 1,
-    LEADERBOARD02 = 0,
+    MAINMENU01 = 0,
+    LEADERBOARD02 = 1,
     PLAYERAMOUNTSELECTION10 = 2,
     PLAYER1NAME11 = 3,
     PLAYER2NAME12 = 4,
@@ -60,7 +60,7 @@ public class SceneHandler : MonoBehaviour
 
     public static void GoToLastScene(int sceneIndexDecrement = 1)
     {
-        int lastSceneIndex = SceneManager.GetActiveScene().buildIndex - sceneIndexDecrement;
+        int lastSceneIndex = (int)Instance.currentScene - sceneIndexDecrement;
 
         //handle exceptions for scenes that are not in the build order first
         SceneType currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
@@ -95,7 +95,7 @@ public class SceneHandler : MonoBehaviour
             return;
         }
 
-        int targetBuildIndex = GetSceneBuildIndex(sceneType);
+        int targetBuildIndex = (int)sceneType;
         nextScene = sceneType;
 
         if (targetBuildIndex == -1)
@@ -104,7 +104,13 @@ public class SceneHandler : MonoBehaviour
             return;
         }
 
-        leavingSceneLeft = targetBuildIndex < SceneManager.GetActiveScene().buildIndex;
+        //Workaround so that leaderboard scene is animated as being to the left of the main menu without fudging around in Build-Order and build index
+        if (sceneType == SceneType.LEADERBOARD02)
+        {
+            leavingSceneLeft = true;
+        }
+        else
+            leavingSceneLeft = targetBuildIndex < (int)Instance.currentScene;
 
         asyncLoad = SceneManager.LoadSceneAsync(targetBuildIndex);
         asyncLoad.allowSceneActivation = false;
@@ -181,10 +187,5 @@ public class SceneHandler : MonoBehaviour
 
         transitionOverlay.enabled = false;
         nextScene = SceneType.EMPTY;
-    }
-
-    private int GetSceneBuildIndex(SceneType sceneType)
-    {
-        return (int)sceneType;
     }
 }

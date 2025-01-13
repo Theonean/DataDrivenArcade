@@ -3,6 +3,7 @@ using System.ComponentModel;
 using SaveSystem;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 [System.Serializable]
@@ -59,6 +60,9 @@ public class PlayerManager : MonoBehaviour
     public int score = 0;
     private int combo = 0;
 
+    public SpriteRenderer SpriteInputeyboard;
+    public SpriteRenderer SpriteInputController;
+
     private void Start()
     {
         gm = GameManager.instance;
@@ -73,6 +77,20 @@ public class PlayerManager : MonoBehaviour
             }
             playerInfoManager.SetLastScore(highScore);
             print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
+        }
+
+        //Set iskeyboardmode by checking PlayerInput Component
+        isKeyboardMode = GetComponent<PlayerInput>().currentControlScheme == "Keyboard";
+
+        if (isKeyboardMode)
+        {
+            SpriteInputeyboard.enabled = true;
+            SpriteInputController.enabled = false;
+        }
+        else
+        {
+            SpriteInputeyboard.enabled = false;
+            SpriteInputController.enabled = true;
         }
     }
 

@@ -79,7 +79,7 @@ public class NameCreator : MonoBehaviour
     public void ToggleSelected(InputAction.CallbackContext ctx)
     {
         //BUGFIX: Prevents trying to acces unloaded eventsystem Objects on keypress during scene transitions
-        if (SceneHandler.Instance.nextScene == SceneType.EMPTY)
+        if (SceneHandler.Instance.nextScene != SceneType.EMPTY)
         {
             return;
         }
