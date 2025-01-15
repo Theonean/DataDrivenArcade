@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using SaveSystem;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 
 public enum GameModeState
@@ -33,9 +35,9 @@ public class GameModeManager : MonoBehaviour
     private float timeLeftStart = 0f;
     [Header("Go Again Inbetween Rounds")]
     public InputActionReference togglePauseAction;
-    public GameObject goAgainObject;
-    public TextMeshProUGUI goAgainTitleText;
-    private string[] playersSelectedActions = new string[2] { "Nothing", "Nothing" };
+    public GameObject PauseMenu;
+    public GameObject RoundOverMenu;
+    public TextMeshProUGUI PlayerWonText;
     [Header("Game Mode Data")]
     public ChallengeManager challengeManager;
     public PlayerManager p1;
@@ -70,7 +72,8 @@ public class GameModeManager : MonoBehaviour
             }
         }
 
-        goAgainObject.SetActive(false);
+        PauseMenu.SetActive(false);
+        RoundOverMenu.SetActive(false);
 
         //Get all inputvisualizer and activate them
         foreach (NewVisualizer iV in FindObjectsOfType<MonoBehaviour>(true).OfType<NewVisualizer>())
@@ -104,7 +107,6 @@ public class GameModeManager : MonoBehaviour
             if (timeLeftRound <= 10f)
             {                //Scale the timer text down and up to indicate time is running out
                 float t = timeLeftRound - Mathf.Round(timeLeftRound);
-                countdownRoundTimer.rectTransform.localScale = Vector3.one * Mathf.Lerp(0.024f, 0.012f, t);
                 countdownRoundTimer.color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time, 1f));
             }
 
@@ -119,6 +121,7 @@ public class GameModeManager : MonoBehaviour
 
                 countdownRoundTimer.color = Color.white;
                 timeLeftRound = roundTime;
+                int playerWon = 0;
 
                 //In singleplayer mode, save Player 1 Data and only visually set player 1
                 if (gm.singlePlayer)
@@ -144,10 +147,12 @@ public class GameModeManager : MonoBehaviour
                         if (p1.score > p2.score)
                         {
                             SaveManager.singleton.playersData[0].roundsWon += 1;
+                            playerWon = 1;
                         }
                         else if (p1.score < p2.score)
                         {
                             SaveManager.singleton.playersData[1].roundsWon += 1;
+                            playerWon = 2;
                         }
                     }
                 }
@@ -164,8 +169,10 @@ public class GameModeManager : MonoBehaviour
                 }
 
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
-                goAgainTitleText.text = "Round Over! \n Play Again?";
-                goAgainObject.SetActive(true);
+                PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " Won!";
+
+                ToggleMenu(RoundOverMenu);
+                RoundOverMenu.GetComponentsInChildren<Button>().Where(b => b.gameObject.name == "ButtonRestart").First().Select();
 
                 countdownRoundTimer.text = roundTime.ToString();
                 timeLeftRound = roundTime;
@@ -200,23 +207,16 @@ public class GameModeManager : MonoBehaviour
             return;
         }
 
-
         //If pressed while the menu is open, simply close it and contine round after 3 second wait
         if (gameModeState == GameModeState.CHOOSINGANOTHERROUND)
         {
-            goAgainObject.SetActive(false);
             timeLeftStart = countdownStart;
             gameModeState = GameModeState.COUNTDOWN;
             countdownStartTime.enabled = true;
             timeLeftRound = timeLeftBeforePause;
             countdownRoundTimer.text = Mathf.RoundToInt(timeLeftRound).ToString();
 
-            //BUGFIX: Player Input Component was found to disable Canvas Interaction somehow, so as a workaround it gets disabled when UI Interaction should be possible
-            Debug.LogError("FindObjectsOfType slow and dirty, refactor this");
-            foreach (PlayerInput iV in FindObjectsOfType<MonoBehaviour>(true).OfType<PlayerInput>())
-            {
-                iV.enabled = true;
-            }
+            ToggleMenu(PauseMenu);
         }
         //Open the menu 
         else
@@ -225,46 +225,25 @@ public class GameModeManager : MonoBehaviour
             p1.UnreadyPlayer();
             if (!gm.singlePlayer) p2.UnreadyPlayer();
             gameModeState = GameModeState.CHOOSINGANOTHERROUND;
-            goAgainTitleText.text = "Continue?";
-            goAgainObject.SetActive(true);
 
-            //BUGFIX: Player Input Component was found to disable Canvas Interaction somehow, so as a workaround it gets disabled when UI Interaction should be possible
-            Debug.LogError("FindObjectsOfType slow and dirty, refactor this");
-            foreach (PlayerInput iV in FindObjectsOfType<MonoBehaviour>(true).OfType<PlayerInput>())
-            {
-                iV.enabled = false;
-            }
+            ToggleMenu(PauseMenu);
+            PauseMenu.GetComponentsInChildren<Button>().Where(b => b.gameObject.name == "ButtonResume").First().Select();
         }
     }
 
-    public void SelectionChanged(int playerNum, string actionType)
+    public void ToggleMenu(GameObject menu)
     {
-        playersSelectedActions[playerNum - 1] = actionType;
-        print("players have these actions selected: " + playersSelectedActions[0] + " " + playersSelectedActions[1]);
-        print("they are equals: " + playersSelectedActions[0].Equals(playersSelectedActions[1]));
+        menu.SetActive(!menu.activeSelf);
+        SetUIInteractionMode(menu.activeSelf);
+    }
 
-        if (playersSelectedActions[0].Equals(playersSelectedActions[1]) && !actionType.Equals("Empty"))
+    private void SetUIInteractionMode(bool enabled)
+    {
+        //BUGFIX: Player Input Component was found to disable Canvas Interaction somehow, so as a workaround it gets disabled when UI Interaction should be possible
+        Debug.LogError("FindObjectsOfType slow and dirty, refactor this");
+        foreach (PlayerInput iV in FindObjectsOfType<MonoBehaviour>(true).OfType<PlayerInput>())
         {
-            switch (playersSelectedActions[0])
-            {
-                case "GoAgain":
-                    goAgainObject.SetActive(false);
-                    //Reset the game
-                    print("Resetting Game");
-                    timeLeftStart = countdownStart;
-                    gameModeState = GameModeState.COUNTDOWN;
-                    countdownStartTime.enabled = true;
-
-                    //Reset the score of both players
-                    p1.ResetPlayer();
-                    if (!gm.singlePlayer) p2.ResetPlayer();
-                    break;
-                case "Quit":
-                    //Quit the game
-                    print("Quitting Game");
-                    SceneHandler.Instance.SwitchScene(SceneType.SELECTGAMEMODE20);
-                    break;
-            }
+            iV.enabled = !enabled;
         }
     }
 }

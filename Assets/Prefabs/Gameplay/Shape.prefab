@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomSidesNum: 0
   selectState: 0
-  radius: 0.4
+  radius: 0.1
   numSides: 0
   playerNum: 0
   lineTextures:

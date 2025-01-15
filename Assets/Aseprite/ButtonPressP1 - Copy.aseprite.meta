@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5ac159f0a2af2bb409541f65f5b5473c
+guid: 9593518f40dafe64e89a33b88781fcbe
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,9 +119,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: ButtonPressP1_Frame_0
+  - name: ButtonPressP1 - Copy_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 78
       width: 27
       height: 27
-    spriteID: 191769e968425c7409a84e67c439df55
+    spriteID: 5051ab7d28e184940a6c80aed82d6810
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,9 +139,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 78}
-  - name: ButtonPressP1_Frame_1
+  - name: ButtonPressP1 - Copy_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -150,7 +150,7 @@ ScriptedImporter:
       y: 4
       width: 27
       height: 27
-    spriteID: 6743e206e3efbaa44a1cbda3bed04510
+    spriteID: 7e7d1130fe5a61d478844b1ea604e96a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -159,9 +159,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 41, y: 4}
-  - name: ButtonPressP1_Frame_2
+  - name: ButtonPressP1 - Copy_Frame_2
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -170,7 +170,7 @@ ScriptedImporter:
       y: 39
       width: 27
       height: 27
-    spriteID: 3a7a947add920fe4b89a6fd6c8d674c1
+    spriteID: cf5ac9a0329767e44a2063a1d689eae0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -179,9 +179,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 41, y: 39}
-  - name: ButtonPressP1_Frame_3
+  - name: ButtonPressP1 - Copy_Frame_3
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -190,7 +190,7 @@ ScriptedImporter:
       y: 74
       width: 27
       height: 27
-    spriteID: ae37bd17c0e6e404eb4b1499d39a457c
+    spriteID: d8e5f7234ec321d449daa0ccf9de86b2
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -199,9 +199,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 41, y: 74}
-  - name: ButtonPressP1_Frame_4
+  - name: ButtonPressP1 - Copy_Frame_4
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -210,7 +210,7 @@ ScriptedImporter:
       y: 4
       width: 27
       height: 27
-    spriteID: b320a8098902dae4ba613d99252e17ad
+    spriteID: 50b550acad745f944ab92e8745ce7325
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -219,9 +219,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 76, y: 4}
-  - name: ButtonPressP1_Frame_5
+  - name: ButtonPressP1 - Copy_Frame_5
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -230,7 +230,7 @@ ScriptedImporter:
       y: 39
       width: 27
       height: 27
-    spriteID: 4c88ba7486613d240985b2a637c04ae9
+    spriteID: e444f0a7f0f991840b5e29b2b140ff33
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -239,9 +239,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 76, y: 39}
-  - name: ButtonPressP1_Frame_6
+  - name: ButtonPressP1 - Copy_Frame_6
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -250,7 +250,7 @@ ScriptedImporter:
       y: 74
       width: 27
       height: 27
-    spriteID: fa306faf8fdacb6429461cc1a38a7ebc
+    spriteID: 30866745e4b69f14b95a0ba8c25bc339
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -259,9 +259,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 76, y: 74}
-  - name: ButtonPressP1_Frame_7
+  - name: ButtonPressP1 - Copy_Frame_7
     originalName: 
-    pivot: {x: 0.5, y: -0.03448276}
+    pivot: {x: 0.51724136, y: -0.03448276}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -270,7 +270,7 @@ ScriptedImporter:
       y: 4
       width: 29
       height: 29
-    spriteID: d914df79e255e7f42bb834736655d982
+    spriteID: d6b061d6af4c8f549beca44101961ed8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -279,9 +279,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: ButtonPressP1_Frame_8
+  - name: ButtonPressP1 - Copy_Frame_8
     originalName: 
-    pivot: {x: 0.5, y: -0.03448276}
+    pivot: {x: 0.51724136, y: -0.03448276}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -290,7 +290,7 @@ ScriptedImporter:
       y: 41
       width: 29
       height: 29
-    spriteID: 4a56ce6b126b96e4d9e9bdb2a669b2dd
+    spriteID: 169f7db361d34a14f88075dbf00543f3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -302,84 +302,84 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 868832138
-    name: ButtonPressP1
+    guid: -747949410
+    name: ButtonPressP1 - Copy
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: ButtonPressP1_Frame_0
+    - name: ButtonPressP1 - Copy_Frame_0
       frameIndex: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: 191769e968425c7409a84e67c439df55
-    - name: ButtonPressP1_Frame_1
+      spriteId: 5051ab7d28e184940a6c80aed82d6810
+    - name: ButtonPressP1 - Copy_Frame_1
       frameIndex: 1
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: 6743e206e3efbaa44a1cbda3bed04510
-    - name: ButtonPressP1_Frame_2
+      spriteId: 7e7d1130fe5a61d478844b1ea604e96a
+    - name: ButtonPressP1 - Copy_Frame_2
       frameIndex: 2
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: 3a7a947add920fe4b89a6fd6c8d674c1
-    - name: ButtonPressP1_Frame_3
+      spriteId: cf5ac9a0329767e44a2063a1d689eae0
+    - name: ButtonPressP1 - Copy_Frame_3
       frameIndex: 3
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: ae37bd17c0e6e404eb4b1499d39a457c
-    - name: ButtonPressP1_Frame_4
+      spriteId: d8e5f7234ec321d449daa0ccf9de86b2
+    - name: ButtonPressP1 - Copy_Frame_4
       frameIndex: 4
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: b320a8098902dae4ba613d99252e17ad
-    - name: ButtonPressP1_Frame_5
+      spriteId: 50b550acad745f944ab92e8745ce7325
+    - name: ButtonPressP1 - Copy_Frame_5
       frameIndex: 5
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: 4c88ba7486613d240985b2a637c04ae9
-    - name: ButtonPressP1_Frame_6
+      spriteId: e444f0a7f0f991840b5e29b2b140ff33
+    - name: ButtonPressP1 - Copy_Frame_6
       frameIndex: 6
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
-      spriteId: fa306faf8fdacb6429461cc1a38a7ebc
-    - name: ButtonPressP1_Frame_7
+      spriteId: 30866745e4b69f14b95a0ba8c25bc339
+    - name: ButtonPressP1 - Copy_Frame_7
       frameIndex: 7
       cellRect:
         x: 1
         y: 1
         width: 29
         height: 29
-      spriteId: d914df79e255e7f42bb834736655d982
-    - name: ButtonPressP1_Frame_8
+      spriteId: d6b061d6af4c8f549beca44101961ed8
+    - name: ButtonPressP1 - Copy_Frame_8
       frameIndex: 8
       cellRect:
         x: 1
         y: 1
         width: 29
         height: 29
-      spriteId: 4a56ce6b126b96e4d9e9bdb2a669b2dd
+      spriteId: 169f7db361d34a14f88075dbf00543f3
     linkedCells: []
     parentIndex: -1
   platformSettings: []

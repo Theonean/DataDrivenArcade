@@ -576,9 +576,11 @@ MonoBehaviour:
   INPUTWITHKEYBOARD: 1
   nameLength: 8
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
+  navigateAction: {fileID: 3912272187603901109, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
+  submitAction: {fileID: 774677881995601620, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   buttonImage: {fileID: 0}
-  playerNum: 0
-  editingNameSprite: {fileID: 2800944074620387919, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
+  playerNum: 1
+  editingNameSprite: {fileID: 5940652373953187025, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
   defaultNameSprite: {fileID: 1189447796280692009, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
 --- !u!114 &4694710550225083336
 MonoBehaviour:

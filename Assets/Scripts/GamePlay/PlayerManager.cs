@@ -36,8 +36,6 @@ public class PlayerManager : MonoBehaviour
 
     public int playerNum;
     public bool isKeyboardMode = false;
-    public GameModeManager gameModeManager;
-    public ChallengeManager challengeManager;
 
     public PlayerInfoManager playerInfoManager;
     public SelectionManager selectionManager;
@@ -289,7 +287,8 @@ public class PlayerManager : MonoBehaviour
             playerInfoManager.SetScore(score);
 
             //Inform challengemanager to reduce Lock Number on challenges below this one
-            if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
+            //if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
+            Debug.LogWarning("Fading out \"Lock\" functionality as grid has become obsolete");
         }
         //When wrong shape is completed, stop combo which resets multiplier
         else
@@ -375,6 +374,5 @@ public class PlayerManager : MonoBehaviour
         {
             lineRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
         }
-
     }
 }

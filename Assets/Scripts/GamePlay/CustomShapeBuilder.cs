@@ -16,6 +16,7 @@ public class CustomShapeBuilder : MonoBehaviour
     //Variables used for Randomization purposes 
     [Header("Randomization")]
     public bool randomSidesNum;
+    public bool IncreaseRadiusInsteadOfReduceLineScale = true;
     //Getter and setter for state
     public SelectState selectState = SelectState.UNSELECTABLE;
     public SelectState SelectState
@@ -117,6 +118,12 @@ public class CustomShapeBuilder : MonoBehaviour
     //calculates the positions for the corners of this shape based on the number of sides
     private void CreateCorners()
     {
+        if (numSides > 1 && IncreaseRadiusInsteadOfReduceLineScale)
+        {
+            float fixedLineLength = textureHeightUnityUnit; // Use the fixed height of the texture
+            radius = fixedLineLength / (2 * Mathf.Sin(Mathf.PI / numSides));
+        }
+
         if (numSides == 1)
         {
             // For a single-sided shape, define two corners to represent the ends of the line
@@ -211,7 +218,7 @@ public class CustomShapeBuilder : MonoBehaviour
             }
             else
             {
-                textureObject.transform.localPosition += new Vector3(0,-0.2f, 0);
+                textureObject.transform.localPosition += new Vector3(0, -0.2f, 0);
             }
         }
 
@@ -232,11 +239,15 @@ public class CustomShapeBuilder : MonoBehaviour
         //scale textureobject.y to the correct length of nodeDir
         float nodeDirLength = nodeDir.magnitude;
         float textureLengthModifier = nodeDirLength / textureHeightUnityUnit;
-        textureObject.transform.localScale = new Vector3(textureLengthModifier / 2f, textureLengthModifier / 2f, 1);
+
+        if (IncreaseRadiusInsteadOfReduceLineScale)
+            textureObject.transform.localScale = new Vector3(1, 1, 1); // Keep the line size fixed
+        else
+            textureObject.transform.localScale = new Vector3(textureLengthModifier / 2f, textureLengthModifier / 2f, 1);
 
         //Create debug information to make the calculation of the scale more traceable
-        print("nodeDirLength: " + nodeDirLength + " textureHeightUnityUnit: " + textureHeightUnityUnit + " textureLengthModifier: " + textureLengthModifier);
-        
+        //print("nodeDirLength: " + nodeDirLength + " textureHeightUnityUnit: " + textureHeightUnityUnit + " textureLengthModifier: " + textureLengthModifier);
+
 
         //print("linecode: " + lineCode.ToString());
         //Use random code variable to determine which texture to use

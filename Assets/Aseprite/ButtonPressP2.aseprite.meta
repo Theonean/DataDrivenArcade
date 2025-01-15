@@ -121,156 +121,16 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ButtonPressP2_Frame_0
     originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 78
-      width: 27
-      height: 27
-    spriteID: 2bce6a8a29cef2d42826d68a9e3e724a
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 78}
-  - name: ButtonPressP2_Frame_1
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 41
-      y: 4
-      width: 27
-      height: 27
-    spriteID: 4fa213614a24ca84d97f8450b89f32ad
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 41, y: 4}
-  - name: ButtonPressP2_Frame_2
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 41
-      y: 39
-      width: 27
-      height: 27
-    spriteID: af0959300b5572840b86dd10e1356d06
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 41, y: 39}
-  - name: ButtonPressP2_Frame_3
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 41
-      y: 74
-      width: 27
-      height: 27
-    spriteID: 22229eb30ca09a74f81e151058db23ab
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 41, y: 74}
-  - name: ButtonPressP2_Frame_4
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 76
-      y: 4
-      width: 27
-      height: 27
-    spriteID: a5d87892054148c4892b7f60fd241e09
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 76, y: 4}
-  - name: ButtonPressP2_Frame_5
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 76
-      y: 39
-      width: 27
-      height: 27
-    spriteID: a7f7b29805943a942b50b80a7f333e0d
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 76, y: 39}
-  - name: ButtonPressP2_Frame_6
-    originalName: 
-    pivot: {x: 0.5185185, y: -0.074074075}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 76
-      y: 74
-      width: 27
-      height: 27
-    spriteID: 9bfab238e8465b04c9848aeb0c887525
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 76, y: 74}
-  - name: ButtonPressP2_Frame_7
-    originalName: 
-    pivot: {x: 0.51724136, y: -0.03448276}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 29
-      height: 29
-    spriteID: 8176bfadc10c06647b4269d730e25aaa
+      width: 13
+      height: 13
+    spriteID: b59480d79f0534045b3180d56424a62e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -279,18 +139,18 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: ButtonPressP2_Frame_8
+  - name: ButtonPressP2_Frame_1
     originalName: 
-    pivot: {x: 0.51724136, y: -0.03448276}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 41
-      width: 29
-      height: 29
-    spriteID: a03090e53eb94ee4cb93a57e7d697571
+      y: 25
+      width: 13
+      height: 13
+    spriteID: 66fdfd82792e5e7499372496382b93ce
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -298,7 +158,147 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 41}
+    uvTransform: {x: 4, y: 25}
+  - name: ButtonPressP2_Frame_2
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 46
+      width: 13
+      height: 13
+    spriteID: 9c31d21cbaf7342468ac3b28d6a21b7f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 46}
+  - name: ButtonPressP2_Frame_3
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 25
+      y: 4
+      width: 13
+      height: 13
+    spriteID: 365ffaec672db7149aa18a809be71b9b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 25, y: 4}
+  - name: ButtonPressP2_Frame_4
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 25
+      y: 25
+      width: 13
+      height: 13
+    spriteID: 4a3909fded1660a4291709ef31e4d707
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 25, y: 25}
+  - name: ButtonPressP2_Frame_5
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 25
+      y: 46
+      width: 13
+      height: 13
+    spriteID: 08c11fadd2c03624ba15aee909a201e7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 25, y: 46}
+  - name: ButtonPressP2_Frame_6
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 46
+      y: 4
+      width: 13
+      height: 13
+    spriteID: 28e6ef09bf71bbc4caf556ebbe523f17
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 46, y: 4}
+  - name: ButtonPressP2_Frame_7
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 46
+      y: 25
+      width: 13
+      height: 13
+    spriteID: 8ee94f48bdcb2bd4a928307931eb996c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 46, y: 25}
+  - name: ButtonPressP2_Frame_8
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 46
+      y: 46
+      width: 13
+      height: 13
+    spriteID: ed008a204ad51974f817d732ae4926c7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 46, y: 46}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -311,78 +311,78 @@ ScriptedImporter:
     - name: ButtonPressP2_Frame_0
       frameIndex: 0
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: 2bce6a8a29cef2d42826d68a9e3e724a
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: b59480d79f0534045b3180d56424a62e
     - name: ButtonPressP2_Frame_1
       frameIndex: 1
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: 4fa213614a24ca84d97f8450b89f32ad
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 66fdfd82792e5e7499372496382b93ce
     - name: ButtonPressP2_Frame_2
       frameIndex: 2
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: af0959300b5572840b86dd10e1356d06
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 9c31d21cbaf7342468ac3b28d6a21b7f
     - name: ButtonPressP2_Frame_3
       frameIndex: 3
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: 22229eb30ca09a74f81e151058db23ab
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 365ffaec672db7149aa18a809be71b9b
     - name: ButtonPressP2_Frame_4
       frameIndex: 4
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: a5d87892054148c4892b7f60fd241e09
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 4a3909fded1660a4291709ef31e4d707
     - name: ButtonPressP2_Frame_5
       frameIndex: 5
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: a7f7b29805943a942b50b80a7f333e0d
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 08c11fadd2c03624ba15aee909a201e7
     - name: ButtonPressP2_Frame_6
       frameIndex: 6
       cellRect:
-        x: 2
-        y: 2
-        width: 27
-        height: 27
-      spriteId: 9bfab238e8465b04c9848aeb0c887525
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 28e6ef09bf71bbc4caf556ebbe523f17
     - name: ButtonPressP2_Frame_7
       frameIndex: 7
       cellRect:
-        x: 1
-        y: 1
-        width: 29
-        height: 29
-      spriteId: 8176bfadc10c06647b4269d730e25aaa
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: 8ee94f48bdcb2bd4a928307931eb996c
     - name: ButtonPressP2_Frame_8
       frameIndex: 8
       cellRect:
-        x: 1
-        y: 1
-        width: 29
-        height: 29
-      spriteId: a03090e53eb94ee4cb93a57e7d697571
+        x: 0
+        y: 0
+        width: 13
+        height: 13
+      spriteId: ed008a204ad51974f817d732ae4926c7
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
+  canvasSize: {x: 13, y: 13}

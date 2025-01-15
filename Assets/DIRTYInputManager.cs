@@ -82,19 +82,23 @@ public class DIRTYInputManager : MonoBehaviour
         var controlScheme = joinInputActionReference.action.activeControl.device.name;
 
         Debug.Log("Last control scheme that pressed join: " + controlScheme);
+        
+        // Check the device that triggered the action
+        var device = joinInputActionReference.action.activeControl.device;
 
-        // Check the control scheme
-        if (controlScheme.Contains("Gamepad"))
+        if (device is Keyboard)
         {
-            player1DeviceType = Gamepad.current;
-        }
-        else if (controlScheme == "Keyboard")
-        {
+            Debug.Log("Player 1 pressed confirm with keyboard");
             player1DeviceType = Keyboard.current;
+        }
+        else if (device is Gamepad)
+        {
+            Debug.Log("Player 1 pressed confirm with gamepad");
+            player1DeviceType = Gamepad.current;
         }
         else
         {
-            Debug.Log("Player 1 joined with unknown control scheme: " + controlScheme);
+            Debug.Log("Player 1 pressed confirm with unknown device: " + device.GetType().Name);
         }
     }
 

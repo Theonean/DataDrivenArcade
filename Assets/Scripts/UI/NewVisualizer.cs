@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class NewVisualizer : MonoBehaviour
 {
     public GameObject lines;
-    public GameObject[] playerKeyboardBindings;
     public GameObject Player;
 
     private Animator[] buttonAnimators;

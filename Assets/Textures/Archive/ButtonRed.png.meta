@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 12.5
   spriteBorder: {x: 0, y: 0, z: 256, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -128,8 +128,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +147,10 @@ TextureImporter:
       name: ButtonRed_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 13
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +168,10 @@ TextureImporter:
       name: ButtonRed_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 26
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +189,10 @@ TextureImporter:
       name: ButtonRed_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 39
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,10 +210,10 @@ TextureImporter:
       name: ButtonRed_4
       rect:
         serializedVersion: 2
-        x: 128
+        x: 52
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,10 +231,10 @@ TextureImporter:
       name: ButtonRed_5
       rect:
         serializedVersion: 2
-        x: 160
+        x: 65
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,10 +252,10 @@ TextureImporter:
       name: ButtonRed_6
       rect:
         serializedVersion: 2
-        x: 192
+        x: 78
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,10 +273,10 @@ TextureImporter:
       name: ButtonRed_7
       rect:
         serializedVersion: 2
-        x: 224
+        x: 91
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,10 +294,10 @@ TextureImporter:
       name: ButtonRed_8
       rect:
         serializedVersion: 2
-        x: 256
+        x: 104
         y: 0
-        width: 32
-        height: 32
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

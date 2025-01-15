@@ -1,3 +1,4 @@
+using SaveSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     public static void SetSingleplayer(bool singlePlayer)
     {
         instance.singlePlayer = singlePlayer;
+        SaveManager.singleton.SetPlayerCount(singlePlayer ? 1 : 2);
     }
 
     public string GetPlayerName(int playerNum)
@@ -60,10 +62,12 @@ public class GameManager : MonoBehaviour
         if (playerNum == 1)
         {
             p1Name = playerName;
+            SaveManager.singleton.Initiate(playerName, playerNum);
         }
         else if (playerNum == 2)
         {
             p2Name = playerName;
+            SaveManager.singleton.Initiate(playerName, playerNum);
         }
         else
         {

@@ -10,14 +10,14 @@ namespace SaveSystem
     {
         public static SaveManager singleton;
 
-        public SaveData[] playersData = new SaveData[2];
+        public SaveData[] playersData;
 
-        public string[] saveFiles = new string[2];
+        public string[] saveFiles;
 
         public List<ISaveable> saveables;
 
-        public SaveFileHandler[] saveFileHandlers = new SaveFileHandler[2];
-        private bool[] playersInitialized = new bool[2];
+        public SaveFileHandler[] saveFileHandlers;
+        private bool[] playersInitialized;
         private bool activated = false;
 
         void Awake()
@@ -36,6 +36,14 @@ namespace SaveSystem
             //  BRIAN: if gm.instance.singlePlayer initialize arrays to 1 else 2
         }
 
+        public void SetPlayerCount(int playerCount)
+        {
+            saveFiles = new string[playerCount];
+            playersData = new SaveData[playerCount];
+            saveFileHandlers = new SaveFileHandler[playerCount];
+            playersInitialized = new bool[playerCount];
+        }
+
         public void Initiate(string fileName, int playerNum)
         {
             int playerNumIndex = playerNum - 1;
@@ -51,6 +59,9 @@ namespace SaveSystem
             }
         }
 
+        /// <summary>
+        /// Call this function when a player enteres the scene where they select or setup the amount of players playing
+        /// </summary>
         public void DeInitiate()
         {
             activated = false;

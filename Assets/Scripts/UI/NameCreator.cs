@@ -46,8 +46,13 @@ public class NameCreator : MonoBehaviour
             nameCharacters[i].transform.SetParent(transform);
             nameCharacters[i].transform.localScale = Vector3.one;
         }
+    }
 
+    private void OnEnable() {
         submitAction.action.performed += ctx => ToggleSelected(ctx);
+    }
+    private void OnDisable() {
+        submitAction.action.performed -= ctx => ToggleSelected(ctx);
     }
 
     void Update()

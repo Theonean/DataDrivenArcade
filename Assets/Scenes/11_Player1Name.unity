@@ -658,29 +658,9 @@ PrefabInstance:
       value: CustomNameInput
       objectReference: {fileID: 0}
     - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
-      propertyPath: playerNum
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
       propertyPath: buttonImage
       value: 
       objectReference: {fileID: 1930370005}
-    - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
-      propertyPath: submitAction
-      value: 
-      objectReference: {fileID: 774677881995601620, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
-    - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
-      propertyPath: navigateAction
-      value: 
-      objectReference: {fileID: 3912272187603901109, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
-    - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
-      propertyPath: defaultNameSprite
-      value: 
-      objectReference: {fileID: 1189447796280692009, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
-    - target: {fileID: 4713921797858124703, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}
-      propertyPath: editingNameSprite
-      value: 
-      objectReference: {fileID: 5940652373953187025, guid: aecb53ec4cefcf647a822403c5b0a9e7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7194050709879930207, guid: 6e1e6a411fe4e214fb69378d7e838656, type: 3}

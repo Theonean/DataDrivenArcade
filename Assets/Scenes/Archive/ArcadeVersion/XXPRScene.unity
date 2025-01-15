@@ -862,9 +862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea205459d4edcf4db8f146a637e7715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 50, y: 50}
+  gridSize: {x: 20, y: 20}
   gridSpacing: 0.5
-  scale: 0.2
+  scale: 1
   liveUpdateSettings: 1
   rotateObjects: 1
   objectOpacity: 0.3

@@ -42,12 +42,12 @@ public class GameModeData
         {
             case GameModeType.CLASSIC:
                 gridSize = new Vector2(2, 1);
-                roundTime = 60f;
+                roundTime = 10;
                 sideMultiplierPerLevel = 1;
                 sideStartingLevel = 1;
                 shapesNeededForUnlockStart = 0;
                 ShapesNeededForUnlockScalePerLevel = 0;
-                instantArrivalShapes = false;
+                instantArrivalShapes = true;
                 allShapesSameSpeed = true;
                 break;
             case GameModeType.GRID:

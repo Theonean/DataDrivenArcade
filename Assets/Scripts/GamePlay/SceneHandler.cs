@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using SaveSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -102,6 +103,11 @@ public class SceneHandler : MonoBehaviour
         {
             Debug.LogError($"Scene {sceneType} not found!");
             return;
+        }
+
+        if (sceneType == SceneType.PLAYERAMOUNTSELECTION10)
+        {
+            SaveManager.singleton.DeInitiate();
         }
 
         //Workaround so that leaderboard scene is animated as being to the left of the main menu without fudging around in Build-Order and build index

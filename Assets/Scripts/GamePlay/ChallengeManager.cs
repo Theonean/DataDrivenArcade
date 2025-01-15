@@ -91,7 +91,8 @@ public class ChallengeManager : MonoBehaviour
                 ChallengeFactory challengeFactory = CreateChallengeFactory(
                     currentPos,
                     challengeFactoryFacesFloorMIN,
-                    new Vector2(scale, scale));
+                    new Vector2(1f, 1f));
+                    Debug.LogWarning("QUICKFIX, forcefully change scale to 1,1 because scaling whole CF is dirty");//Variable before: scale
 
                 challengeFactory.gridPosition = new Vector2(x, y);
                 challengeFactory.shapeTeleports = gameModeData.instantArrivalShapes;
