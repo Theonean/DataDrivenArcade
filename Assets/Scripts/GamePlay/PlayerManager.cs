@@ -38,12 +38,9 @@ public class PlayerManager : MonoBehaviour
     public bool isKeyboardMode = false;
 
     public PlayerInfoManager playerInfoManager;
-    public SelectionManager selectionManager;
-    public List<ChallengeFactoryList> challengeFactories = new List<ChallengeFactoryList>();
 
-    [Description("Set Value in Editor determines first Factory that's selected when the game starts")]
-    private Vector2 selectedFactoryStartIndex = new Vector2(0, 0);
-    private ChallengeFactory selectedFactory;
+    [SerializeField]
+    public ChallengeFactory selectedFactory;
 
     public CustomShapeBuilder playerShape;
     private GameManager gm;
@@ -90,28 +87,14 @@ public class PlayerManager : MonoBehaviour
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = true;
         }
+
+        selectedFactory.ResetCF();
+        selectedFactory.SetSelectableState(true);
     }
 
     public void ReadyPlayer()
     {
-        ReadyPlayer(challengeFactories);
-    }
-
-    public void ReadyPlayer(List<ChallengeFactoryList> challengeFactories)
-    {
-        this.challengeFactories = challengeFactories;
         gm = GameManager.instance;
-
-        if (playerNum == 1)
-        {
-            selectedFactoryStartIndex = new Vector2(0, 0);
-        }
-        else
-        {
-            selectedFactoryStartIndex = new Vector2(challengeFactories[0].list.Count - 1, 0);
-        }
-
-        selectedFactory = challengeFactories[(int)selectedFactoryStartIndex.y].list[(int)selectedFactoryStartIndex.x];
 
         //print("PlayerManager Start");
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
@@ -125,8 +108,6 @@ public class PlayerManager : MonoBehaviour
         playerInfoManager.SetScore(score);
         playerInfoManager.SetCombo(combo);
 
-        //activate the selection manager and pass it the starting index of the selected factory
-        selectionManager.Activate(selectedFactoryStartIndex);
         playerReady = true;
     }
 
@@ -134,7 +115,6 @@ public class PlayerManager : MonoBehaviour
     {
         selectedFactory.shapeBuilder.EndLineHighlight();
 
-        selectionManager.Deactivate();
         playerReady = false;
     }
 
@@ -170,10 +150,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void OnResetShape() => ReinitializePlayer(new InputData(playerNum));
-    public void OnMoveLeft() => selectionManager.TryMoveSelection(Vector2.left);
-    public void OnMoveRight() => selectionManager.TryMoveSelection(Vector2.right);
-    public void OnMoveUp() => selectionManager.TryMoveSelection(Vector2.up);
-    public void OnMoveDown() => selectionManager.TryMoveSelection(Vector2.down);
 
     private void TryAddLine(InputData iData)
     {
@@ -243,36 +219,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void UpdateSelectedFactory(Vector2 newIndex)
-    {
-        //print("Updating Selected Factory by Player");
-
-        //Deselect old Shape and stop audio
-        selectedFactory.shapeBuilder.EndLineHighlight();
-        selectedFactory.shapeBuilder.sap.StopCurrentAudio();
-
-        //Set old factory to locked (without selection) 
-        if (selectedFactory.shapeBuilder.IsLocked()) selectedFactory.shapeBuilder.selectState = SelectState.LOCKED;
-
-        //Select and highlight new factory / shape
-        selectedFactory = challengeFactories[(int)newIndex.y].list[(int)newIndex.x];
-
-        //Reset player shape to the selected factory
-        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-
-        //Create shadow of selected shape as guide for player
-        CreateSelectedShapeShadow();
-
-        //Start line highlight on new selected factory (starts blinking animation)
-        selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
-
-        //Show player input is blocked while this shape is selected
-        foreach (SpriteRenderer lockObject in lockObjects)
-        {
-            lockObject.enabled = selectedFactory.shapeBuilder.IsLocked();
-        }
-    }
-
     public void ShapeArrived(bool correctShape, ChallengeFactory cf)
     {
 
@@ -328,10 +274,6 @@ public class PlayerManager : MonoBehaviour
 
         //Reset playe shape to 2 sides -> Old Bug workaround?
         playerShape.InitializeShape(false, 2);
-
-        //Reset to original position, which also resets player factory
-        UpdateSelectedFactory(selectedFactoryStartIndex);
-        selectionManager.ResetSelection(selectedFactoryStartIndex);
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 

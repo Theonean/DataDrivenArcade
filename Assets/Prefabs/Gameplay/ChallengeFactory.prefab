@@ -595,12 +595,12 @@ MonoBehaviour:
   shapesNeededForUnlockStart: 3
   shapesNeededForUnlock: 3
   gridPosition: {x: 0, y: 0}
-  maxFacesFloorMIN: 0
-  shapeNumSides: 0
+  maxFacesFloorMIN: 1
+  shapeNumSides: 1
   shapeNumSidesScaling: 1
   movingShape: {fileID: 0}
-  shapeTeleports: 0
-  shapeSameSpeed: 0
+  shapeTeleports: 1
+  shapeSameSpeed: 1
   shapeArrivedCorrectSystem:
   - {fileID: 2727908371270755761}
   - {fileID: 7489660757779718914}

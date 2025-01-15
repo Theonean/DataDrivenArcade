@@ -46,9 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSidesNum: 0
+  IncreaseRadiusInsteadOfReduceLineScale: 1
   selectState: 0
   radius: 0.1
-  numSides: 0
+  numSides: 1
   playerNum: 0
   lineTextures:
   - {fileID: 21300000, guid: 418767bd1c1b75b4691bea59af3f0d0e, type: 3}

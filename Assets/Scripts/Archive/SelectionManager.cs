@@ -5,6 +5,7 @@ public class SelectionManager : MonoBehaviour
 {
     //This class works as an addon to the ScoreManager to handle player input and selection of Factories
     //Without this class, Scoremanager will default its selected Factory to the first index
+    /*
     public CustomShapeBuilder playerShape;
     public GameObject selectionSprite;
 
@@ -214,4 +215,5 @@ public class SelectionManager : MonoBehaviour
 
         return inputDir;
     }
+    */
 }

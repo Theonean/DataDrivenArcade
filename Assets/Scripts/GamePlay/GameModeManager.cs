@@ -39,7 +39,6 @@ public class GameModeManager : MonoBehaviour
     public GameObject RoundOverMenu;
     public TextMeshProUGUI PlayerWonText;
     [Header("Game Mode Data")]
-    public ChallengeManager challengeManager;
     public PlayerManager p1;
     public PlayerManager p2;
     private List<ChallengeFactoryList> challengeFactories;
@@ -59,18 +58,6 @@ public class GameModeManager : MonoBehaviour
 
         timeLeftRound = roundTime;
         timeLeftStart = countdownStart;
-
-        challengeFactories = challengeManager.ConstructChallengeLayout();
-
-        //Iterate over all challenge factories and create a challenge shape if it is not selected
-        for (int i = 0; i < challengeFactories.Count; i++)
-        {
-            for (int j = 0; j < challengeFactories[i].list.Count; j++)
-            {
-                ChallengeFactory cf = challengeFactories[i].list[j];
-                cf.ResetCF();
-            }
-        }
 
         PauseMenu.SetActive(false);
         RoundOverMenu.SetActive(false);
@@ -159,14 +146,8 @@ public class GameModeManager : MonoBehaviour
 
                 SaveManager.singleton.SaveData();
 
-                //Iterate over all challenge factories and reset them
-                foreach (ChallengeFactoryList cfl in challengeFactories)
-                {
-                    foreach (ChallengeFactory cf in cfl.list)
-                    {
-                        cf.ResetCF();
-                    }
-                }
+                p1.selectedFactory.ResetCF();
+                if (!gm.singlePlayer) p2.selectedFactory.ResetCF();
 
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
                 PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " Won!";
@@ -190,8 +171,8 @@ public class GameModeManager : MonoBehaviour
 
                 print("Round Started");
 
-                p1.ReadyPlayer(challengeFactories);
-                if (!gm.singlePlayer) p2.ReadyPlayer(challengeFactories);
+                p1.ReadyPlayer();
+                if (!gm.singlePlayer) p2.ReadyPlayer();
             }
         }
 

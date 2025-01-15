@@ -19,7 +19,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
     public int shapesNeededForUnlock;
     public Vector2 gridPosition;
 
-    [Range(2, 100)]
+    [Range(1, 100)]
     public int maxFacesFloorMIN;
 
     public int shapeNumSides;
