@@ -336,7 +336,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -560,42 +560,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MoveLeft"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""673bcbe4-a443-4381-9a4e-60a416c12648"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MoveRight"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""33176d32-d882-434a-a71f-5088ba728d88"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MoveUp"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""a3ee9970-62e3-433d-8761-d72659261078"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MoveDown"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""669ee90b-fd6f-41aa-bae9-be6b1b4d9037"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -973,94 +937,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""action"": ""ResetShape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7be6295d-d23f-42c5-aca3-4b214930facd"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""MoveLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b51c506d-7472-4fb7-9508-3b7984c1b624"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b22d69ed-3b06-470a-872d-0c9bdad03a97"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""MoveRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3462b02c-94a6-4360-b730-14bb738da002"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9824fe4b-9c5f-4058-997f-2ff260f9397a"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""MoveUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fa0bccce-de99-41b0-8fcc-b2e86b007915"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""721fb885-c6ed-4149-96ee-8429fcccfc2d"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""MoveDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""948d304d-e06b-4444-968b-ce782202dad0"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MoveDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1111,10 +987,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         m_Player_CreateLine6 = m_Player.FindAction("CreateLine6", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_ResetShape = m_Player.FindAction("ResetShape", throwIfNotFound: true);
-        m_Player_MoveLeft = m_Player.FindAction("MoveLeft", throwIfNotFound: true);
-        m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
-        m_Player_MoveUp = m_Player.FindAction("MoveUp", throwIfNotFound: true);
-        m_Player_MoveDown = m_Player.FindAction("MoveDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1294,10 +1166,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CreateLine6;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_ResetShape;
-    private readonly InputAction m_Player_MoveLeft;
-    private readonly InputAction m_Player_MoveRight;
-    private readonly InputAction m_Player_MoveUp;
-    private readonly InputAction m_Player_MoveDown;
     public struct PlayerActions
     {
         private @ShapeShifterControls m_Wrapper;
@@ -1310,10 +1178,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         public InputAction @CreateLine6 => m_Wrapper.m_Player_CreateLine6;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @ResetShape => m_Wrapper.m_Player_ResetShape;
-        public InputAction @MoveLeft => m_Wrapper.m_Player_MoveLeft;
-        public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
-        public InputAction @MoveUp => m_Wrapper.m_Player_MoveUp;
-        public InputAction @MoveDown => m_Wrapper.m_Player_MoveDown;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1347,18 +1211,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
             @ResetShape.started += instance.OnResetShape;
             @ResetShape.performed += instance.OnResetShape;
             @ResetShape.canceled += instance.OnResetShape;
-            @MoveLeft.started += instance.OnMoveLeft;
-            @MoveLeft.performed += instance.OnMoveLeft;
-            @MoveLeft.canceled += instance.OnMoveLeft;
-            @MoveRight.started += instance.OnMoveRight;
-            @MoveRight.performed += instance.OnMoveRight;
-            @MoveRight.canceled += instance.OnMoveRight;
-            @MoveUp.started += instance.OnMoveUp;
-            @MoveUp.performed += instance.OnMoveUp;
-            @MoveUp.canceled += instance.OnMoveUp;
-            @MoveDown.started += instance.OnMoveDown;
-            @MoveDown.performed += instance.OnMoveDown;
-            @MoveDown.canceled += instance.OnMoveDown;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1387,18 +1239,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
             @ResetShape.started -= instance.OnResetShape;
             @ResetShape.performed -= instance.OnResetShape;
             @ResetShape.canceled -= instance.OnResetShape;
-            @MoveLeft.started -= instance.OnMoveLeft;
-            @MoveLeft.performed -= instance.OnMoveLeft;
-            @MoveLeft.canceled -= instance.OnMoveLeft;
-            @MoveRight.started -= instance.OnMoveRight;
-            @MoveRight.performed -= instance.OnMoveRight;
-            @MoveRight.canceled -= instance.OnMoveRight;
-            @MoveUp.started -= instance.OnMoveUp;
-            @MoveUp.performed -= instance.OnMoveUp;
-            @MoveUp.canceled -= instance.OnMoveUp;
-            @MoveDown.started -= instance.OnMoveDown;
-            @MoveDown.performed -= instance.OnMoveDown;
-            @MoveDown.canceled -= instance.OnMoveDown;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1456,9 +1296,5 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         void OnCreateLine6(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnResetShape(InputAction.CallbackContext context);
-        void OnMoveLeft(InputAction.CallbackContext context);
-        void OnMoveRight(InputAction.CallbackContext context);
-        void OnMoveUp(InputAction.CallbackContext context);
-        void OnMoveDown(InputAction.CallbackContext context);
     }
 }

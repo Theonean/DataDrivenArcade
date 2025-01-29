@@ -48,23 +48,13 @@ MonoBehaviour:
   randomSidesNum: 0
   IncreaseRadiusInsteadOfReduceLineScale: 1
   selectState: 0
+  maxRadius: 1.7
   radius: 0.1
   numSides: 1
   playerNum: 0
-  lineTextures:
-  - {fileID: 21300000, guid: 418767bd1c1b75b4691bea59af3f0d0e, type: 3}
-  - {fileID: 21300000, guid: 39db18d43a28f214d9e2cd7347917168, type: 3}
-  - {fileID: 21300000, guid: 13ade102aa2ab4a48a7dbc1189c12d95, type: 3}
-  - {fileID: 21300000, guid: 160f58104aa38834698686dfe52e6ae5, type: 3}
-  - {fileID: 21300000, guid: 6f524f964a8c0044bb2d6fa5297bdd62, type: 3}
-  - {fileID: 21300000, guid: 5c0f0078ffb41a44bb0f514b090f053b, type: 3}
-  highlightLineTextures:
-  - {fileID: 21300000, guid: 96f1fb7c680e8a348aa02220c59e7be7, type: 3}
-  - {fileID: 21300000, guid: 64539d6d67de66642a0ea76a53f1d8e4, type: 3}
-  - {fileID: 21300000, guid: f0e4f930d99c03243be2886b5e2e1a45, type: 3}
-  - {fileID: 21300000, guid: 4a8e491a905fdf64496a4ca4a09a30b2, type: 3}
-  - {fileID: 21300000, guid: 94ed3e96c2c8b6c4987914dc59afb74c, type: 3}
-  - {fileID: 21300000, guid: 9b271ba66c9a83c47a7064ad3896293b, type: 3}
+  linesRegular: {fileID: 11400000, guid: 26819d91172725047af95365000f9873, type: 2}
+  linesStencil: {fileID: 11400000, guid: 93e31a0c4c41d2f44842dbc04b39d1b2, type: 2}
+  linesHighlighted: {fileID: 11400000, guid: dd7256a577081544aa4b336fc4a758a0, type: 2}
   currNodePathID: 0
   sap: {fileID: 3268517464024973446}
 --- !u!114 &3268517464024973446

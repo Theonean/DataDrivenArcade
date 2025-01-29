@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,52 +6,73 @@ using UnityEngine.InputSystem;
 public class NewVisualizer : MonoBehaviour
 {
     public GameObject lines;
-    public GameObject Player;
+    private PlayerManager Player;
+    [SerializeField] private LineTextureVariant linesRegular;
+    [SerializeField] private LineTextureVariant linesPressed;
+    [SerializeField] private LineTextureVariant linesGreyedOut;
 
-    private Animator[] buttonAnimators;
     private bool active = false;
 
     GameManager gm;
 
-    private void Start()
+    private void Awake()
     {
         gm = GameManager.instance;
+        Player = GetComponentInParent<PlayerManager>();
+        Player.OnChangeReadyState.AddListener(ToggleActive);
 
-        //Joystick Events
-        //gm.JoystickInputEvent.AddListener(OnJoystickInput);
-        //gm.JoystickReleasedEvent.AddListener(OnJoystickReleased);
-
-        //Button Events
-        //gm.LineInputEvent.AddListener((iData) => OnButtonInput(iData, "Pressed"));
-        //gm.LineReleasedEvent.AddListener((iData) => OnButtonInput(iData, "Released"));
-        Debug.LogError("Repair Input System");
-
-        //Find the animators in the scene
-        buttonAnimators = GetComponentsInChildren<Animator>().Where(a => a.gameObject.name.Contains("Button")).ToArray();
-
-        PlayerInput playerInput = Player.GetComponent<PlayerInput>();
+        PlayerInput playerInput = Player.gameObject.GetComponent<PlayerInput>();
         playerInput.actions["CreateLine1"].performed += ctx => OnButtonInput(0, ctx);
         playerInput.actions["CreateLine2"].performed += ctx => OnButtonInput(1, ctx);
         playerInput.actions["CreateLine3"].performed += ctx => OnButtonInput(2, ctx);
         playerInput.actions["CreateLine4"].performed += ctx => OnButtonInput(3, ctx);
         playerInput.actions["CreateLine5"].performed += ctx => OnButtonInput(4, ctx);
         playerInput.actions["CreateLine6"].performed += ctx => OnButtonInput(5, ctx);
+
+        SetLinesActive(false);
     }
 
-    public void ToggleActive(bool showLines)
+    public void ToggleActive(bool isActive)
     {
+        //Debug.Log("Inputvisualizer toggled active " + isActive);
         gm = GameManager.instance;
-        active = !active;
-        lines.SetActive(showLines);
+        active = isActive;
+        SetLinesActive(isActive);
     }
 
     public void OnButtonInput(int lineCode, InputAction.CallbackContext ctx)
     {
-        Debug.Log("Button Input: " + lineCode + " " + ctx.action.phase);
+        if (!active)
+            return;
 
-        string buttonAnimName = lineCode % 2 == 0 ? "ButtonBlue" : "ButtonRed";
-        buttonAnimName += ctx.action.phase == InputActionPhase.Started ? "Pressed" : "Released";
+        GameObject lineObject = lines.transform.GetChild(lineCode).gameObject;
+        SpriteRenderer lineRenderer = lineObject.GetComponent<SpriteRenderer>();
 
-        buttonAnimators[lineCode].Play(buttonAnimName);
+        StartCoroutine(linePressed(lineCode, lineRenderer));
+
+    }
+
+    private void SetLinesActive(bool active)
+    {
+        int lineIndex = 0;
+        foreach (SpriteRenderer line in lines.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (active)
+            {
+                line.sprite = linesRegular.GetLineSprite(lineIndex);
+            }
+            else
+            {
+                line.sprite = linesGreyedOut.GetLineSprite(lineIndex);
+            }
+            lineIndex++;
+        }
+    }
+
+    private IEnumerator linePressed(int lineCode, SpriteRenderer lineRenderer)
+    {
+        lineRenderer.sprite = linesPressed.GetLineSprite(lineCode);
+        yield return new WaitForSeconds(0.1f);
+        lineRenderer.sprite = linesRegular.GetLineSprite(lineCode);
     }
 }

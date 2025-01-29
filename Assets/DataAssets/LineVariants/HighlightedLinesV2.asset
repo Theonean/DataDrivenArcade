@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0ccf649318bd14990bf44cc6290225, type: 3}
+  m_Name: HighlightedLinesV2
+  m_EditorClassIdentifier: 
+  lineTextures:
+  - {fileID: 21300000, guid: 3757279e2f4d30c4c9a3feb81804fb12, type: 3}
+  - {fileID: 21300000, guid: 2dde775d7e11f2149aa1451c213e79a4, type: 3}
+  - {fileID: 21300000, guid: b7c6c239078c44e458c44e03f725638b, type: 3}
+  - {fileID: 21300000, guid: 868cac954b88705408ee57da5c812fd2, type: 3}
+  - {fileID: 21300000, guid: 4f1da7f53f939a34c9f4eef7ba8889c6, type: 3}
+  - {fileID: 21300000, guid: 6b7adf30ed1cf5f4e83ee502915181d8, type: 3}

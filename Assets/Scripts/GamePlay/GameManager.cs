@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public string p1Name;
     public string p2Name;
+    public bool p1InputKeyboard = true;
+    public bool p2InputKeyboard = true;
 
     private void Awake()
     {
@@ -23,27 +25,30 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         }
     }
 
-    private void Start() {
-        
-        // Hide the cursor
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
+    private void Start()
+    {
         // Set the first selected UI element for navigation
+        //cheggi ned wieso das do isch
+        Debug.LogWarning("Silly stuff");
         if (EventSystem.current.firstSelectedGameObject != null)
         {
             EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
     }
-    
+
     public static void SetSingleplayer(bool singlePlayer)
     {
         instance.singlePlayer = singlePlayer;
-        SaveManager.singleton.SetPlayerCount(singlePlayer ? 1 : 2);
+        SaveManager.singleton.SetPlayerCount(2); //Legacy weirdness
+
+        if (singlePlayer)
+        {
+            instance.SetPlayerName(2, "henryai");
+        }
     }
 
     public string GetPlayerName(int playerNum)

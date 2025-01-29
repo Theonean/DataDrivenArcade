@@ -114,6 +114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2595777533443398838}
   - component: {fileID: 1558482185092026914}
+  - component: {fileID: 6594429004074638117}
   m_Layer: 0
   m_Name: background
   m_TagString: Untagged
@@ -130,8 +131,8 @@ Transform:
   m_GameObject: {fileID: 2944012707982834198}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.5}
+  m_LocalPosition: {x: 0, y: -1.4622136, z: 0}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 1.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 396355789927543076}
@@ -188,6 +189,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6594429004074638117
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944012707982834198}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 502753e04aa35ec478e67cd8510c0694, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3623765923381010635
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +608,7 @@ MonoBehaviour:
   shapePrefab: {fileID: 2377739720529655395, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
   factoryName: 
   showLocalCombo: 0
+  shapePlatform: {fileID: 2944012707982834198}
   visualChallengeLocks:
   - {fileID: 7512191802781987606}
   - {fileID: 8092775610098049217}
@@ -11025,13 +11048,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 396355789927543076}
     m_Modifications:
+    - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
+      propertyPath: linesShadow
+      value: 
+      objectReference: {fileID: 11400000, guid: 93e31a0c4c41d2f44842dbc04b39d1b2, type: 2}
+    - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
+      propertyPath: linesRegular
+      value: 
+      objectReference: {fileID: 11400000, guid: 26819d91172725047af95365000f9873, type: 2}
+    - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
+      propertyPath: linesStencil
+      value: 
+      objectReference: {fileID: 11400000, guid: 93e31a0c4c41d2f44842dbc04b39d1b2, type: 2}
+    - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
+      propertyPath: linesHighlighted
+      value: 
+      objectReference: {fileID: 11400000, guid: dd7256a577081544aa4b336fc4a758a0, type: 2}
     - target: {fileID: 2377739720529655395, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
       propertyPath: m_Name
       value: Shape
       objectReference: {fileID: 0}
     - target: {fileID: 8185694493848597380, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.79999995
       objectReference: {fileID: 0}
     - target: {fileID: 8185694493848597380, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
       propertyPath: m_LocalPosition.z

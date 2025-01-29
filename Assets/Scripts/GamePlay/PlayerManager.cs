@@ -3,6 +3,7 @@ using System.ComponentModel;
 using SaveSystem;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 
@@ -45,8 +46,7 @@ public class PlayerManager : MonoBehaviour
     public CustomShapeBuilder playerShape;
     private GameManager gm;
     private bool playerReady = false;
-    private GameObject shadowShape = null;
-    public SpriteRenderer[] lockObjects;
+    [SerializeField] private GameObject Hammer;
 
     //SCORE MANAGEMENT
     //SIMPLIFY THIS, MULTIPLY SIDES OF FACE WITH COMBO
@@ -57,39 +57,62 @@ public class PlayerManager : MonoBehaviour
 
     public SpriteRenderer SpriteInputeyboard;
     public SpriteRenderer SpriteInputController;
+    public UnityEvent<bool> OnChangeReadyState;
+    public UnityEvent<string> OnFinishedShape;
+    private int shapesCompleted = 0;
+    private int shapesCorrect = 0;
+    public float LineAccuracy { get => (float)shapesCorrect / shapesCompleted; }
+    private int linesPlaced = 0;
+    private float timeSpent = 0.1f; //Not zero to avoid division by zero
+    public float InputSpeed { get => linesPlaced / timeSpent; }
 
     private void Start()
     {
         gm = GameManager.instance;
 
-        if (!gm.singlePlayer || playerNum == 1)
+        playerInfoManager.SetName(gm.GetPlayerName(playerNum));
+        int highScore = SaveManager.singleton.playersData[playerNum - 1].GetHighScore();
+        if (highScore < 0)
         {
-            playerInfoManager.SetName(gm.GetPlayerName(playerNum));
-            int highScore = SaveManager.singleton.playersData[playerNum - 1].GetHighScore();
-            if (highScore < 0)
-            {
-                highScore = 0;
-            }
-            playerInfoManager.SetLastScore(highScore);
-            print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
+            highScore = 0;
         }
+        playerInfoManager.SetLastScore(highScore);
+        print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
 
         //Set iskeyboardmode by checking PlayerInput Component
-        isKeyboardMode = GetComponent<PlayerInput>().currentControlScheme == "Keyboard";
+        isKeyboardMode = playerNum == 1 ? DIRTYInputManager.instance.Player1IsKeyboard : DIRTYInputManager.instance.Player2IsKeyboard;
+        Debug.LogWarning("Game does not account input device for who pressed first, this is a bug and the workaround is to force player 1 to be keyboard and player 2 to be controller");
 
         if (isKeyboardMode)
         {
+            Debug.Log("Player " + playerNum + " is in Keyboard Mode");
             SpriteInputeyboard.enabled = true;
             SpriteInputController.enabled = false;
+            GetComponent<PlayerInput>().SwitchCurrentControlScheme(Keyboard.current);
         }
         else
         {
+            Debug.Log("Player " + playerNum + " is in Controller Mode");
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = true;
+            GetComponent<PlayerInput>().SwitchCurrentControlScheme(Gamepad.current);
+        }
+
+        if (GameManager.instance.singlePlayer && playerNum == 2)
+        {
+            GetComponent<PlayerInput>().enabled = false;
         }
 
         selectedFactory.ResetCF();
         selectedFactory.SetSelectableState(true);
+
+        playerShape.transform.position = selectedFactory.shapeBuilder.transform.position - Vector3.forward;
+    }
+
+    private void Update()
+    {
+        if (playerReady)
+            timeSpent += Time.deltaTime;
     }
 
     public void ReadyPlayer()
@@ -99,16 +122,17 @@ public class PlayerManager : MonoBehaviour
         //print("PlayerManager Start");
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
-        selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
+        selectedFactory.shapeBuilder.StartLineHighlight(playerNum, 0);
         selectedFactory.shapeBuilder.selectState = SelectState.SELECTED;
 
         //Create shadow of selected shape as guide for player
-        CreateSelectedShapeShadow();
+        //CreateSelectedShapeShadow();
 
         playerInfoManager.SetScore(score);
         playerInfoManager.SetCombo(combo);
 
         playerReady = true;
+        OnChangeReadyState.Invoke(playerReady);
     }
 
     public void UnreadyPlayer()
@@ -116,6 +140,7 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.EndLineHighlight();
 
         playerReady = false;
+        OnChangeReadyState.Invoke(playerReady);
     }
 
     public void OnCreateLine1()
@@ -156,6 +181,7 @@ public class PlayerManager : MonoBehaviour
         //When event comes from the right Player and the selected factory is not locked (ie. Animating)
         if (iData.playerNum == playerNum && !selectedFactory.shapeBuilder.IsLocked())
         {
+            linesPlaced++;
             selectedFactory.shapeBuilder.HighlightNextLine();
 
             //Stop playing audio on sap so theres not as much overlapping sounds
@@ -165,10 +191,17 @@ public class PlayerManager : MonoBehaviour
             playerShape.sap.PlayLinePlaced(iData.lineCode);
 
             //Check if adding line finished shape
-            if (playerShape.AddLine(iData.lineCode))
+            if (playerShape.AddLine(iData.lineCode, LineState.REGULAR))
             {
+                shapesCompleted++;
                 FinishedShape();
             }
+
+            //Ultra hacky way of getting the last line placed, but I didn't wanna make a specific interface just for this on the shapeBuilder
+            GameObject lastLinePlaced = playerShape.transform.GetChild(playerShape.transform.childCount - 1).gameObject;
+            Hammer.transform.position = new Vector3(lastLinePlaced.transform.position.x, lastLinePlaced.transform.position.y, Hammer.transform.position.z);
+            Hammer.GetComponent<Animator>().StopPlayback();
+            Hammer.GetComponent<Animator>().Play("HammerSmash");
         }
     }
 
@@ -177,15 +210,12 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.HighlightNextLine();
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
 
+        //TODO: Remove and simply this loopin call to CF, Shapes used to be able to fly to the CF, thats no more however
         StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode()));
 
-        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
+        OnFinishedShape.Invoke(playerShape.GetShapecode());
 
-        //Show player input is blocked while this shape is selected
-        foreach (SpriteRenderer lockObject in lockObjects)
-        {
-            lockObject.enabled = true;
-        }
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
     }
 
     /// <summary>
@@ -202,18 +232,12 @@ public class PlayerManager : MonoBehaviour
             {
                 Destroy(selectedFactory.movingShape);
                 selectedFactory.shapeBuilder.sap.playShapeFinished(false, combo);
-
-                //remove visual lock objects
-                foreach (SpriteRenderer lockObject in lockObjects)
-                {
-                    lockObject.enabled = false;
-                }
             }
             //Normal reset of player factory and with proper reset on highlighting
             else
             {
                 playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-                selectedFactory.shapeBuilder.EndLineHighlight();
+                selectedFactory.shapeBuilder.EndLineHighlight(true);
                 selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
             }
         }
@@ -232,6 +256,8 @@ public class PlayerManager : MonoBehaviour
             score += (cf.shapeNumSides - 1) * combo; //-1 adjusts to account for shapenumsides going up before this function is called
             playerInfoManager.SetScore(score);
 
+            shapesCorrect++;
+
             //Inform challengemanager to reduce Lock Number on challenges below this one
             //if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
             Debug.LogWarning("Fading out \"Lock\" functionality as grid has become obsolete");
@@ -247,16 +273,7 @@ public class PlayerManager : MonoBehaviour
         //If the player still has this factory selected when it arrives
         if (cf.Equals(selectedFactory))
         {
-            //Show player input is blocked while this shape is selected
-            foreach (SpriteRenderer lockObject in lockObjects)
-            {
-                lockObject.enabled = false;
-            }
-
             playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-
-            //Create shadow of selected shape as guide for player
-            CreateSelectedShapeShadow();
         }
     }
 
@@ -278,43 +295,10 @@ public class PlayerManager : MonoBehaviour
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
         //Create shadow of selected shape as guide for player
-        CreateSelectedShapeShadow();
+        //CreateSelectedShapeShadow();
 
         score = 0;
         combo = 0;
         playerInfoManager.Reset();
-    }
-
-    /// <summary>
-    /// Create a shadow of the shape that is currently selected inside the player factory as a guide for the player
-    /// </summary>
-    private void CreateSelectedShapeShadow()
-    {
-        //If shadow doesn't exist yet, create new one from selected factorys shapeBuilder
-        if (shadowShape.IsUnityNull())
-        {
-            //Clone selected factorys shapeBuilder and parent it to the player
-            shadowShape = Instantiate(selectedFactory.shapeBuilder.gameObject, transform);
-            shadowShape.name = "ShadowShape";
-            shadowShape.transform.localScale = playerShape.transform.localScale;
-            shadowShape.transform.localPosition = new Vector3(0, 0, 0);
-            shadowShape.transform.position = playerShape.transform.position;
-            shadowShape.transform.position = new Vector3(shadowShape.transform.position.x, shadowShape.transform.position.y, 0);
-        }
-        //If shadow already exists, update it to be the same as the selected factorys shapeBuilder
-        else
-        {
-            //Get shapebuilder script from shadowShape
-            CustomShapeBuilder shadowShapeBuilder = shadowShape.GetComponent<CustomShapeBuilder>();
-
-            //Recreate shadow to be same as selected factory
-            shadowShapeBuilder.InitializeShape(true, selectedFactory.shapeNumSides, selectedFactory.shapeBuilder.GetShapecode());
-        }
-
-        //create shadow effect by setting all the line textures to a black color
-        foreach (SpriteRenderer lineRenderer in shadowShape.GetComponentsInChildren<SpriteRenderer>())
-        {
-            lineRenderer.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0.5f);
-        }
     }
 }

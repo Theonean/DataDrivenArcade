@@ -36,6 +36,7 @@ namespace SaveSystem
             //  BRIAN: if gm.instance.singlePlayer initialize arrays to 1 else 2
         }
 
+        //This function is outdated, it used to be the case that players could play solo, I changed it so that in singleplayers they play against henryAI, which also has a savefile as any normal player
         public void SetPlayerCount(int playerCount)
         {
             saveFiles = new string[playerCount];
@@ -86,8 +87,6 @@ namespace SaveSystem
             if (activated)
             {
                 LoadData(1);
-
-                if (GameManager.instance.singlePlayer) return;
                 LoadData(2);
             }
         }
@@ -104,9 +103,6 @@ namespace SaveSystem
         public void SaveData()
         {
             SaveData(1);
-
-            //Player 2 doesn't get saved in singleplayer mode
-            if (GameManager.instance.singlePlayer) return;
             
             SaveData(2);
         }

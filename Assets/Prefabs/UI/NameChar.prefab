@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterText: {fileID: 5769223659400460204}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  blinkColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8707668390692985867
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X
+  m_text: x
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9f7ca81abc9b90545a88bc67ce9cf5f9, type: 2}
   m_sharedMaterial: {fileID: -4565979111124930816, guid: 9f7ca81abc9b90545a88bc67ce9cf5f9, type: 2}

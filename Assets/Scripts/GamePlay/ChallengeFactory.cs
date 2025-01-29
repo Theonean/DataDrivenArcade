@@ -8,6 +8,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
 {
     public string factoryName;
     public bool showLocalCombo;
+    [SerializeField] GameObject shapePlatform;
     [Description("Drag all objects in here which are part of the visual \"locking\" of a challenge")]
     public GameObject[] visualChallengeLocks;
     public TextMeshProUGUI localComboText;
@@ -168,24 +169,46 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             bool isCorrectShape = playerShapeCode == shapeBuilder.GetShapecode();
             //print("Shape arrived and code is correct: " + isCorrectShape + " after comparing codes: " + playerShapeCode + " to " + shapeBuilder.GetShapecode());
 
+            //DROP SHAPE ONTO PLATTFORM BELOW SEQUENCE
+            shapePlatform.GetComponent<Animator>().Play("LetShapeFallOntoBelt");
+
+            //Prevent lines blinking while falling down
+            shapeBuilder.EndLineHighlight(true);
+            shapeBuilder.InitializeShape(true, shapeNumSides, playerShapeCode, LineState.REGULAR);
+
+            //Short sequence where the built shape gets dropped onto belt below
+            //To achieve this, the shape is scaled down over a short period of time and then properly reset
+            //lerp scale from 1 to 0.25 depending on how close shapeBuilder.radius is to 1.7 from starting point 1
+            float time = 0.4f;
+            float counter = 0f;
+            Vector3 originalScale = shapeBuilder.transform.localScale;
+            float targetScaleMultiplier = Mathf.Lerp(1, 0.25f, shapeBuilder.radius / shapeBuilder.maxRadius);
+            while (counter < time)
+            {
+                counter += Time.deltaTime;
+                shapeBuilder.transform.localScale = Vector3.Lerp(originalScale, originalScale * targetScaleMultiplier, counter / time);
+                yield return null;
+            }
+            shapeBuilder.transform.localScale = originalScale; //Reset original scale after dropping shape
+
             //Create new challenge if code was correct
             if (isCorrectShape)
             {
                 StartCoroutine(FlyScoreUp((player.GetCombo() + 1) * shapeNumSides)); //Let score fly up before combo and sides are updated so right number is shown
+
                 localCombo += 1;
                 shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
+                shapeBuilder.StartLineHighlight(player.playerNum, 0); //Start Highlighting again
+
 
                 myShapeArrivedCorrectSystem.Play();
             }
             else
             {
                 //If shapecode is longer than the number of sides, reset shapecode to maxFacesFloorMIN
-                if (shapeBuilder.GetShapecode().Length > maxFacesFloorMIN)
-                {
-                    shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
-                }
+                shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
 
                 localCombo = 0;
                 shapeNumSides = maxFacesFloorMIN;
@@ -201,8 +224,8 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             //If the shape is wrong, jiggle it left and right
             if (!isCorrectShape)
             {
-                float time = 0.5f;
-                float counter = 0f;
+                time = 0.5f;
+                counter = 0f;
                 Vector3 originalPos = shapeBuilder.transform.position;
                 while (counter < time)
                 {

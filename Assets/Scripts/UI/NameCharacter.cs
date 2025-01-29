@@ -13,11 +13,15 @@ public class NameCharacter : MonoBehaviour
 
     public TextMeshProUGUI characterText;
     public Color defaultColor = Color.white;
+    public Color blinkColor = Color.black;
     private float invisibleTime = 0.25f;
     private float visibleTime = 0.6f;
     private float visibilityTimer;
     private bool visible = true;
     private bool selected = false;
+
+    private int minAllowedChar = 97;
+    private int maxAllowedChar = 122;
 
     void Start()
     {
@@ -28,13 +32,14 @@ public class NameCharacter : MonoBehaviour
     {
         selected = !selected;
 
-        if (!selected)
-        {
-            characterText.color = defaultColor;
-        }
+        SetVisibility(selected);
 
-        SetVisibility(true);
+    }
 
+    public bool isCharLegal(char c)
+    {
+        int charInt = (int)c;
+        return charInt >= minAllowedChar && charInt <= maxAllowedChar;
     }
 
     //Handles setting the character either up or down
@@ -43,13 +48,13 @@ public class NameCharacter : MonoBehaviour
         int charInt = (int)characterText.text[0];
         if (isUp)
         {
-            int nextCharInt = charInt < 126 ? charInt + 1 : 32;
+            int nextCharInt = charInt > minAllowedChar ? charInt - 1 : maxAllowedChar;
             characterText.text = ((char)nextCharInt).ToString();
             print("Num: " + (int)characterText.text[0]);
         }
         else
         {
-            int nextCharInt = charInt > 32 ? charInt - 1 : 126;
+            int nextCharInt = charInt < maxAllowedChar ? charInt + 1 : minAllowedChar;
             characterText.text = ((char)nextCharInt).ToString();
             print("Num: " + (int)characterText.text[0]);
         }
@@ -87,6 +92,6 @@ public class NameCharacter : MonoBehaviour
 
         //Toggle visibility
         visible = targetVisibility;
-        characterText.color = visible ? defaultColor : Color.clear;
+        characterText.color = visible ? blinkColor : defaultColor;
     }
 }

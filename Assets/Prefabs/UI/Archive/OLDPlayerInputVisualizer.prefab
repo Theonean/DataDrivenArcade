@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 4589620542861438979}
   - component: {fileID: 4995392077212770649}
   m_Layer: 0
-  m_Name: PlayerInputVisualizer
+  m_Name: OLDPlayerInputVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

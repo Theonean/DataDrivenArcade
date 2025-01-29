@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0ccf649318bd14990bf44cc6290225, type: 3}
+  m_Name: GreyedoutLines
+  m_EditorClassIdentifier: 
+  lineTextures:
+  - {fileID: 21300000, guid: c9ed7131ee619034794f3423eb043857, type: 3}
+  - {fileID: 21300000, guid: f5f0a4da35db892428d0c69bac07a1bf, type: 3}
+  - {fileID: 21300000, guid: 0f1a3395b7c0aec46b380fd291102bbd, type: 3}
+  - {fileID: 21300000, guid: 7929f491d6b2aad42a8f4a3f2c0bd578, type: 3}
+  - {fileID: 21300000, guid: 780628c679020cd4eb0538ec2b10b423, type: 3}
+  - {fileID: 21300000, guid: c95605a6581dcc145b4ec7c2a1cab303, type: 3}

@@ -48,12 +48,16 @@ public class NameCreator : MonoBehaviour
         }
     }
 
-    private void OnEnable() {
-        submitAction.action.performed += ctx => ToggleSelected(ctx);
+    private void OnEnable()
+    {
+        submitAction.action.performed += OnSubmitActionPerformed;
     }
-    private void OnDisable() {
-        submitAction.action.performed -= ctx => ToggleSelected(ctx);
+
+    private void OnDisable()
+    {
+        submitAction.action.performed -= OnSubmitActionPerformed;
     }
+
 
     void Update()
     {
@@ -78,16 +82,22 @@ public class NameCreator : MonoBehaviour
 
     private bool IsValidInput(char input)
     {
-        return (input >= 'a' && input <= 'z') || (input >= 'A' && input <= 'Z');
+        return nameCharacters[selectedNameCharIndex].isCharLegal(input);
+    }
+
+    private void OnSubmitActionPerformed(InputAction.CallbackContext ctx)
+    {
+        ToggleSelected(ctx);
     }
 
     public void ToggleSelected(InputAction.CallbackContext ctx)
     {
-        //BUGFIX: Prevents trying to acces unloaded eventsystem Objects on keypress during scene transitions
         if (SceneHandler.Instance.nextScene != SceneType.EMPTY)
         {
             return;
         }
+
+        Debug.Log("NameCreator selected: " + selected + " object still active: " + gameObject.activeSelf);
 
         if (EventSystem.current.currentSelectedGameObject != transform.parent.gameObject && !selected)
         {
@@ -105,18 +115,18 @@ public class NameCreator : MonoBehaviour
         print("NameCreator selected: " + selected);
         if (selected)
         {
-            //Set source image to editing name sprite
+            // Set source image to editing name sprite
             buttonImage.sprite = editingNameSprite;
             ToggleUIElements(false);
 
-            //Subscribe to the ShapeShifterControls "Navigate" UI Event and bind it to changeLetter function
-            navigateAction.action.performed += ctx => ChangeLetter(ctx);
+            // Subscribe to the navigateAction event
+            navigateAction.action.performed += OnNavigateActionPerformed;
         }
         else
         {
-            //Desubscribe
-            navigateAction.action.performed -= ctx => ChangeLetter(ctx);
-            Debug.Log("Deselected NameCreator and desubscribed from navigateAction");
+            // Unsubscribe from the navigateAction event
+            navigateAction.action.performed -= OnNavigateActionPerformed;
+            Debug.Log("Deselected NameCreator and unsubscribed from navigateAction");
 
             ToggleUIElements(true);
 
@@ -127,6 +137,11 @@ public class NameCreator : MonoBehaviour
 
         nameCharacters[selectedNameCharIndex].ToggleSelected();
     }
+    private void OnNavigateActionPerformed(InputAction.CallbackContext ctx)
+    {
+        ChangeLetter(ctx);
+    }
+
 
     public void SaveName()
     {

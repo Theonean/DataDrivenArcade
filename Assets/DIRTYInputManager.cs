@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,8 @@ public class DIRTYInputManager : MonoBehaviour
 
     public InputDevice player1DeviceType;
     public InputDevice player2DeviceType;
+    public bool Player1IsKeyboard;
+    public bool Player2IsKeyboard;
 
     void Awake()
     {
@@ -21,59 +24,15 @@ public class DIRTYInputManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-
-        if (SceneHandler.Instance.currentScene == SceneType.GAME30)
-        {
-            //Find Player1 and Player2 Game Objects
-            GameObject player1 = GameObject.Find("Player1");
-            GameObject player2 = GameObject.Find("Player2");
-
-            //Find Player1 and Player2 Input Actions
-            PlayerInput player1Input = player1.GetComponent<PlayerInput>();
-            PlayerInput player2Input = player2.GetComponent<PlayerInput>();
-
-            // Assign Input Device to players
-            player1Input.SwitchCurrentControlScheme(player1DeviceType);
-            player2Input.SwitchCurrentControlScheme(player2DeviceType);
-
-            // Enable the corresponding action maps for Player 1 and Player 2
-            player1Input.actions.FindActionMap("Player").Enable();
-            player2Input.actions.FindActionMap("Player").Enable();
-        }
     }
 
     private void OnEnable()
     {
-        // Subscribe to the action's performed event
-        joinInputActionReference.action.performed += OnActionPerformed;
         joinInputActionReference.action.Enable();
     }
 
-    private void OnDisable()
-    {
-        // Unsubscribe from the action's performed event
-        joinInputActionReference.action.performed -= OnActionPerformed;
-    }
-
-    public void OnActionPerformed(InputAction.CallbackContext context)
-    {
-        Debug.Log("Player 1 pressed confirm");
-
-        // Check the device that triggered the action
-        var device = context.control.device;
-
-        if (device is Keyboard)
-        {
-            Debug.Log("Player 1 pressed confirm with keyboard");
-        }
-        else if (device is Gamepad)
-        {
-            Debug.Log("Player 1 pressed confirm with gamepad");
-        }
-        else
-        {
-            Debug.Log("Player 1 pressed confirm with unknown device: " + device.GetType().Name);
-        }
+    private void OnDisable() {
+        joinInputActionReference.action.Disable();
     }
 
     private void GetControlSchemeLastJoinPressed()
@@ -82,7 +41,7 @@ public class DIRTYInputManager : MonoBehaviour
         var controlScheme = joinInputActionReference.action.activeControl.device.name;
 
         Debug.Log("Last control scheme that pressed join: " + controlScheme);
-        
+
         // Check the device that triggered the action
         var device = joinInputActionReference.action.activeControl.device;
 
@@ -90,11 +49,15 @@ public class DIRTYInputManager : MonoBehaviour
         {
             Debug.Log("Player 1 pressed confirm with keyboard");
             player1DeviceType = Keyboard.current;
+            Player1IsKeyboard = true;
+            Player2IsKeyboard = false;
         }
         else if (device is Gamepad)
         {
             Debug.Log("Player 1 pressed confirm with gamepad");
             player1DeviceType = Gamepad.current;
+            Player1IsKeyboard = false;
+            Player2IsKeyboard = true;
         }
         else
         {
