@@ -44,6 +44,16 @@ public class GameModeManager : MonoBehaviour
     private GameModeState gameModeState = GameModeState.COUNTDOWN;
     private GameModeData gameModeData;
 
+    private void OnEnable() {
+        CustomUIEvents.OnResumeGame += TogglePauseMenu;
+        Application.focusChanged += OnFocusChangeTogglePause;
+    }
+
+    private void OnDisable() {
+        CustomUIEvents.OnResumeGame -= TogglePauseMenu;
+        Application.focusChanged -= OnFocusChangeTogglePause;
+    }
+
     private void Start()
     {
         gm = GameManager.instance;
@@ -63,18 +73,6 @@ public class GameModeManager : MonoBehaviour
         Debug.LogWarning("make it so that player 2 is in AI mode if singleplayer");
 
         togglePauseAction.action.Enable();
-
-        Debug.LogWarning("Create Interface function for lambda shenanigans and make this in onenable ondisable");
-        togglePauseAction.action.performed += ctx => TogglePauseMenu();
-
-        //If player clicks outside of game and it's unfocused, pause
-        Application.focusChanged += (focus) =>
-        {
-            if (!focus)
-            {
-                TogglePauseMenu();
-            }
-        };
     }
 
 
@@ -159,6 +157,14 @@ public class GameModeManager : MonoBehaviour
                 p1.ReadyPlayer();
                 p2.ReadyPlayer();
             }
+        }
+    }
+
+    private void OnFocusChangeTogglePause(bool focus)
+    {
+        if (!focus)
+        {
+            TogglePauseMenu();
         }
     }
 

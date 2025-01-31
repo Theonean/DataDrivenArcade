@@ -83,7 +83,13 @@ public class PlayerManager : MonoBehaviour
         isKeyboardMode = playerNum == 1 ? DIRTYInputManager.instance.Player1IsKeyboard : DIRTYInputManager.instance.Player2IsKeyboard;
         Debug.LogWarning("Game does not account input device for who pressed first, this is a bug and the workaround is to force player 1 to be keyboard and player 2 to be controller");
 
-        if (isKeyboardMode)
+        if(playerNum == 2 && GameManager.instance.singlePlayer)
+        {
+            SpriteInputeyboard.enabled = false;
+            SpriteInputController.enabled = false;
+            GetComponent<PlayerInput>().enabled = false;
+        }
+        else if (isKeyboardMode)
         {
             Debug.Log("Player " + playerNum + " is in Keyboard Mode");
             SpriteInputeyboard.enabled = true;
@@ -96,11 +102,6 @@ public class PlayerManager : MonoBehaviour
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = true;
             GetComponent<PlayerInput>().SwitchCurrentControlScheme(Gamepad.current);
-        }
-
-        if (GameManager.instance.singlePlayer && playerNum == 2)
-        {
-            GetComponent<PlayerInput>().enabled = false;
         }
 
         selectedFactory.ResetCF();

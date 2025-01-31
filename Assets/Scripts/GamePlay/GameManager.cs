@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public SceneType gameState;
-    public GameModeData gameModeData;
+    public GameModeData gameModeData = new GameModeData(GameModeType.CLASSIC);
     public bool arcadeMode = false;
     public bool singlePlayer = false;
 
@@ -29,6 +29,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        //Prevent duplicate singleton in scene from subscribing to events
+        if (instance != this) return;
+
+        CustomUIEvents.OnQuitGame += QuitGame;
+        CustomUIEvents.OnSetPlayerCount += SetPlayerCount;
+    }
+
+    private void OnDisable()
+    {
+        //Prevent duplicate singleton in scene from unsubscribing to events
+        if (instance != this) return;
+
+        CustomUIEvents.OnQuitGame -= QuitGame;
+        CustomUIEvents.OnSetPlayerCount -= SetPlayerCount;
+    }
+
     private void Start()
     {
         // Set the first selected UI element for navigation
@@ -40,12 +58,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void SetSingleplayer(bool singlePlayer)
+    public static void SetPlayerCount(int playerCount)
     {
-        instance.singlePlayer = singlePlayer;
+        instance.singlePlayer = playerCount == 1;
+
         SaveManager.singleton.SetPlayerCount(2); //Legacy weirdness
 
-        if (singlePlayer)
+        if (playerCount == 1)
         {
             instance.SetPlayerName(2, "henryai");
         }
@@ -80,31 +99,6 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Set player " + playerNum + " name " + playerName);
-    }
-
-    public static void SetGameMode(string gameMode)
-    {
-        switch (gameMode)
-        {
-            case "Classic":
-                instance.SwitchToGameMode(GameModeType.CLASSIC);
-                break;
-            case "Grid":
-                instance.SwitchToGameMode(GameModeType.GRID);
-                break;
-            case "Custom":
-                instance.SwitchToGameMode(GameModeType.CUSTOM);
-                break;
-            default:
-                Debug.LogError("Invalid game mode: " + gameMode);
-                break;
-        }
-    }
-
-    private void SwitchToGameMode(GameModeType mode)
-    {
-        instance.gameModeData = new GameModeData(mode);
-        SceneHandler.Instance.SwitchScene(SceneType.GAME30);
     }
 
     public static void QuitGame()

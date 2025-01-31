@@ -46,7 +46,17 @@ public class SceneHandler : MonoBehaviour
         }
     }
 
-    public static void GoToNextScene(int sceneIndexIncrement = 1)
+    private void OnEnable() {
+        CustomUIEvents.OnMoveSceneForward += GoToNextScene;
+        CustomUIEvents.OnMoveSceneBackward += GoToLastScene;
+    }
+
+    private void OnDisable() {
+        CustomUIEvents.OnMoveSceneForward -= GoToNextScene;
+        CustomUIEvents.OnMoveSceneBackward -= GoToLastScene;
+    }
+
+    public void GoToNextScene(int sceneIndexIncrement = 1)
     {
         int nextSceneIndex = (int)Instance.currentScene + sceneIndexIncrement;
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
@@ -59,7 +69,7 @@ public class SceneHandler : MonoBehaviour
         }
     }
 
-    public static void GoToLastScene(int sceneIndexDecrement = 1)
+    public void GoToLastScene(int sceneIndexDecrement = 1)
     {
         int lastSceneIndex = (int)Instance.currentScene - sceneIndexDecrement;
 

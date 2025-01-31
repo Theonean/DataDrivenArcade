@@ -11,13 +11,13 @@ public class NameCreator : MonoBehaviour
     When an Underscore is selected, it blinks and the players Input can change the character at that index by either pressing up or down with the Joystick
     this Class functions as an intermediary between all the chars and the MainMenu Class 
     */
+    [SerializeField] InputActionReference backsapceAction;
     public bool selected = false;
     //FLAG BOOLEAN TO LATER USE WHEN SWITCHING BETWEEN CONTROLLER / KEYBOARD INPUT
     public bool INPUTWITHKEYBOARD = true;
     public int nameLength = 8;
     public GameObject nameCharacterPrefab;
     public InputActionReference navigateAction;
-    public InputActionReference submitAction;
     private GameManager gm;
     private NameCharacter[] nameCharacters;
     private float interCharDistance = 0.3f;
@@ -26,7 +26,7 @@ public class NameCreator : MonoBehaviour
     public int playerNum;
     public Sprite editingNameSprite;
     public Sprite defaultNameSprite;
-    private string lastInput = "";
+    [SerializeField] private Button button;
 
     void Start()
     {
@@ -50,34 +50,41 @@ public class NameCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        submitAction.action.performed += OnSubmitActionPerformed;
+        CustomUIEvents.OnToggleNameInputSelected += ToggleSelected;
+        CustomUIEvents.OnSavePlayerName += SaveName;
+        backsapceAction.action.performed += OnDeleteCharacter;
     }
 
     private void OnDisable()
     {
-        submitAction.action.performed -= OnSubmitActionPerformed;
+        CustomUIEvents.OnToggleNameInputSelected -= ToggleSelected;
+        CustomUIEvents.OnSavePlayerName -= SaveName;
+        backsapceAction.action.performed -= OnDeleteCharacter;
     }
 
 
     void Update()
     {
-        if (selected && INPUTWITHKEYBOARD && UnityEngine.Input.inputString.Length > 0)
+        if (selected && INPUTWITHKEYBOARD && Input.inputString.Length > 0)
         {
             //Take any character input and change the character at the selected index, move the selected index to the right
-            char input = UnityEngine.Input.inputString[0];
+            char input = Input.inputString[0];
             if (IsValidInput(input))
             {
-                lastInput = input.ToString();
                 nameCharacters[selectedNameCharIndex].SetCharacter(input);
                 MoveCharacterSelectionForward();
-
-            }//Otherwise if backspace is pressed, remove the last character
-            else if (UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
-            {
-                nameCharacters[selectedNameCharIndex].SetCharacter('X');
-                MoveCharacterSelectionBackward();
             }
         }
+    }
+
+    private void OnDeleteCharacter(InputAction.CallbackContext ctx)
+    {
+        if (IsLastCharacterInName() && selectedNameCharIndex > 0)
+        {
+            nameCharacters[selectedNameCharIndex].SetCharacter(' ');
+        }
+
+        MoveCharacterSelectionBackward();
     }
 
     private bool IsValidInput(char input)
@@ -85,29 +92,16 @@ public class NameCreator : MonoBehaviour
         return nameCharacters[selectedNameCharIndex].isCharLegal(input);
     }
 
-    private void OnSubmitActionPerformed(InputAction.CallbackContext ctx)
+    private bool IsLastCharacterInName()
     {
-        ToggleSelected(ctx);
+        return selectedNameCharIndex == nameLength - 1 ||
+            nameCharacters[selectedNameCharIndex + 1].GetCharacter()[0].Equals(' ');
     }
 
-    public void ToggleSelected(InputAction.CallbackContext ctx)
+    public void ToggleSelected()
     {
         if (SceneHandler.Instance.nextScene != SceneType.EMPTY)
         {
-            return;
-        }
-
-        Debug.Log("NameCreator selected: " + selected + " object still active: " + gameObject.activeSelf);
-
-        if (EventSystem.current.currentSelectedGameObject != transform.parent.gameObject && !selected)
-        {
-            Debug.Log("Name Input Not selected, do nothing");
-            return;
-        }
-
-        if (!ctx.performed)
-        {
-            Debug.Log("Action not performed, do nothing");
             return;
         }
 
@@ -117,7 +111,7 @@ public class NameCreator : MonoBehaviour
         {
             // Set source image to editing name sprite
             buttonImage.sprite = editingNameSprite;
-            ToggleUIElements(false);
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
 
             // Subscribe to the navigateAction event
             navigateAction.action.performed += OnNavigateActionPerformed;
@@ -128,9 +122,8 @@ public class NameCreator : MonoBehaviour
             navigateAction.action.performed -= OnNavigateActionPerformed;
             Debug.Log("Deselected NameCreator and unsubscribed from navigateAction");
 
-            ToggleUIElements(true);
-
             buttonImage.sprite = defaultNameSprite;
+            button.navigation = new Navigation { mode = Navigation.Mode.Automatic };
 
             EventSystem.current.SetSelectedGameObject(transform.parent.gameObject);
         }
@@ -173,6 +166,8 @@ public class NameCreator : MonoBehaviour
         {
             name += nameCharacters[i].GetCharacter();
         }
+        name.TrimEnd(' ');
+
         return name;
     }
 
@@ -204,13 +199,15 @@ public class NameCreator : MonoBehaviour
         {
             nameCharacters[selectedNameCharIndex].SetCharacter(false);
         }
-
-
-
     }
 
     private void MoveCharacterSelectionForward()
     {
+        if (nameCharacters[selectedNameCharIndex].GetCharacter()[0] == ' ')
+        {
+            return;
+        }
+
         if (selectedNameCharIndex < nameLength - 1)
         {
             nameCharacters[selectedNameCharIndex].ToggleSelected();
@@ -225,14 +222,6 @@ public class NameCreator : MonoBehaviour
             nameCharacters[selectedNameCharIndex].ToggleSelected();
             selectedNameCharIndex--;
             nameCharacters[selectedNameCharIndex].ToggleSelected();
-        }
-    }
-    private void ToggleUIElements(bool isActive)
-    {
-        Button[] buttons = FindObjectsOfType<Button>();
-        foreach (var button in buttons)
-        {
-            button.interactable = isActive;
         }
     }
 }

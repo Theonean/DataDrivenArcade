@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[ExecuteInEditMode]
 public class BackgroundShapeMover : MonoBehaviour
 {
     public GameObject[] pathPoints;

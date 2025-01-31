@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NameCharacter : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class NameCharacter : MonoBehaviour
 
     */
 
-    public TextMeshProUGUI characterText;
+    [SerializeField] private TextMeshProUGUI characterText;
+    [SerializeField] private Image characterUnderline;
     public Color defaultColor = Color.white;
     public Color blinkColor = Color.black;
     private float invisibleTime = 0.25f;
@@ -26,11 +28,17 @@ public class NameCharacter : MonoBehaviour
     void Start()
     {
         visibilityTimer = visibleTime;
+        SetCharacter(' ');
     }
 
     public void ToggleSelected()
     {
         selected = !selected;
+
+        if (selected && (characterText.text.Length == 0 || characterText.text[0] == ' '))
+        {
+            SetCharacter('a');
+        }
 
         SetVisibility(selected);
 
@@ -45,27 +53,27 @@ public class NameCharacter : MonoBehaviour
     //Handles setting the character either up or down
     public void SetCharacter(bool isUp)
     {
+        SetVisibility(selected);
         int charInt = (int)characterText.text[0];
+
         if (isUp)
         {
             int nextCharInt = charInt > minAllowedChar ? charInt - 1 : maxAllowedChar;
             characterText.text = ((char)nextCharInt).ToString();
-            print("Num: " + (int)characterText.text[0]);
+            //print("Num: " + (int)characterText.text[0]);
         }
         else
         {
             int nextCharInt = charInt < maxAllowedChar ? charInt + 1 : minAllowedChar;
             characterText.text = ((char)nextCharInt).ToString();
-            print("Num: " + (int)characterText.text[0]);
+            //print("Num: " + (int)characterText.text[0]);
         }
-
-        SetVisibility(true);
     }
 
     public void SetCharacter(int charInt)
     {
         characterText.text = ((char)charInt).ToString();
-        SetVisibility(true);
+        SetVisibility(selected);
     }
 
     public string GetCharacter()
@@ -93,5 +101,6 @@ public class NameCharacter : MonoBehaviour
         //Toggle visibility
         visible = targetVisibility;
         characterText.color = visible ? blinkColor : defaultColor;
+        characterUnderline.color = visible ? blinkColor : defaultColor;
     }
 }
