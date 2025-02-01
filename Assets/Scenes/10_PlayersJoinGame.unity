@@ -1042,9 +1042,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99f2786a4883e640965abe402aeb6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backButton: {fileID: 0}
   joinInputActionReference: {fileID: 774677881995601620, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
+  cancelInputActionReference: {fileID: 0}
   Player1IsKeyboard: 0
   Player2IsKeyboard: 0
+  playerUIGroups: []
+  playerReadyImages: []
 --- !u!4 &1123816520
 Transform:
   m_ObjectHideFlags: 0

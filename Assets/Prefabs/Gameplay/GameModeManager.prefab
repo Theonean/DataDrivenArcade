@@ -1,53 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &660462388920642610
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2318153775356246074}
-  - component: {fileID: 4638301194858104089}
-  m_Layer: 0
-  m_Name: ChallengeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2318153775356246074
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660462388920642610}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4475665094865158777}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4638301194858104089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660462388920642610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a0b9c29d96f48459670160bb601643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  challengePrefab: {fileID: 5666017759957841742, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
-  faceMultiplierPerLevel: 0
-  faceStartValue: 1
-  gridSize: {x: 4, y: 3}
 --- !u!1 &792687002875593374
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +236,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2318153775356246074}
   - {fileID: 2095614996328709609}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -302,15 +253,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countdownRoundTimer: {fileID: 3294314551684321705}
   countdownStartTime: {fileID: 2579742493818178317}
-  goAgainObject: {fileID: 0}
-  goAgainTitleText: {fileID: 0}
-  startSelectablesGoAgain:
-  - {fileID: 0}
-  - {fileID: 0}
-  challengeManager: {fileID: 4638301194858104089}
+  togglePauseAction: {fileID: 0}
+  PauseMenu: {fileID: 0}
+  RoundOverMenu: {fileID: 0}
+  PlayerWonText: {fileID: 0}
   p1: {fileID: 0}
   p2: {fileID: 0}
-  p2Objects: []
 --- !u!1 &4562541905108311430
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,8 +11,6 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
     [SerializeField] GameObject shapePlatform;
     [Description("Drag all objects in here which are part of the visual \"locking\" of a challenge")]
     public GameObject[] visualChallengeLocks;
-    public TextMeshProUGUI localComboText;
-    public TextMeshProUGUI shapesNeededForUnlockText;
 
     [HideInInspector]
     public int localCombo = 1;
@@ -49,25 +47,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
         shapesNeededForUnlock = shapesNeededForUnlockStart;
         SetSelectableState(false, showLockNumber);
 
-        UpdateUI();
-
         shapeBuilder.InitializeShape(true, shapeNumSides);
-    }
-
-    /// <summary>
-    /// Reduces the number of shapes needed to unlock the challenge by 1.
-    /// </summary>
-    /// <returns> returns whether this shape was unlocked </returns>
-    public bool ReduceNeededShapesUntilUnlock()
-    {
-        shapesNeededForUnlock -= 1;
-        if (shapesNeededForUnlock <= 0)
-        {
-            SetSelectableState(true);
-            return true;
-        }
-        UpdateUI();
-        return false;
     }
 
     /// <summary>
@@ -80,8 +60,6 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
         if (selectable || gridPosition.y == 0)
         {
             shapeBuilder.selectState = shapeBuilder.selectState == SelectState.SELECTED ? SelectState.SELECTED : SelectState.UNSELECTED;
-            localComboText.enabled = showLocalCombo;
-            shapesNeededForUnlockText.enabled = false;
 
             //Hide all visual lock objects
             foreach (GameObject lockObject in visualChallengeLocks)
@@ -104,10 +82,6 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             {
                 Debug.LogError("Error in ChallengeFactory.cs: SetSelectableState() with gridPosition.y = " + gridPosition.y);
             }
-
-            //hide local combo and show shapes needed for unlock
-            localComboText.enabled = false;
-            shapesNeededForUnlockText.enabled = hideLockNumber;
 
             //Unhide all visual lock objects
             foreach (GameObject lockObject in visualChallengeLocks)
@@ -217,8 +191,6 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             //Create some camera screenshake in a coroutine
             StartCoroutine(ShakeCamera());
 
-            UpdateUI();
-
             shapeBuilder.sap.playShapeFinished(isCorrectShape, player.GetCombo());
 
             //If the shape is wrong, jiggle it left and right
@@ -313,11 +285,5 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             if (movingShape != null) Destroy(movingShape);
             shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
         }
-    }
-
-    private void UpdateUI()
-    {
-        localComboText.text = localCombo.ToString();
-        shapesNeededForUnlockText.text = shapesNeededForUnlock.ToString();
     }
 }
