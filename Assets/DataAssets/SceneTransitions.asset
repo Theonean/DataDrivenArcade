@@ -24,13 +24,7 @@ MonoBehaviour:
     fadeOutDirection: {x: 0, y: 1}
   - sceneName: 3
     fadeInDirection: {x: 0, y: -1}
-    fadeOutDirection: {x: 0, y: 1}
-  - sceneName: 4
-    fadeInDirection: {x: 0, y: -1}
-    fadeOutDirection: {x: 0, y: 1}
-  - sceneName: 5
-    fadeInDirection: {x: 0, y: -1}
     fadeOutDirection: {x: 1, y: 1}
-  - sceneName: 6
+  - sceneName: 4
     fadeInDirection: {x: 0, y: -1}
     fadeOutDirection: {x: 0, y: -1}

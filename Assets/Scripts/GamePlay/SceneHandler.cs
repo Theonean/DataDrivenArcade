@@ -10,11 +10,9 @@ public enum SceneType
     MAINMENU01 = 0,
     LEADERBOARD02 = 1,
     PLAYERAMOUNTSELECTION10 = 2,
-    PLAYER1NAME11 = 3,
-    PLAYER2NAME12 = 4,
-    SELECTGAMEMODE20 = 5,
-    GAME30 = 6,
-    EMPTY = 7
+    SELECTGAMEMODE20 = 3,
+    GAME30 = 4,
+    EMPTY = 5
 }
 
 public class SceneHandler : MonoBehaviour
@@ -46,12 +44,14 @@ public class SceneHandler : MonoBehaviour
         }
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         CustomUIEvents.OnMoveSceneForward += GoToNextScene;
         CustomUIEvents.OnMoveSceneBackward += GoToLastScene;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         CustomUIEvents.OnMoveSceneForward -= GoToNextScene;
         CustomUIEvents.OnMoveSceneBackward -= GoToLastScene;
     }
@@ -60,7 +60,7 @@ public class SceneHandler : MonoBehaviour
     {
         int nextSceneIndex = (int)Instance.currentScene + sceneIndexIncrement;
 
-        if(nextSceneIndex == (int)SceneType.PLAYERAMOUNTSELECTION10)
+        if (nextSceneIndex == (int)SceneType.PLAYERAMOUNTSELECTION10)
         {
 
         }
@@ -78,20 +78,6 @@ public class SceneHandler : MonoBehaviour
     public void GoToLastScene(int sceneIndexDecrement = 1)
     {
         int lastSceneIndex = (int)Instance.currentScene - sceneIndexDecrement;
-
-        //handle exceptions for scenes that are not in the build order first
-        SceneType currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
-        if (currentScene == SceneType.SELECTGAMEMODE20 && sceneIndexDecrement == 1)
-        {
-            if (GameManager.instance.singlePlayer)
-            {
-                lastSceneIndex = (int)SceneType.PLAYER1NAME11;
-            }
-            else
-            {
-                lastSceneIndex = (int)SceneType.PLAYER2NAME12;
-            }
-        }
 
 
         if (lastSceneIndex >= 0)
@@ -153,17 +139,12 @@ public class SceneHandler : MonoBehaviour
         StartCoroutine(FadeSceneIn());
     }
 
-    private SceneTransitionData GetTransitionData(SceneType sceneType)
-    {
-        return sceneTransitions.sceneTransitionsData.FirstOrDefault(x => x.sceneName == sceneType);
-    }
-
     private IEnumerator FadeSceneOut()
     {
         float elapsedTime = 0f;
 
         Vector3 startPos = Camera.main.transform.position;
-        SceneTransitionData transition = GetTransitionData(currentScene);
+        SceneTransitionData transition = sceneTransitions.sceneTransitionsData[(int)currentScene];
         Vector3 endPos = leavingSceneLeft ? new Vector3(transition.fadeInDirection.x * transitionMoveDistance, transition.fadeInDirection.y * transitionMoveDistance / 1.5f, Camera.main.transform.position.z) : new Vector3(transition.fadeOutDirection.x * transitionMoveDistance, transition.fadeOutDirection.y * transitionMoveDistance / 1.5f, Camera.main.transform.position.z);
         Color startColor = Color.clear;
         Color endColor = Color.clear;
@@ -188,7 +169,7 @@ public class SceneHandler : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        SceneTransitionData transition = GetTransitionData(currentScene);
+        SceneTransitionData transition = sceneTransitions.sceneTransitionsData[(int)currentScene];
         Vector3 startPos = leavingSceneLeft ? new Vector3(transition.fadeOutDirection.x * transitionMoveDistance, transition.fadeOutDirection.y * transitionMoveDistance / 1.5f, Camera.main.transform.position.z) : new Vector3(transition.fadeInDirection.x * transitionMoveDistance, transition.fadeInDirection.y * transitionMoveDistance / 1.5f, Camera.main.transform.position.z);
         Vector3 endPos = new Vector3(0, 0, Camera.main.transform.position.z);
         Color startColor = Color.clear;

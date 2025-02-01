@@ -79,8 +79,6 @@ public class PlayerManager : MonoBehaviour
         playerInfoManager.SetLastScore(highScore);
         print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
 
-        InputDevice device = GameManager.instance.playerDevices[playerNum - 1];
-        GetComponent<PlayerInput>().SwitchCurrentControlScheme(device);
 
         //HenryAI Should not display an input device
         if (playerNum == 2 && GameManager.instance.singlePlayer)
@@ -89,17 +87,22 @@ public class PlayerManager : MonoBehaviour
             SpriteInputController.enabled = false;
             GetComponent<PlayerInput>().enabled = false;
         }
-        else if (device is Keyboard)
-        {
-            Debug.Log("Player " + playerNum + " is in Keyboard Mode");
-            SpriteInputeyboard.enabled = true;
-            SpriteInputController.enabled = false;
-        }
         else
         {
-            Debug.Log("Player " + playerNum + " is in Controller Mode");
-            SpriteInputeyboard.enabled = false;
-            SpriteInputController.enabled = true;
+            InputDevice device = GameManager.instance.playerDevices[playerNum - 1];
+            GetComponent<PlayerInput>().SwitchCurrentControlScheme(device);
+            if (device is Keyboard)
+            {
+                Debug.Log("Player " + playerNum + " is in Keyboard Mode");
+                SpriteInputeyboard.enabled = true;
+                SpriteInputController.enabled = false;
+            }
+            else
+            {
+                Debug.Log("Player " + playerNum + " is in Controller Mode");
+                SpriteInputeyboard.enabled = false;
+                SpriteInputController.enabled = true;
+            }
         }
 
         selectedFactory.ResetCF();

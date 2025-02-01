@@ -159,16 +159,6 @@ public class NameCreator : MonoBehaviour
 
         //Save name
         gm.SetPlayerName(playerNum, GetName());
-
-        //change scene, if singleplayer switch to game selection, otherwise to player 2 name input
-        if (gm.singlePlayer || SceneHandler.Instance.currentScene == SceneType.PLAYER2NAME12)
-        {
-            SceneHandler.Instance.SwitchScene(SceneType.SELECTGAMEMODE20);
-        }
-        else
-        {
-            SceneHandler.Instance.SwitchScene(SceneType.PLAYER2NAME12);
-        }
     }
 
     public string GetName()

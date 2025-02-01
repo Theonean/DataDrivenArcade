@@ -68,7 +68,7 @@ public class DIRTYInputManager : MonoBehaviour
                     playerUIGroups[i].GetComponentInChildren<NameCreator>().SaveName();
                 }
 
-                CustomUIEvents.VirtualMoveSceneForward(3);
+                CustomUIEvents.VirtualMoveSceneForward(1);
             }
             return;
         }
