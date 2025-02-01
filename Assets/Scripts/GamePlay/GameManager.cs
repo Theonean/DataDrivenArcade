@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using SaveSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     public string p2Name;
     public bool p1InputKeyboard = true;
     public bool p2InputKeyboard = true;
+    public List<InputDevice> playerDevices;
 
     private void Awake()
     {
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void SetPlayerCount(int playerCount)
+    public void SetPlayerCount(int playerCount)
     {
         instance.singlePlayer = playerCount == 1;
 

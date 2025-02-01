@@ -59,6 +59,12 @@ public class SceneHandler : MonoBehaviour
     public void GoToNextScene(int sceneIndexIncrement = 1)
     {
         int nextSceneIndex = (int)Instance.currentScene + sceneIndexIncrement;
+
+        if(nextSceneIndex == (int)SceneType.PLAYERAMOUNTSELECTION10)
+        {
+
+        }
+
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
             Instance.SwitchScene((SceneType)nextSceneIndex);

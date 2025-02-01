@@ -52,7 +52,7 @@ public class CustomUIEvents : ScriptableObject
     #region Move Scene forward
     public delegate void MoveSceneForward(int buildIndexIncrement);
     public static event MoveSceneForward OnMoveSceneForward;
-    public void VirtualMoveSceneForward(int buildIndexIncrement)
+    public static void VirtualMoveSceneForward(int buildIndexIncrement)
     {
         OnMoveSceneForward?.Invoke(buildIndexIncrement);
     }
@@ -61,18 +61,18 @@ public class CustomUIEvents : ScriptableObject
     #region Move Scene Backward
     public delegate void MoveSceneBackward(int buildIndexDecrement);
     public static event MoveSceneBackward OnMoveSceneBackward;
-    public void VirtualMoveSceneBackward(int buildIndexDecrement)
+    public static void VirtualMoveSceneBackward(int buildIndexDecrement)
     {
         OnMoveSceneBackward?.Invoke(buildIndexDecrement);
     }
     #endregion
 
     #region Toggle Name Input Selected
-    public delegate void ToggleNameInputSelected();
+    public delegate void ToggleNameInputSelected(int playerNum);
     public static event ToggleNameInputSelected OnToggleNameInputSelected;
-    public void VirtualToggleNameInputSelected()
+    public void VirtualToggleNameInputSelected(int playerNum)
     {
-        OnToggleNameInputSelected?.Invoke();
+        OnToggleNameInputSelected?.Invoke(playerNum);
     }
     #endregion
 
@@ -91,6 +91,15 @@ public class CustomUIEvents : ScriptableObject
     public void VirtualSetPlayerCount(int playerCount)
     {
         OnSetPlayerCount?.Invoke(playerCount);
+    }
+    #endregion
+
+    #region Toggle Player Ready
+    public delegate void TogglePlayerReady(int playerNum);
+    public static event TogglePlayerReady OnTogglePlayerReady;
+    public void VirtualTogglePlayerReady(int playerNum)
+    {
+        OnTogglePlayerReady?.Invoke(playerNum);
     }
     #endregion
 

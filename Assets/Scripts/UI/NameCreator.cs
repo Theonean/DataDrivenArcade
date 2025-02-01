@@ -11,10 +11,8 @@ public class NameCreator : MonoBehaviour
     When an Underscore is selected, it blinks and the players Input can change the character at that index by either pressing up or down with the Joystick
     this Class functions as an intermediary between all the chars and the MainMenu Class 
     */
-    [SerializeField] InputActionReference backsapceAction;
+    [SerializeField] InputActionReference backSpaceAction;
     public bool selected = false;
-    //FLAG BOOLEAN TO LATER USE WHEN SWITCHING BETWEEN CONTROLLER / KEYBOARD INPUT
-    public bool INPUTWITHKEYBOARD = true;
     public int nameLength = 8;
     public GameObject nameCharacterPrefab;
     public InputActionReference navigateAction;
@@ -26,9 +24,11 @@ public class NameCreator : MonoBehaviour
     public int playerNum;
     public Sprite editingNameSprite;
     public Sprite defaultNameSprite;
+    private InputDevice activeDevice;
+
     [SerializeField] private Button button;
 
-    void Start()
+    void Awake()
     {
         gm = GameManager.instance;
 
@@ -50,22 +50,24 @@ public class NameCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        CustomUIEvents.OnToggleNameInputSelected += ToggleSelected;
         CustomUIEvents.OnSavePlayerName += SaveName;
-        backsapceAction.action.performed += OnDeleteCharacter;
+        backSpaceAction.action.performed += OnDeleteCharacter;
     }
 
     private void OnDisable()
     {
-        CustomUIEvents.OnToggleNameInputSelected -= ToggleSelected;
         CustomUIEvents.OnSavePlayerName -= SaveName;
-        backsapceAction.action.performed -= OnDeleteCharacter;
+        backSpaceAction.action.performed -= OnDeleteCharacter;
+        
+        // Unsubscribe just in case when the object is disabled
+        navigateAction.action.performed -= OnNavigateActionPerformed;
+        backSpaceAction.action.performed -= OnDeleteCharacter;
     }
 
 
     void Update()
     {
-        if (selected && INPUTWITHKEYBOARD && Input.inputString.Length > 0)
+        if (selected && activeDevice is Keyboard && Input.inputString.Length > 0)
         {
             //Take any character input and change the character at the selected index, move the selected index to the right
             char input = Input.inputString[0];
@@ -75,16 +77,6 @@ public class NameCreator : MonoBehaviour
                 MoveCharacterSelectionForward();
             }
         }
-    }
-
-    private void OnDeleteCharacter(InputAction.CallbackContext ctx)
-    {
-        if (IsLastCharacterInName() && selectedNameCharIndex > 0)
-        {
-            nameCharacters[selectedNameCharIndex].SetCharacter(' ');
-        }
-
-        MoveCharacterSelectionBackward();
     }
 
     private bool IsValidInput(char input)
@@ -98,7 +90,7 @@ public class NameCreator : MonoBehaviour
             nameCharacters[selectedNameCharIndex + 1].GetCharacter()[0].Equals(' ');
     }
 
-    public void ToggleSelected()
+    public void ToggleSelected(InputDevice device)
     {
         if (SceneHandler.Instance.nextScene != SceneType.EMPTY)
         {
@@ -106,20 +98,23 @@ public class NameCreator : MonoBehaviour
         }
 
         selected = !selected;
-        print("NameCreator selected: " + selected);
+        activeDevice = device; // Store the active device
+        print("NameCreator selected: " + selected + " using device: " + device);
+
         if (selected)
         {
-            // Set source image to editing name sprite
             buttonImage.sprite = editingNameSprite;
             button.navigation = new Navigation { mode = Navigation.Mode.None };
 
-            // Subscribe to the navigateAction event
+            // Subscribe to navigateAction with filtering
             navigateAction.action.performed += OnNavigateActionPerformed;
+            backSpaceAction.action.performed += OnDeleteCharacter;
         }
         else
         {
-            // Unsubscribe from the navigateAction event
+            // Unsubscribe when deselecting
             navigateAction.action.performed -= OnNavigateActionPerformed;
+            backSpaceAction.action.performed -= OnDeleteCharacter;
             Debug.Log("Deselected NameCreator and unsubscribed from navigateAction");
 
             buttonImage.sprite = defaultNameSprite;
@@ -132,8 +127,25 @@ public class NameCreator : MonoBehaviour
     }
     private void OnNavigateActionPerformed(InputAction.CallbackContext ctx)
     {
-        ChangeLetter(ctx);
+        if (ctx.control.device == activeDevice) // Ensure input comes from correct device
+        {
+            ChangeLetter(ctx);
+        }
     }
+
+    private void OnDeleteCharacter(InputAction.CallbackContext ctx)
+    {
+        if (ctx.control.device == activeDevice) // Ensure input comes from correct device
+        {
+            if (IsLastCharacterInName() && selectedNameCharIndex > 0)
+            {
+                nameCharacters[selectedNameCharIndex].SetCharacter(' ');
+            }
+
+            MoveCharacterSelectionBackward();
+        }
+    }
+
 
 
     public void SaveName()

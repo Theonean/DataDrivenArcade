@@ -79,29 +79,27 @@ public class PlayerManager : MonoBehaviour
         playerInfoManager.SetLastScore(highScore);
         print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
 
-        //Set iskeyboardmode by checking PlayerInput Component
-        isKeyboardMode = playerNum == 1 ? DIRTYInputManager.instance.Player1IsKeyboard : DIRTYInputManager.instance.Player2IsKeyboard;
-        Debug.LogWarning("Game does not account input device for who pressed first, this is a bug and the workaround is to force player 1 to be keyboard and player 2 to be controller");
+        InputDevice device = GameManager.instance.playerDevices[playerNum - 1];
+        GetComponent<PlayerInput>().SwitchCurrentControlScheme(device);
 
-        if(playerNum == 2 && GameManager.instance.singlePlayer)
+        //HenryAI Should not display an input device
+        if (playerNum == 2 && GameManager.instance.singlePlayer)
         {
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = false;
             GetComponent<PlayerInput>().enabled = false;
         }
-        else if (isKeyboardMode)
+        else if (device is Keyboard)
         {
             Debug.Log("Player " + playerNum + " is in Keyboard Mode");
             SpriteInputeyboard.enabled = true;
             SpriteInputController.enabled = false;
-            GetComponent<PlayerInput>().SwitchCurrentControlScheme(Keyboard.current);
         }
         else
         {
             Debug.Log("Player " + playerNum + " is in Controller Mode");
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = true;
-            GetComponent<PlayerInput>().SwitchCurrentControlScheme(Gamepad.current);
         }
 
         selectedFactory.ResetCF();
