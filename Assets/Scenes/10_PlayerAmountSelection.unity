@@ -941,7 +941,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backSpaceAction: {fileID: -8178499939100033015, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   selected: 0
-  INPUTWITHKEYBOARD: 1
   nameLength: 8
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
   navigateAction: {fileID: 3912272187603901109, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
@@ -2095,7 +2094,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backSpaceAction: {fileID: -8178499939100033015, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   selected: 0
-  INPUTWITHKEYBOARD: 1
   nameLength: 8
   nameCharacterPrefab: {fileID: 1107544531054589277, guid: bb14f8cee5bc1ca4188b27c290806238, type: 3}
   navigateAction: {fileID: 3912272187603901109, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}

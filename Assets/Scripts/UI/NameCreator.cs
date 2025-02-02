@@ -24,7 +24,7 @@ public class NameCreator : MonoBehaviour
     public int playerNum;
     public Sprite editingNameSprite;
     public Sprite defaultNameSprite;
-    private InputDevice activeDevice;
+    public InputDevice activeDevice;
 
     [SerializeField] private Button button;
 

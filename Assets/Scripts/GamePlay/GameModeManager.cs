@@ -46,12 +46,10 @@ public class GameModeManager : MonoBehaviour
 
     private void OnEnable() {
         CustomUIEvents.OnResumeGame += TogglePauseMenu;
-        Application.focusChanged += OnFocusChangeTogglePause;
     }
 
     private void OnDisable() {
         CustomUIEvents.OnResumeGame -= TogglePauseMenu;
-        Application.focusChanged -= OnFocusChangeTogglePause;
     }
 
     private void Start()
@@ -157,14 +155,6 @@ public class GameModeManager : MonoBehaviour
                 p1.ReadyPlayer();
                 p2.ReadyPlayer();
             }
-        }
-    }
-
-    private void OnFocusChangeTogglePause(bool focus)
-    {
-        if (!focus)
-        {
-            TogglePauseMenu();
         }
     }
 

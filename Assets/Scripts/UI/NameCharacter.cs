@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class NameCharacter : MonoBehaviour
@@ -35,7 +36,7 @@ public class NameCharacter : MonoBehaviour
     {
         selected = !selected;
 
-        if (selected && (characterText.text.Length == 0 || characterText.text[0] == ' '))
+        if (selected && (characterText.text.Length == 0 || characterText.text[0] == ' ') && GetComponentInParent<NameCreator>().activeDevice is not Keyboard) //"is not keyboard" fixes visual "bug" where keyboard types and it has a trailing 'a' behind it
         {
             SetCharacter('a');
         }
