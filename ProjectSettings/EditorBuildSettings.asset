@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/10_PlayerAmountSelection.unity
     guid: a5e7cb4b9ac3d3346823f2d0fdff922d
   - enabled: 1
-    path: Assets/Scenes/20_SelectGamemode.unity
-    guid: ef977697dbcbb824faf068daaf8cc443
-  - enabled: 1
     path: Assets/Scenes/30_Game.unity
     guid: eea5774f6030fd74cb4b893983da8a71
   m_configObjects:
