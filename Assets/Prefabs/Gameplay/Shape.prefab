@@ -55,6 +55,7 @@ MonoBehaviour:
   linesRegular: {fileID: 11400000, guid: 26819d91172725047af95365000f9873, type: 2}
   linesStencil: {fileID: 11400000, guid: 93e31a0c4c41d2f44842dbc04b39d1b2, type: 2}
   linesHighlighted: {fileID: 11400000, guid: dd7256a577081544aa4b336fc4a758a0, type: 2}
+  linesShadow: {fileID: 11400000, guid: b6cc07003e0ce224a95f020aab752b4f, type: 2}
   currNodePathID: 0
   sap: {fileID: 3268517464024973446}
 --- !u!114 &3268517464024973446

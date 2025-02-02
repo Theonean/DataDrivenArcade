@@ -3,7 +3,12 @@ guid: 7e520ebd7cbdee443b647acc25202c2d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - linesRegular: {instanceID: 0}
+  - linesStencil: {instanceID: 0}
+  - linesHighlighted: {instanceID: 0}
+  - linesShadow: {fileID: 11400000, guid: b6cc07003e0ce224a95f020aab752b4f, type: 2}
+  - sap: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

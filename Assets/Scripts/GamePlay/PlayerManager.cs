@@ -191,9 +191,11 @@ public class PlayerManager : MonoBehaviour
 
             //Play sound from sap on player shape
             playerShape.sap.PlayLinePlaced(iData.lineCode);
+            
+            bool IsCorrectLine = selectedFactory.shapeBuilder.GetShapecode()[playerShape.GetShapecode().Length] == iData.lineCode;
 
             //Check if adding line finished shape
-            if (playerShape.AddLine(iData.lineCode, LineState.REGULAR))
+            if (playerShape.AddLine(iData.lineCode, IsCorrectLine ? LineState.REGULAR : LineState.SHADOW))
             {
                 shapesCompleted++;
                 FinishedShape();

@@ -15,7 +15,8 @@ public enum LineState
 {
     REGULAR,
     HIGHLIGHT,
-    STENCIL
+    STENCIL,
+    SHADOW
 }
 
 public class CustomShapeBuilder : MonoBehaviour
@@ -44,6 +45,7 @@ public class CustomShapeBuilder : MonoBehaviour
     public LineTextureVariant linesRegular;
     public LineTextureVariant linesStencil;
     public LineTextureVariant linesHighlighted;
+    public LineTextureVariant linesShadow;
     private SpriteRenderer[] lineSprites;
 
     [HideInInspector]
@@ -292,6 +294,9 @@ public class CustomShapeBuilder : MonoBehaviour
             case LineState.STENCIL:
                 spr = linesStencil.GetLineSprite(lineCode);
                 break;
+            case LineState.SHADOW:
+                spr = linesShadow.GetLineSprite(lineCode);
+                break;
             default:
                 Debug.LogError("LineState not recognized + " + lineState);
                 break;
@@ -349,6 +354,9 @@ public class CustomShapeBuilder : MonoBehaviour
                 break;
             case LineState.STENCIL:
                 line.sprite = linesStencil.GetLineSprite(lineCode);
+                break;
+            case LineState.SHADOW:
+                line.sprite = linesShadow.GetLineSprite(lineCode);
                 break;
         }
     }

@@ -476,8 +476,6 @@ MonoBehaviour:
   visualChallengeLocks:
   - {fileID: 7512191802781987606}
   - {fileID: 8092775610098049217}
-  localComboText: {fileID: 0}
-  shapesNeededForUnlockText: {fileID: 0}
   localCombo: 1
   shapesNeededForUnlockStart: 3
   shapesNeededForUnlock: 3
@@ -10779,7 +10777,7 @@ PrefabInstance:
     - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
       propertyPath: linesShadow
       value: 
-      objectReference: {fileID: 11400000, guid: 93e31a0c4c41d2f44842dbc04b39d1b2, type: 2}
+      objectReference: {fileID: 11400000, guid: b6cc07003e0ce224a95f020aab752b4f, type: 2}
     - target: {fileID: 1909240480748762008, guid: 1726a2660c6010749a455bef6442dbb7, type: 3}
       propertyPath: linesRegular
       value: 
