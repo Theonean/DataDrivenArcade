@@ -25,7 +25,6 @@ public class DIRTYInputManager : MonoBehaviour
         cancelInputActionReference.action.Enable();
         joinInputActionReference.action.performed += RegisterDeviceToPlayer;
         cancelInputActionReference.action.canceled += UnregisterDeviceFromPlayer;
-        CustomUIEvents.OnSetPlayerCount += LockinPlayerInput;
     }
 
     private void OnDisable()
@@ -34,7 +33,6 @@ public class DIRTYInputManager : MonoBehaviour
         cancelInputActionReference.action.Disable();
         joinInputActionReference.action.performed -= RegisterDeviceToPlayer;
         cancelInputActionReference.action.canceled -= UnregisterDeviceFromPlayer;
-        CustomUIEvents.OnSetPlayerCount -= LockinPlayerInput;
     }
 
     private void RegisterDeviceToPlayer(InputAction.CallbackContext context)
@@ -163,33 +161,6 @@ public class DIRTYInputManager : MonoBehaviour
         else
         {
             Debug.Log("Player 1 pressed confirm with unknown device: " + device.GetType().Name);
-        }
-    }
-
-    public void LockinPlayerInput(int playerCount)
-    {
-        GetControlSchemeLastJoinPressed();
-
-        if (playerCount == 1)
-        {
-            player2DeviceType = null;
-            Debug.Log("Player 1 locked in with: " + player1DeviceType.GetType().Name);
-            Debug.Log("Player 2 does not have a control scheme");
-        }
-        else if (playerCount == 2)
-        {
-            player2DeviceType = player1DeviceType == Gamepad.current ? Keyboard.current : Gamepad.current;
-
-            if (player2DeviceType == null)
-            {
-                Debug.Log("Player 1 locked in with: " + player1DeviceType.GetType().Name);
-                Debug.Log("Player 2 does not have a control scheme");
-            }
-            else
-            {
-                Debug.Log("Player 1 locked in with: " + player1DeviceType.GetType().Name);
-                Debug.Log("Player 2 locked in with: " + player2DeviceType.GetType().Name);
-            }
         }
     }
 }

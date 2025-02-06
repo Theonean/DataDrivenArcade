@@ -261,10 +261,6 @@ public class PlayerManager : MonoBehaviour
             playerInfoManager.SetScore(score);
 
             shapesCorrect++;
-
-            //Inform challengemanager to reduce Lock Number on challenges below this one
-            //if (!challengeManager.IsUnityNull()) challengeManager.ReduceShapeLockNum(cf);
-            Debug.LogWarning("Fading out \"Lock\" functionality as grid has become obsolete");
         }
         //When wrong shape is completed, stop combo which resets multiplier
         else

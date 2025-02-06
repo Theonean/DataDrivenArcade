@@ -125,6 +125,17 @@ public class NameCreator : MonoBehaviour
 
         nameCharacters[selectedNameCharIndex].ToggleSelected();
     }
+
+    public void SetName(string name)
+    {
+        
+        name = name.Substring(0, Mathf.Min(name.Length, nameLength));
+        for (int i = 0; i < nameLength; i++)
+        {
+            nameCharacters[i].SetCharacter(name[i]);
+        }
+    }
+
     private void OnNavigateActionPerformed(InputAction.CallbackContext ctx)
     {
         if (ctx.control.device == activeDevice) // Ensure input comes from correct device
