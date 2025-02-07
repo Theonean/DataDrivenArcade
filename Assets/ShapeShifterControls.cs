@@ -625,6 +625,15 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeShapeGrowDirection"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad42660f-c7a2-45e0-b687-ddf772be3d27"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1012,6 +1021,39 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""action"": ""ResetShape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93a27f13-d82e-442d-85ce-6546617a4f0f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ChangeShapeGrowDirection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f595a4b-bbac-46ea-be4a-98e1ec1f0d2e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ChangeShapeGrowDirection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf53f8ce-0f08-4e62-9f10-ed77fecbfcee"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ChangeShapeGrowDirection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1063,6 +1105,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         m_Player_CreateLine6 = m_Player.FindAction("CreateLine6", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_ResetShape = m_Player.FindAction("ResetShape", throwIfNotFound: true);
+        m_Player_ChangeShapeGrowDirection = m_Player.FindAction("ChangeShapeGrowDirection", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1250,6 +1293,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CreateLine6;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_ResetShape;
+    private readonly InputAction m_Player_ChangeShapeGrowDirection;
     public struct PlayerActions
     {
         private @ShapeShifterControls m_Wrapper;
@@ -1262,6 +1306,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         public InputAction @CreateLine6 => m_Wrapper.m_Player_CreateLine6;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @ResetShape => m_Wrapper.m_Player_ResetShape;
+        public InputAction @ChangeShapeGrowDirection => m_Wrapper.m_Player_ChangeShapeGrowDirection;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1295,6 +1340,9 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
             @ResetShape.started += instance.OnResetShape;
             @ResetShape.performed += instance.OnResetShape;
             @ResetShape.canceled += instance.OnResetShape;
+            @ChangeShapeGrowDirection.started += instance.OnChangeShapeGrowDirection;
+            @ChangeShapeGrowDirection.performed += instance.OnChangeShapeGrowDirection;
+            @ChangeShapeGrowDirection.canceled += instance.OnChangeShapeGrowDirection;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1323,6 +1371,9 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
             @ResetShape.started -= instance.OnResetShape;
             @ResetShape.performed -= instance.OnResetShape;
             @ResetShape.canceled -= instance.OnResetShape;
+            @ChangeShapeGrowDirection.started -= instance.OnChangeShapeGrowDirection;
+            @ChangeShapeGrowDirection.performed -= instance.OnChangeShapeGrowDirection;
+            @ChangeShapeGrowDirection.canceled -= instance.OnChangeShapeGrowDirection;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1381,5 +1432,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
         void OnCreateLine6(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnResetShape(InputAction.CallbackContext context);
+        void OnChangeShapeGrowDirection(InputAction.CallbackContext context);
     }
 }

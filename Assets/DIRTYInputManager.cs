@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Steamworks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,6 +20,28 @@ public class DIRTYInputManager : MonoBehaviour
     [SerializeField] List<Image> playerReadyImages = new List<Image>();
     private List<InputDevice> playerDevices = new List<InputDevice>();
     private bool[] playersReady = new bool[] { false, false };
+    private string[] playersNames = new string[] { "", "" };
+
+    private void Awake()
+    {
+        if (SteamManager.Initialized)
+        {
+            playersNames[0] = SteamFriends.GetPersonaName();
+
+            //If using remote play set player 2 name too
+            if (SteamRemotePlay.GetSessionCount() > 0)
+            {
+                playersNames[1] = SteamRemotePlay.GetSessionClientName(SteamRemotePlay.GetSessionID(0));
+                Debug.Log("Remote Play Session Name: " + playersNames[1]);
+            }
+        }
+    }
+
+    private void Start()
+    {
+        playerUIGroups[0].SetActive(false);
+        playerUIGroups[1].SetActive(false);
+    }
 
     private void OnEnable()
     {
@@ -70,7 +94,7 @@ public class DIRTYInputManager : MonoBehaviour
             }
             return;
         }
-        else
+        else if (playerDevices.Count < 2) //don't allow more than 2 players
         {
             playerDevices.Add(device);
             int playerNum = playerDevices.Count;
@@ -80,7 +104,17 @@ public class DIRTYInputManager : MonoBehaviour
             Debug.Log("Player" + playerNum + " joined with device: " + device.name);
 
             playerGroup.SetActive(true);
-            playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
+
+            //Force Steam Name if available onto player 1
+            if (playerNum == 1 && SteamManager.Initialized)
+            {
+                NameCreator nc = playerUIGroups[0].GetComponentInChildren<NameCreator>();
+                nc.SetName(playersNames[0]);
+            }
+            else
+            {
+                playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
+            }
         }
     }
 
@@ -126,7 +160,10 @@ public class DIRTYInputManager : MonoBehaviour
             {
                 Debug.Log("Player" + playerNum + " left with device: " + device.name);
 
-                playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
+                //Don't toggle selected if player 1 has their name set by steamName
+                if (playerNum != 1 && !SteamManager.Initialized)
+                    playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
+
                 playerDevices.Remove(device);
                 playerGroup.SetActive(false);
             }

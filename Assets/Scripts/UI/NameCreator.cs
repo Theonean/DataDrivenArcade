@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -58,7 +59,7 @@ public class NameCreator : MonoBehaviour
     {
         CustomUIEvents.OnSavePlayerName -= SaveName;
         backSpaceAction.action.performed -= OnDeleteCharacter;
-        
+
         // Unsubscribe just in case when the object is disabled
         navigateAction.action.performed -= OnNavigateActionPerformed;
         backSpaceAction.action.performed -= OnDeleteCharacter;
@@ -126,11 +127,14 @@ public class NameCreator : MonoBehaviour
         nameCharacters[selectedNameCharIndex].ToggleSelected();
     }
 
-    public void SetName(string name)
+    public void SetName(string name) =>
+        StartCoroutine(SetNameDelayed(name));
+
+    //Coroutine because fixes bug where characters are not yet initialized and so setting them instantly doesn't work
+    private IEnumerator SetNameDelayed(string name)
     {
-        
-        name = name.Substring(0, Mathf.Min(name.Length, nameLength));
-        for (int i = 0; i < nameLength; i++)
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < Mathf.Min(name.Length, nameLength); i++)
         {
             nameCharacters[i].SetCharacter(name[i]);
         }

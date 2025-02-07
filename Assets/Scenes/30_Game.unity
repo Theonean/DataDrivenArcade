@@ -2853,6 +2853,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2855492782886576262, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
+      propertyPath: isKeyboardMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2855492782886576262, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
       propertyPath: gameModeManager
       value: 
       objectReference: {fileID: 903490406}
@@ -3311,6 +3315,14 @@ PrefabInstance:
     - target: {fileID: 9038915746025170483, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
       propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064875316740822720, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.6399999
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064875316740822720, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4888,6 +4900,14 @@ PrefabInstance:
     - target: {fileID: 9038915746025170483, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
       propertyPath: m_NeverAutoSwitchControlSchemes
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064875316740822720, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064875316740822720, guid: fa0bae07fade2c047afc93cd44fcee10, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.3500004
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

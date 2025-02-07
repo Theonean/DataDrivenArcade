@@ -47,6 +47,8 @@ public class PlayerManager : MonoBehaviour
     private GameManager gm;
     private bool playerReady = false;
     [SerializeField] private GameObject Hammer;
+    [SerializeField] private Sprite[] growDirectionSprites = new Sprite[3];
+    [SerializeField] private SpriteRenderer growDirectionSpriteRenderer;
 
     //SCORE MANAGEMENT
     //SIMPLIFY THIS, MULTIPLY SIDES OF FACE WITH COMBO
@@ -54,9 +56,11 @@ public class PlayerManager : MonoBehaviour
     //MAYBE DEDUCT POINTS FOR EACH LINE THAT'S WRONG IN THE SENT SHAPE?
     public int score = 0;
     private int combo = 0;
+    private int growDirection = 1; //1 is up, 0 neutral, -1 down
 
     public SpriteRenderer SpriteInputeyboard;
     public SpriteRenderer SpriteInputController;
+    public SpriteRenderer SpriteHenryAI;
     public UnityEvent<bool> OnChangeReadyState;
     public UnityEvent<string> OnFinishedShape;
     private int shapesCompleted = 0;
@@ -80,11 +84,11 @@ public class PlayerManager : MonoBehaviour
         print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
 
 
-        //HenryAI Should not display an input device
         if (playerNum == 2 && GameManager.instance.singlePlayer)
         {
             SpriteInputeyboard.enabled = false;
             SpriteInputController.enabled = false;
+            SpriteHenryAI.enabled = true;
             GetComponent<PlayerInput>().enabled = false;
         }
         else
@@ -176,7 +180,25 @@ public class PlayerManager : MonoBehaviour
         if (playerReady) TryAddLine(new InputData(5, playerNum));
     }
 
-    public void OnResetShape() => ReinitializePlayer(new InputData(playerNum));
+    public void OnResetShape() => DeleteLastLine();
+
+    public void OnChangeShapeGrowDirection()
+    {
+        switch (growDirection)
+        {
+            case 1:
+                growDirection = -1;
+                break;
+            case -1:
+                growDirection = 0;
+                break;
+            case 0:
+                growDirection = 1;
+                break;
+        }
+
+        growDirectionSpriteRenderer.sprite = growDirectionSprites[growDirection + 1];
+    }
 
     private void TryAddLine(InputData iData)
     {
@@ -191,7 +213,7 @@ public class PlayerManager : MonoBehaviour
 
             //Play sound from sap on player shape
             playerShape.sap.PlayLinePlaced(iData.lineCode);
-            
+
             bool IsCorrectLine = selectedFactory.shapeBuilder.GetShapecode()[playerShape.GetShapecode().Length] == iData.lineCode;
 
             //Check if adding line finished shape
@@ -214,14 +236,14 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.HighlightNextLine();
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
 
-        //TODO: Remove and simply this loopin call to CF, Shapes used to be able to fly to the CF, thats no more however
-        StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode()));
+        //TODO: Remove and simply this looping call to CF, Shapes used to be able to fly to the CF, thats no more however
+        StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode(), growDirection));
 
         OnFinishedShape.Invoke(playerShape.GetShapecode());
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
-        if(SteamManager.Initialized)
+        if (SteamManager.Initialized)
             SteamStatsAndAchievements.Instance.CreatedShape();
     }
 
@@ -247,6 +269,15 @@ public class PlayerManager : MonoBehaviour
                 selectedFactory.shapeBuilder.EndLineHighlight(true);
                 selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
             }
+        }
+    }
+
+    private void DeleteLastLine()
+    {
+        if (playerReady)
+        {
+            playerShape.DeleteLastLine();
+            selectedFactory.shapeBuilder.HighlightLastLine();
         }
     }
 

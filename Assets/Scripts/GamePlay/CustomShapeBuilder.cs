@@ -174,6 +174,16 @@ public class CustomShapeBuilder : MonoBehaviour
         shapeCode = "";
     }
 
+    public void DeleteLastLine()
+    {
+        if (linesPlaced > 0)
+        {
+            Destroy(lineSprites[linesPlaced - 1].gameObject);
+            linesPlaced -= 1;
+            shapeCode = shapeCode.Substring(0, shapeCode.Length - 1);
+        }
+    }
+
     //function which generates a random shape code dependent on amount of sides
     public string GenerateShapeCode(int numSides, bool debug = false)
     {
@@ -453,6 +463,18 @@ public class CustomShapeBuilder : MonoBehaviour
             SetLineState(highlightedLineIndex, LineState.REGULAR);
             ModifyLineZDepth(false, highlightedLineIndex);
             highlightedLineIndex = highlightedLineIndex == numSides - 1 ? 0 : highlightedLineIndex + 1;
+            SetLineState(highlightedLineIndex, LineState.HIGHLIGHT);
+            ModifyLineZDepth(true, highlightedLineIndex);
+        }
+    }
+
+    public void HighlightLastLine(){
+        if (selectState == SelectState.SELECTED && highlightedLineIndex > 0)
+        {
+            //print("Highlighting next line for player: " + iData.playerNum + " at index: " + highlightedLineIndex + " with sides: " + numSides + " and code: " + shapeCode);
+            SetLineState(highlightedLineIndex, LineState.REGULAR);
+            ModifyLineZDepth(false, highlightedLineIndex);
+            highlightedLineIndex = highlightedLineIndex == 0 ? numSides - 1 : highlightedLineIndex - 1;
             SetLineState(highlightedLineIndex, LineState.HIGHLIGHT);
             ModifyLineZDepth(true, highlightedLineIndex);
         }

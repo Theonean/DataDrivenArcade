@@ -603,6 +603,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeShapeGrowDirection",
+                    "type": "Button",
+                    "id": "ad42660f-c7a2-45e0-b687-ddf772be3d27",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -988,6 +997,39 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ResetShape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93a27f13-d82e-442d-85ce-6546617a4f0f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ChangeShapeGrowDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f595a4b-bbac-46ea-be4a-98e1ec1f0d2e",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ChangeShapeGrowDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf53f8ce-0f08-4e62-9f10-ed77fecbfcee",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ChangeShapeGrowDirection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

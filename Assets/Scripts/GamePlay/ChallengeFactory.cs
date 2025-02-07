@@ -92,7 +92,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
     }
 
     //Clones a shape and moves that to the challenge shape
-    public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode)
+    public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode, int shapeNumSidesGrowDirection)
     {
         //print("Moving shape to challenge");
         //Clone player shape
@@ -170,7 +170,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             {
                 StartCoroutine(FlyScoreUp((player.GetCombo() + 1) * shapeNumSides)); //Let score fly up before combo and sides are updated so right number is shown
 
-                localCombo += 1;
+                localCombo = Mathf.Max(0, localCombo + shapeNumSidesGrowDirection);
                 shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
