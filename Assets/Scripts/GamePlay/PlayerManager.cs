@@ -214,7 +214,10 @@ public class PlayerManager : MonoBehaviour
             //Play sound from sap on player shape
             playerShape.sap.PlayLinePlaced(iData.lineCode);
 
-            bool IsCorrectLine = selectedFactory.shapeBuilder.GetShapecode()[playerShape.GetShapecode().Length] == iData.lineCode;
+            string selectedFactoryShapeCode = selectedFactory.shapeBuilder.GetShapecode();
+            int selectedFactoryLineCode = int.Parse(selectedFactoryShapeCode.Substring(playerShape.GetShapecode().Length, 1));
+            bool IsCorrectLine = selectedFactoryLineCode.Equals(iData.lineCode);
+            Debug.Log($"Comparing {selectedFactoryShapeCode} |" + selectedFactoryLineCode + " with " + iData.lineCode + " = " + IsCorrectLine);
 
             //Check if adding line finished shape
             if (playerShape.AddLine(iData.lineCode, IsCorrectLine ? LineState.REGULAR : LineState.SHADOW))
@@ -245,31 +248,6 @@ public class PlayerManager : MonoBehaviour
 
         if (SteamManager.Initialized)
             SteamStatsAndAchievements.Instance.CreatedShape();
-    }
-
-    /// <summary>
-    /// Reinitializes a player when a double input is received to allow for player to retry the same shape without losing combo
-    /// </summary>
-    /// <param name="iData"></param>
-    private void ReinitializePlayer(InputData iData)
-    {
-        if (iData.playerNum == playerNum)
-        {
-
-            //Destroy the moving shape to stop other player from getting points
-            if (selectedFactory.shapeBuilder.IsLocked())
-            {
-                Destroy(selectedFactory.movingShape);
-                selectedFactory.shapeBuilder.sap.playShapeFinished(false, combo);
-            }
-            //Normal reset of player factory and with proper reset on highlighting
-            else
-            {
-                playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-                selectedFactory.shapeBuilder.EndLineHighlight(true);
-                selectedFactory.shapeBuilder.StartLineHighlight(playerNum, playerShape.GetShapecode().Length);
-            }
-        }
     }
 
     private void DeleteLastLine()
@@ -314,25 +292,4 @@ public class PlayerManager : MonoBehaviour
     //Getter for combo, needed in audiomanager
     public int GetCombo() { return combo; }
     public int GetScore() { return score; }
-
-    /// <summary>
-    /// Resets this player to how how they were at the Start of the Game
-    /// </summary>
-    /// //TODO: Create Proper Score Manager and move this to there (Score Manager should manage score of both player and handle game resets and the like)
-    public void ResetPlayer()
-    {
-        print("Resetting PLAYER " + playerNum);
-
-        //Reset playe shape to 2 sides -> Old Bug workaround?
-        playerShape.InitializeShape(false, 2);
-
-        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-
-        //Create shadow of selected shape as guide for player
-        //CreateSelectedShapeShadow();
-
-        score = 0;
-        combo = 0;
-        playerInfoManager.Reset();
-    }
 }
