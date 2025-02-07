@@ -116,7 +116,7 @@ public class GameModeManager : MonoBehaviour
                 SaveManager.singleton.playersData[1].scores.Add(new Score(p2.score, gameModeData.gameMode, gm.GetPlayerName(1)));
 
                 Debug.LogWarning("Right now both scores are uploaded in the name of player 1, fix this");
-                Leaderboard.UploadScore(p1.score);
+                SteamLeaderboardHandler.UploadScore(p1.score);
 
                 if (SteamManager.Initialized)
                 {

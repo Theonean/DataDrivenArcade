@@ -10,62 +10,34 @@ using Steamworks;
 public class Leaderboard : MonoBehaviour
 {
     public TextMeshProUGUI leaderboardText;
-    private List<(string, int)> scores;
+    [SerializeField] private List<(string, int)> localScores;
+    [SerializeField] private List<(string, int)> onlineScores;
 
     private void Awake()
     {
-        scores = new List<(string, int)>();
+        localScores = new List<(string, int)>();
+        onlineScores = new List<(string, int)>();
+
+        SteamLeaderboardHandler.OnScoresDownloaded += OnScoresDownloaded;
+        SteamLeaderboardHandler.OnScoreUploaded += OnScoreUploaded;
     }
 
     private void Start()
     {
-        LoadScores();
-    }
-
-    private void LoadScores()
-    {
-        print("Loading online scores");
+        LoadLocalScores();
         LoadOnlineScores();
     }
 
     private void LoadOnlineScores()
     {
-        if (SteamManager.Initialized)
-        {
-            SteamAPICall_t handle = SteamUserStats.DownloadLeaderboardEntries((SteamLeaderboard_t)3501630, ELeaderboardDataRequest.k_ELeaderboardDataRequestGlobal, 1, 10);
-            CallResult<LeaderboardScoresDownloaded_t> callResult = CallResult<LeaderboardScoresDownloaded_t>.Create(OnLeaderboardScoresDownloaded);
-            callResult.Set(handle);
-        }
-        else
-        {
-            Debug.LogWarning("SteamManager not initialized, cannot load online scores");
-        }
+        Debug.Log("Loading online scores...");
+        SteamLeaderboardHandler.DownloadScores();
     }
 
-    private void OnLeaderboardScoresDownloaded(LeaderboardScoresDownloaded_t pCallback, bool bIOFailure)
+    private void OnScoresDownloaded(List<(string, int)> downloadedScores)
     {
-        if (bIOFailure)
-        {
-            Debug.LogError("Failed to download leaderboard scores");
-            return;
-        }
-
-        for (int i = 0; i < pCallback.m_cEntryCount; i++)
-        {
-            LeaderboardEntry_t entry;
-            int[] details = new int[1];
-            SteamUserStats.GetDownloadedLeaderboardEntry(pCallback.m_hSteamLeaderboardEntries, i, out entry, details, details.Length);
-
-            string playerName = SteamFriends.GetFriendPersonaName(entry.m_steamIDUser);
-            int scoreValue = entry.m_nScore;
-            GameModeType gameMode = (GameModeType)details[0]; // Assuming game mode is stored in details
-
-            scores.Add((playerName, scoreValue));
-        }
-
-        Debug.Log($"SCORES: {scores}");
-
-        ShowScores("CLASSIC");
+        onlineScores = downloadedScores;
+        ShowScores(downloadedScores);
     }
 
     private void LoadLocalScores()
@@ -81,12 +53,13 @@ public class Leaderboard : MonoBehaviour
             AddScores(saveData);
             i++;
         }
+        
     }
 
     private void AddScores(SaveData saveData)
     {
-        print("Player name: " + saveData.playerName);
-        print("Scores: " + saveData.scores.Count);
+        Debug.Log("Player name: " + saveData.playerName);
+        Debug.Log("Scores: " + saveData.scores.Count);
         if (saveData.scores.Count > 0)
         {
             foreach (GameModeType gameMode in Enum.GetValues(typeof(GameModeType)))
@@ -98,19 +71,17 @@ public class Leaderboard : MonoBehaviour
                     .FirstOrDefault();
                 if (topScore != null)
                 {
-                    scores.Add((saveData.playerName, topScore.score));
+                    localScores.Add((saveData.playerName, topScore.score));
                 }
             }
         }
     }
 
-    public void ShowScores(string gameMode)
+    public void ShowScores(List<(string, int)> scores)
     {
         scores.Sort((x, y) => y.Item2.CompareTo(x.Item2));
 
         PrintScoresToLeaderboard(scores);
-
-        Debug.LogWarning("Score has bug im working on");
     }
 
     private void PrintScoresToLeaderboard(List<(string, int)> scores)
@@ -124,35 +95,21 @@ public class Leaderboard : MonoBehaviour
             scoreI++;
             if (scoreI > maxScores) break;
 
-            var text = scoreI + ". " + score.Item1 + " - " + score.Item2;
+            var text = scoreI + ". " + score.Item1 + " - " + score.Item2 + "\n";
             leaderboardText.text += text;
         }
     }
 
-    public static bool UploadScore(int score)
+    private void OnScoreUploaded(bool success)
     {
-        if (SteamManager.Initialized)
+        if (success)
         {
-            SteamAPICall_t handle = SteamUserStats.UploadLeaderboardScore((SteamLeaderboard_t)3501630, ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest, score, null, 0);
-            CallResult<LeaderboardScoreUploaded_t> callResult = CallResult<LeaderboardScoreUploaded_t>.Create(OnLeaderboardScoreUploaded);
-            callResult.Set(handle);
-            return true;
+            Debug.Log("Score uploaded successfully!");
+            LoadOnlineScores(); // Refresh scores after upload
         }
         else
         {
-            Debug.LogWarning("SteamManager not initialized, cannot upload score");
-            return false;
+            Debug.LogError("Score upload failed.");
         }
-    }
-
-    private static void OnLeaderboardScoreUploaded(LeaderboardScoreUploaded_t pCallback, bool bIOFailure)
-    {
-        if (bIOFailure)
-        {
-            Debug.LogError("Failed to upload leaderboard score");
-            return;
-        }
-
-        Debug.Log("Successfully uploaded leaderboard score");
     }
 }
