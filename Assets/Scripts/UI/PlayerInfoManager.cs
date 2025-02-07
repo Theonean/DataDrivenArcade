@@ -1,15 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting.AssemblyQualifiedNameParser;
+using UnityEngine.UI;
 
 public class PlayerInfoManager : MonoBehaviour
 {
 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI comboText;
+    public Slider comboSlider;
     public TextMeshProUGUI lastScoreText;
     public TextMeshProUGUI nameText;
 
@@ -34,6 +33,8 @@ public class PlayerInfoManager : MonoBehaviour
             if (gameObject.activeSelf) StartCoroutine(LerpColor(Color.white, 1));
         }
 
+
+        comboSlider.value = combo / PlayerManager.comboNeededForMaxMultiplier;
         comboText.text = combo.ToString();
     }
 

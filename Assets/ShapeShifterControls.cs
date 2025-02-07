@@ -33,7 +33,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""id"": ""78ca7ebd-44c9-4ce6-b84b-64849800fe91"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {

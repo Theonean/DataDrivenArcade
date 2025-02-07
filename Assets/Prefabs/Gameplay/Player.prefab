@@ -791,6 +791,7 @@ MonoBehaviour:
   isKeyboardMode: 0
   playerInfoManager: {fileID: 0}
   selectedFactory: {fileID: 0}
+  isTutorialPlayer: 0
   playerShape: {fileID: 574873076463414285}
   Hammer: {fileID: 7109367124085306059}
   growDirectionSprites:
@@ -824,7 +825,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maximumComboMultiplier: 5
-  comboNeededForMaxMultiplier: 15
   SpriteInputeyboard: {fileID: 9170787996276790708}
   SpriteInputController: {fileID: 6087209941241593256}
   SpriteHenryAI: {fileID: 17803207067322454}

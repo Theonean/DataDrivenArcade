@@ -42,6 +42,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField]
     public ChallengeFactory selectedFactory;
+    public bool isTutorialPlayer = false;
 
     public CustomShapeBuilder playerShape;
     private GameManager gm;
@@ -58,7 +59,7 @@ public class PlayerManager : MonoBehaviour
     private int combo = 0;
     [SerializeField] private AnimationCurve comboToMultiplierScoreCurve;
     [SerializeField] private float maximumComboMultiplier = 5;
-    [SerializeField] private int comboNeededForMaxMultiplier = 15;
+    public static int comboNeededForMaxMultiplier = 15;
     private int growDirection = 1; //1 is up, 0 neutral, -1 down
 
     public SpriteRenderer SpriteInputeyboard;
@@ -77,38 +78,42 @@ public class PlayerManager : MonoBehaviour
     {
         gm = GameManager.instance;
 
-        playerInfoManager.SetName(gm.GetPlayerName(playerNum));
-        int highScore = SaveManager.singleton.playersData[playerNum - 1].GetHighScore();
-        if (highScore < 0)
+        if (!isTutorialPlayer)
         {
-            highScore = 0;
-        }
-        playerInfoManager.SetLastScore(highScore);
-        print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
+            playerInfoManager.SetName(gm.GetPlayerName(playerNum));
 
-
-        if (playerNum == 2 && GameManager.instance.singlePlayer)
-        {
-            SpriteInputeyboard.enabled = false;
-            SpriteInputController.enabled = false;
-            SpriteHenryAI.enabled = true;
-            GetComponent<PlayerInput>().enabled = false;
-        }
-        else
-        {
-            InputDevice device = GameManager.instance.playerDevices[playerNum - 1];
-            GetComponent<PlayerInput>().SwitchCurrentControlScheme(device);
-            if (device is Keyboard)
+            int highScore = SaveManager.singleton.playersData[playerNum - 1].GetHighScore();
+            if (highScore < 0)
             {
-                Debug.Log("Player " + playerNum + " is in Keyboard Mode");
-                SpriteInputeyboard.enabled = true;
+                highScore = 0;
+            }
+            playerInfoManager.SetLastScore(highScore);
+            print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
+
+
+            if (playerNum == 2 && GameManager.instance.singlePlayer)
+            {
+                SpriteInputeyboard.enabled = false;
                 SpriteInputController.enabled = false;
+                SpriteHenryAI.enabled = true;
+                GetComponent<PlayerInput>().enabled = false;
             }
             else
             {
-                Debug.Log("Player " + playerNum + " is in Controller Mode");
-                SpriteInputeyboard.enabled = false;
-                SpriteInputController.enabled = true;
+                InputDevice device = GameManager.instance.playerDevices[playerNum - 1];
+                GetComponent<PlayerInput>().SwitchCurrentControlScheme(device);
+                if (device is Keyboard)
+                {
+                    Debug.Log("Player " + playerNum + " is in Keyboard Mode");
+                    SpriteInputeyboard.enabled = true;
+                    SpriteInputController.enabled = false;
+                }
+                else
+                {
+                    Debug.Log("Player " + playerNum + " is in Controller Mode");
+                    SpriteInputeyboard.enabled = false;
+                    SpriteInputController.enabled = true;
+                }
             }
         }
 
@@ -116,6 +121,9 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.SetSelectableState(true);
 
         playerShape.transform.position = selectedFactory.shapeBuilder.transform.position - Vector3.forward;
+        
+        if(isTutorialPlayer)
+            ReadyPlayer();
     }
 
     private void Update()
@@ -249,7 +257,7 @@ public class PlayerManager : MonoBehaviour
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
-        if (SteamManager.Initialized)
+        if (SteamManager.Initialized && !isTutorialPlayer)
             SteamStatsAndAchievements.Instance.CreatedShape();
     }
 

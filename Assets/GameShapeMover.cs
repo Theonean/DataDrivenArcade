@@ -14,13 +14,13 @@ public class GameShapeMover : MonoBehaviour
     private void OnEnable()
     {
         player1.OnFinishedShape.AddListener((shapeData) => StartCoroutine(HandleFinishedShape(0, shapeData, player1Waypoints)));
-        player2.OnFinishedShape.AddListener((shapeData) => StartCoroutine(HandleFinishedShape(1, shapeData, player2Waypoints)));
+        if (player2 != null) player2.OnFinishedShape.AddListener((shapeData) => StartCoroutine(HandleFinishedShape(1, shapeData, player2Waypoints)));
     }
 
     private void OnDisable()
     {
         player1.OnFinishedShape.RemoveAllListeners();
-        player2.OnFinishedShape.RemoveAllListeners();
+        if (player2 != null) player2.OnFinishedShape.RemoveAllListeners();
     }
 
     private IEnumerator HandleFinishedShape(int playernum, string shapeData, List<Transform> waypoints)
