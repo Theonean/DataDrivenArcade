@@ -140,9 +140,6 @@ public class GameModeManager : MonoBehaviour
 
                 SaveManager.singleton.SaveData();
 
-                p1.selectedFactory.ResetCF();
-                p2.selectedFactory.ResetCF();
-
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
                 PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " Won!";
 
