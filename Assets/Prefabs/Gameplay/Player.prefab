@@ -799,6 +799,32 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1c2ae9ad5cdf94248b1d1ef951d13017, type: 3}
   growDirectionSpriteRenderer: {fileID: 978140080450531087}
   score: 0
+  comboToMultiplierScoreCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maximumComboMultiplier: 5
+  comboNeededForMaxMultiplier: 15
   SpriteInputeyboard: {fileID: 9170787996276790708}
   SpriteInputController: {fileID: 6087209941241593256}
   SpriteHenryAI: {fileID: 17803207067322454}

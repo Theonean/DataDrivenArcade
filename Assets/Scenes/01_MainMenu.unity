@@ -869,7 +869,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 59915496043294521, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: gameModeData.roundTime
-      value: 10
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1191605369127970534, guid: 804e3b5ddb9abb747b0ea036701c9a42, type: 3}
       propertyPath: m_Name

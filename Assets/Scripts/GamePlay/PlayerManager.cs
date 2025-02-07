@@ -56,6 +56,9 @@ public class PlayerManager : MonoBehaviour
     //MAYBE DEDUCT POINTS FOR EACH LINE THAT'S WRONG IN THE SENT SHAPE?
     public int score = 0;
     private int combo = 0;
+    [SerializeField] private AnimationCurve comboToMultiplierScoreCurve;
+    [SerializeField] private float maximumComboMultiplier = 5;
+    [SerializeField] private int comboNeededForMaxMultiplier = 15;
     private int growDirection = 1; //1 is up, 0 neutral, -1 down
 
     public SpriteRenderer SpriteInputeyboard;
@@ -217,7 +220,7 @@ public class PlayerManager : MonoBehaviour
             string selectedFactoryShapeCode = selectedFactory.shapeBuilder.GetShapecode();
             int selectedFactoryLineCode = int.Parse(selectedFactoryShapeCode.Substring(playerShape.GetShapecode().Length, 1));
             bool IsCorrectLine = selectedFactoryLineCode.Equals(iData.lineCode);
-            Debug.Log($"Comparing {selectedFactoryShapeCode} |" + selectedFactoryLineCode + " with " + iData.lineCode + " = " + IsCorrectLine);
+            //Debug.Log($"Comparing {selectedFactoryShapeCode} |" + selectedFactoryLineCode + " with " + iData.lineCode + " = " + IsCorrectLine);
 
             //Check if adding line finished shape
             if (playerShape.AddLine(iData.lineCode, IsCorrectLine ? LineState.REGULAR : LineState.SHADOW))
@@ -268,8 +271,10 @@ public class PlayerManager : MonoBehaviour
             //Increase combo which influences score as multiplier
             combo++;
 
+            int multiplier = Mathf.RoundToInt(comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier) * maximumComboMultiplier);
+
             //Add score to player
-            score += (cf.shapeNumSides - 1) * combo; //-1 adjusts to account for shapenumsides going up before this function is called
+            score += (cf.shapeNumSides - 1) * multiplier; //-1 adjusts to account for shapenumsides going up before this function is called
             playerInfoManager.SetScore(score);
 
             shapesCorrect++;
