@@ -220,6 +220,9 @@ public class PlayerManager : MonoBehaviour
         OnFinishedShape.Invoke(playerShape.GetShapecode());
 
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
+
+        if(SteamManager.Initialized)
+            SteamStatsAndAchievements.Instance.CreatedShape();
     }
 
     /// <summary>

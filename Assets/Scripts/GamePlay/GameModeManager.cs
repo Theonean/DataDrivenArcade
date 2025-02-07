@@ -44,11 +44,13 @@ public class GameModeManager : MonoBehaviour
     private GameModeState gameModeState = GameModeState.COUNTDOWN;
     private GameModeData gameModeData;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         CustomUIEvents.OnResumeGame += TogglePauseMenu;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         CustomUIEvents.OnResumeGame -= TogglePauseMenu;
     }
 
@@ -115,7 +117,14 @@ public class GameModeManager : MonoBehaviour
 
                 Debug.LogWarning("Right now both scores are uploaded in the name of player 1, fix this");
                 Leaderboard.UploadScore(p1.score);
-                Leaderboard.UploadScore(p2.score);
+
+                if (SteamManager.Initialized)
+                {
+                    if (GameManager.instance.singlePlayer)
+                        SteamStatsAndAchievements.Instance.FinishedSinglePlayerGame(p1.score);
+                    else
+                        SteamStatsAndAchievements.Instance.FinishedMultiPlayerGame(p1.score);
+                }
 
                 if (p1.score > p2.score)
                 {

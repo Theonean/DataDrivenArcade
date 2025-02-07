@@ -9,13 +9,29 @@ public class SteamStatsAndAchievements : MonoBehaviour
     private enum Achievement : int
     {
         ACH_FINISHED_TUTORIAL,
+        ACH_SINGLEPLAYER_1WIN,
+        ACH_SINGLEPLAYER_5WIN,
+        ACH_MULTIPLAYER_1WIN,
+        ACH_MULTIPLAYER_5WIN,
+        ACH_SCORE_100,
+        ACH_SCORE_500,
+        ACH_SCORE_1000,
     };
 
     private Achievement_t[] m_Achievements = new Achievement_t[] {
-        new Achievement_t(Achievement.ACH_FINISHED_TUTORIAL, "Tutorial Destroyer", ""),
+        new Achievement_t(Achievement.ACH_FINISHED_TUTORIAL, "Tutorial Destroyer", "Started the tutorial, and beat it!"),
+        new Achievement_t(Achievement.ACH_SINGLEPLAYER_1WIN, "Rookie Shaper", "Beat HenryAI once"),
+        new Achievement_t(Achievement.ACH_SINGLEPLAYER_5WIN, "Expert Shaper", "Beat HenryAI five times"),
+        new Achievement_t(Achievement.ACH_MULTIPLAYER_1WIN, "Rookie reshaper", "Win against a friend once"),
+        new Achievement_t(Achievement.ACH_MULTIPLAYER_5WIN, "Professional relationship reshaper", "Win against a friend 5 times"),
+        new Achievement_t(Achievement.ACH_SCORE_100, "Rookie", "Get a highscore of at least 100"),
+        new Achievement_t(Achievement.ACH_SCORE_500, "Shape Shifter", "Get a highscore of at least 500"),
+        new Achievement_t(Achievement.ACH_SCORE_1000, "Master of geometric manipulation", "Get a highscore of at least 1000"),
+
     };
 
     public static SteamStatsAndAchievements Instance { get; private set; }
+    [SerializeField] private bool debug = false;
 
     // Our GameID
     private CGameID m_GameID;
@@ -29,6 +45,10 @@ public class SteamStatsAndAchievements : MonoBehaviour
 
     // Current Steam user stats
     private int m_tutorialFinished;
+    private int m_singlePlayerGamesWon;
+    private int m_multiPlayerGamesWon;
+    private int m_shapesCreated;
+    private int m_highScore;
 
     protected Callback<UserStatsReceived_t> m_UserStatsReceived;
     protected Callback<UserStatsStored_t> m_UserStatsStored;
@@ -103,6 +123,34 @@ public class SteamStatsAndAchievements : MonoBehaviour
                     if (m_tutorialFinished == 1)
                         UnlockAchievement(achievement);
                     break;
+                case Achievement.ACH_SINGLEPLAYER_1WIN:
+                    if (m_singlePlayerGamesWon >= 1)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_SINGLEPLAYER_5WIN:
+                    if (m_singlePlayerGamesWon >= 5)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_MULTIPLAYER_1WIN:
+                    if (m_multiPlayerGamesWon >= 1)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_MULTIPLAYER_5WIN:
+                    if (m_multiPlayerGamesWon >= 5)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_SCORE_100:
+                    if (m_highScore >= 100)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_SCORE_500:
+                    if (m_highScore >= 500)
+                        UnlockAchievement(achievement);
+                    break;
+                case Achievement.ACH_SCORE_1000:
+                    if (m_highScore >= 1000)
+                        UnlockAchievement(achievement);
+                    break;
             }
         }
 
@@ -124,6 +172,26 @@ public class SteamStatsAndAchievements : MonoBehaviour
     public void FinishedTutorial()
     {
         m_tutorialFinished = 1;
+        m_bStoreStats = true;
+    }
+
+    public void FinishedSinglePlayerGame(int score)
+    {
+        m_singlePlayerGamesWon++;
+        m_highScore = m_highScore > score ? m_highScore : score;
+        m_bStoreStats = true;
+    }
+
+    public void FinishedMultiPlayerGame(int score)
+    {
+        m_multiPlayerGamesWon++;
+        m_highScore = m_highScore > score ? m_highScore : score;
+        m_bStoreStats = true;
+    }
+
+    public void CreatedShape()
+    {
+        m_shapesCreated++;
         m_bStoreStats = true;
     }
 
@@ -179,6 +247,10 @@ public class SteamStatsAndAchievements : MonoBehaviour
 
                 // load stats
                 SteamUserStats.GetStat("nTimesFinishedTutorial", out m_tutorialFinished);
+                SteamUserStats.GetStat("singleplayerGamesWon", out m_singlePlayerGamesWon);
+                SteamUserStats.GetStat("multiplayerGamesWon", out m_multiPlayerGamesWon);
+                SteamUserStats.GetStat("shapesCreated", out m_shapesCreated);
+                SteamUserStats.GetStat("highscore", out m_highScore);
             }
             else
             {
@@ -236,6 +308,11 @@ public class SteamStatsAndAchievements : MonoBehaviour
         }
     }
 
+    private void OnGUI() {
+        if(debug)
+            Render();
+    }
+
     //-----------------------------------------------------------------------------
     // Purpose: Display the user's stats and achievements
     //-----------------------------------------------------------------------------
@@ -248,6 +325,10 @@ public class SteamStatsAndAchievements : MonoBehaviour
         }
 
         GUILayout.Label("Tutorial Finished: " + m_tutorialFinished);
+        GUILayout.Label("Singleplayer Games Won: " + m_singlePlayerGamesWon);
+        GUILayout.Label("Multiplayer Games Won: " + m_multiPlayerGamesWon);
+        GUILayout.Label("Shapes Created: " + m_shapesCreated);
+        GUILayout.Label("Highscore: " + m_highScore);
 
         GUILayout.BeginArea(new Rect(Screen.width - 300, 0, 300, 800));
         foreach (Achievement_t ach in m_Achievements)
