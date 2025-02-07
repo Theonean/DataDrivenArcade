@@ -17,9 +17,18 @@ public class Leaderboard : MonoBehaviour
     {
         localScores = new List<(string, int)>();
         onlineScores = new List<(string, int)>();
+    }
 
+    private void OnEnable()
+    {
         SteamLeaderboardHandler.OnScoresDownloaded += OnScoresDownloaded;
         SteamLeaderboardHandler.OnScoreUploaded += OnScoreUploaded;
+    }
+
+    private void OnDisable()
+    {
+        SteamLeaderboardHandler.OnScoresDownloaded -= OnScoresDownloaded;
+        SteamLeaderboardHandler.OnScoreUploaded -= OnScoreUploaded;
     }
 
     private void Start()
@@ -40,6 +49,9 @@ public class Leaderboard : MonoBehaviour
         ShowScores(downloadedScores);
     }
 
+    public void DisplayLocalScores () => ShowScores(localScores);
+    public void DisplayOnlineScores() => ShowScores(onlineScores);
+
     private void LoadLocalScores()
     {
         string[] saveFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt");
@@ -53,7 +65,7 @@ public class Leaderboard : MonoBehaviour
             AddScores(saveData);
             i++;
         }
-        
+
     }
 
     private void AddScores(SaveData saveData)
