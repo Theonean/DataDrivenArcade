@@ -3812,6 +3812,10 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 190041946142615318, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 368201861553710252, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0

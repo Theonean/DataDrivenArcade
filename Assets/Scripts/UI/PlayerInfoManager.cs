@@ -3,13 +3,13 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
 public class PlayerInfoManager : MonoBehaviour
 {
-
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI comboText;
     public Slider comboSlider;
-    public TextMeshProUGUI lastScoreText;
+    public AnimationCurve comboSliderCurve;
+    private Coroutine comboSliderCoroutine;
     public TextMeshProUGUI nameText;
 
     public void SetScore(int score)
@@ -19,28 +19,16 @@ public class PlayerInfoManager : MonoBehaviour
 
     public void SetCombo(float combo)
     {
-        //If the new combo is larger than previous combo, Scale the text slightly up and down over time
-        if (combo > int.Parse(comboText.text))
+        if (comboSliderCoroutine != null)
         {
-            StartCoroutine(ScaleText(combo));
+            StopCoroutine(comboSliderCoroutine);
         }
-        //Otherwise color text red and slowly lerp to white again over 1 second
+
+
+        if (combo == 0)
+            comboSliderCoroutine = StartCoroutine(DeflateComboSlider());
         else
-        {
-            comboText.color = Color.red;
-            comboText.text = combo.ToString();
-
-            if (gameObject.activeSelf) StartCoroutine(LerpColor(Color.white, 1));
-        }
-
-
-        comboSlider.value = combo / PlayerManager.comboNeededForMaxMultiplier;
-        comboText.text = combo.ToString();
-    }
-
-    public void SetLastScore(int score)
-    {
-        lastScoreText.text = score.ToString();
+            comboSlider.value = combo / PlayerManager.comboNeededForMaxMultiplier;
     }
 
     public void SetName(string name)
@@ -48,39 +36,15 @@ public class PlayerInfoManager : MonoBehaviour
         nameText.text = name;
     }
 
-    public void Reset()
+    private IEnumerator DeflateComboSlider()
     {
-        print("Resetting score: " + scoreText.text + " last score: " + lastScoreText.text);
-        lastScoreText.text = int.Parse(scoreText.text) > int.Parse(lastScoreText.text) ? scoreText.text : lastScoreText.text;
-        scoreText.text = "00";
-        comboText.text = "00";
-    }
-
-    private IEnumerator ScaleText(float combo)
-    {
-        float time = 0.5f;
+        float time = 1.5f;
         float elapsedTime = 0;
-        //Scale text up and down using Mathf.pingpong
         while (elapsedTime < time)
         {
             elapsedTime += Time.deltaTime;
-            float scaleValue = Mathf.PingPong(elapsedTime, time);
-            comboText.transform.localScale = new Vector3(1 + scaleValue, 1 + scaleValue, 1);
+            comboSlider.value = Mathf.Lerp(comboSlider.value, 0, comboSliderCurve.Evaluate(elapsedTime / time));
             yield return null;
         }
-        comboText.transform.localScale = new Vector3(1, 1, 1);
-    }
-
-    private IEnumerator LerpColor(Color color, float time)
-    {
-        float elapsedTime = 0;
-        Color startColor = comboText.color;
-        while (elapsedTime < time)
-        {
-            elapsedTime += Time.deltaTime;
-            comboText.color = Color.Lerp(startColor, color, elapsedTime / time);
-            yield return null;
-        }
-        comboText.color = color;
     }
 }

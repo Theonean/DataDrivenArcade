@@ -9,6 +9,12 @@ public class FadeElementInOut : MonoBehaviour
     public AnimationCurve fadeInCurve;
     public AnimationCurve fadeOutCurve;
     public float duration = 0.5f;
+
+    private void Awake()
+    {
+        GetComponent<CanvasGroup>().blocksRaycasts = isVisible;
+    }
+
     public void ToggleFadeElement()
     {
         if (isVisible)
@@ -48,5 +54,6 @@ public class FadeElementInOut : MonoBehaviour
         }
 
         canvasGroup.alpha = endAlpha;
+        canvasGroup.blocksRaycasts = isFadeIn;
     }
 }

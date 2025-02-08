@@ -87,9 +87,7 @@ public class PlayerManager : MonoBehaviour
             {
                 highScore = 0;
             }
-            playerInfoManager.SetLastScore(highScore);
-            print("PlayerManager" + playerNum + " Start with highscore: " + highScore);
-
+            
 
             if (playerNum == 2 && GameManager.instance.singlePlayer)
             {
@@ -290,7 +288,7 @@ public class PlayerManager : MonoBehaviour
             int multiplier = Mathf.RoundToInt(comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier) * maximumComboMultiplier);
 
             //Add score to player
-            score += (cf.shapeNumSides - 1) * multiplier; //-1 adjusts to account for shapenumsides going up before this function is called
+            score += cf.shapeNumSides * multiplier; //-1 adjusts to account for shapenumsides going up before this function is called
             playerInfoManager.SetScore(score);
 
             shapesCorrect++;
