@@ -991,17 +991,6 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b6265788-59b8-4f20-b0fd-b57cfe7fb614"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e9dcfe8b-0e57-4fd7-aa53-fb9d578e088a"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",

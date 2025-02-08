@@ -2493,11 +2493,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8894173741968108198, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 10.679985
+      value: 14.999992
       objectReference: {fileID: 0}
     - target: {fileID: 8894173741968108198, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -7.0200005
+      value: -10.260002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6019,7 +6019,7 @@ PrefabInstance:
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: togglePauseAction
       value: 
-      objectReference: {fileID: -2844941059655354577, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
+      objectReference: {fileID: -8178499939100033015, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
     - target: {fileID: 6645748805605825456, guid: 7ff8bf77883d68b4ea1d665b1b474859, type: 3}
       propertyPath: p2Objects.Array.size
       value: 2

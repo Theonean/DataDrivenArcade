@@ -121,8 +121,8 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.SetSelectableState(true);
 
         playerShape.transform.position = selectedFactory.shapeBuilder.transform.position - Vector3.forward;
-        
-        if(isTutorialPlayer)
+
+        if (isTutorialPlayer)
             ReadyPlayer();
     }
 
@@ -192,6 +192,14 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void OnResetShape() => DeleteLastLine();
+
+    public void OnPause()
+    {
+        if (playerReady && !isTutorialPlayer)
+        {
+            GameModeManager.Instance.TogglePauseMenu();
+        }
+    }
 
     public void OnChangeShapeGrowDirection()
     {

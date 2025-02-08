@@ -1,15 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using SaveSystem;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements.Experimental;
 
 public enum GameModeState
 {
@@ -23,6 +17,7 @@ public class GameModeManager : MonoBehaviour
 {
     //This class should handle the game mode logic
     //Initiates the game and tells the challengemanager to create the correct number / grid of challenge
+    public static GameModeManager Instance { get; private set; }
     public TextMeshProUGUI countdownRoundTimer;
     private GameManager gm;
 
@@ -34,7 +29,6 @@ public class GameModeManager : MonoBehaviour
     private float countdownStart = 3.5f;
     private float timeLeftStart = 0f;
     [Header("Go Again Inbetween Rounds")]
-    public InputActionReference togglePauseAction;
     public FadeElementInOut PauseMenu;
     public FadeElementInOut RoundOverMenu;
     public TextMeshProUGUI PlayerWonText;
@@ -44,14 +38,16 @@ public class GameModeManager : MonoBehaviour
     private GameModeState gameModeState = GameModeState.COUNTDOWN;
     private GameModeData gameModeData;
 
-    private void OnEnable()
+    private void Awake()
     {
-        CustomUIEvents.OnResumeGame += TogglePauseMenu;
-    }
-
-    private void OnDisable()
-    {
-        CustomUIEvents.OnResumeGame -= TogglePauseMenu;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     private void Start()
@@ -69,10 +65,6 @@ public class GameModeManager : MonoBehaviour
 
         PauseMenu.FadeElementOut();
         RoundOverMenu.FadeElementOut();
-
-        Debug.LogWarning("make it so that player 2 is in AI mode if singleplayer");
-
-        togglePauseAction.action.Enable();
     }
 
 
