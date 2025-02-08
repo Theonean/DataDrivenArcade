@@ -21,15 +21,59 @@ public class NewVisualizer : MonoBehaviour
         Player = GetComponentInParent<PlayerManager>();
         Player.OnChangeReadyState.AddListener(ToggleActive);
 
-        PlayerInput playerInput = Player.gameObject.GetComponent<PlayerInput>();
-        playerInput.actions["CreateLine1"].performed += ctx => OnButtonInput(0, ctx);
-        playerInput.actions["CreateLine2"].performed += ctx => OnButtonInput(1, ctx);
-        playerInput.actions["CreateLine3"].performed += ctx => OnButtonInput(2, ctx);
-        playerInput.actions["CreateLine4"].performed += ctx => OnButtonInput(3, ctx);
-        playerInput.actions["CreateLine5"].performed += ctx => OnButtonInput(4, ctx);
-        playerInput.actions["CreateLine6"].performed += ctx => OnButtonInput(5, ctx);
-
         SetLinesActive(false);
+    }
+
+    private void OnEnable() {
+        PlayerInput playerInput = Player.gameObject.GetComponent<PlayerInput>();
+
+        playerInput.actions["CreateLine1"].performed += OnLine1Input;
+        playerInput.actions["CreateLine2"].performed += OnLine2Input;
+        playerInput.actions["CreateLine3"].performed += OnLine3Input;
+        playerInput.actions["CreateLine4"].performed += OnLine4Input;
+        playerInput.actions["CreateLine5"].performed += OnLine5Input;
+        playerInput.actions["CreateLine6"].performed += OnLine6Input;
+    }
+
+    private void OnDisable() {
+        PlayerInput playerInput = Player.gameObject.GetComponent<PlayerInput>();
+
+        playerInput.actions["CreateLine1"].performed -= OnLine1Input;
+        playerInput.actions["CreateLine2"].performed -= OnLine2Input;
+        playerInput.actions["CreateLine3"].performed -= OnLine3Input;
+        playerInput.actions["CreateLine4"].performed -= OnLine4Input;
+        playerInput.actions["CreateLine5"].performed -= OnLine5Input;
+        playerInput.actions["CreateLine6"].performed -= OnLine6Input;
+    }
+
+    private void OnLine1Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(0, ctx);
+    }
+
+    private void OnLine2Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(1, ctx);
+    }
+
+    private void OnLine3Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(2, ctx);
+    }
+
+    private void OnLine4Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(3, ctx);
+    }
+
+    private void OnLine5Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(4, ctx);
+    }
+
+    private void OnLine6Input(InputAction.CallbackContext ctx)
+    {
+        OnButtonInput(5, ctx);
     }
 
     public void ToggleActive(bool isActive)
