@@ -862,13 +862,13 @@ MonoBehaviour:
   m_MoveAction: {fileID: 3912272187603901109, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_SubmitAction: {fileID: 774677881995601620, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_CancelAction: {fileID: -8178499939100033015, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
-  m_LeftClickAction: {fileID: -4510367891304316845, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
+  m_LeftClickAction: {fileID: -7244007158782596760, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_MiddleClickAction: {fileID: 7858014366541533204, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_RightClickAction: {fileID: -1723318780436950141, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_ScrollWheelAction: {fileID: 1316207628342308368, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_TrackedDevicePositionAction: {fileID: -8081515247083285211, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
   m_TrackedDeviceOrientationAction: {fileID: -5155938446086493906, guid: 0b05d55c90f66db4a81eac44508ef58d, type: 3}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
 --- !u!114 &429535729

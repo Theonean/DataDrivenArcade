@@ -11,7 +11,8 @@ public enum SceneType
     LEADERBOARD02 = 1,
     PLAYERAMOUNTSELECTION10 = 2,
     GAME30 = 3,
-    EMPTY = 4
+    TUTORIAL31 = 4,
+    EMPTY = 5
 }
 
 public class SceneHandler : MonoBehaviour
