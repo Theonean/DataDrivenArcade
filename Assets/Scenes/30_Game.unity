@@ -2156,6 +2156,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -51.839996
       objectReference: {fileID: 0}
+    - target: {fileID: 553350179727980224, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 553350179727980224, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 7.5
+      objectReference: {fileID: 0}
     - target: {fileID: 655005554192537790, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_fontSizeBase
       value: 4
@@ -2271,6 +2279,14 @@ PrefabInstance:
     - target: {fileID: 2902472878476319226, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699086494001696245, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 65.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699086494001696245, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5.2
       objectReference: {fileID: 0}
     - target: {fileID: 3738124452610309791, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_text
@@ -2760,6 +2776,10 @@ PrefabInstance:
     - target: {fileID: 5666017759957841742, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
       propertyPath: m_Name
       value: CF1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444340512257232745, guid: 683f9aba42390fb4e955158268fe7bc3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3545,6 +3565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f648848aa71b341aeba9dbc9a1e5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFadingOut: 0
   fadeInCurve:
     serializedVersion: 2
     m_Curve:
@@ -4497,6 +4518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f648848aa71b341aeba9dbc9a1e5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFadingOut: 0
   fadeInCurve:
     serializedVersion: 2
     m_Curve:
@@ -4726,6 +4748,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -52
       objectReference: {fileID: 0}
+    - target: {fileID: 553350179727980224, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -67
+      objectReference: {fileID: 0}
+    - target: {fileID: 553350179727980224, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 655005554192537790, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_fontSizeBase
       value: 4
@@ -4797,6 +4827,14 @@ PrefabInstance:
     - target: {fileID: 3499484602897882105, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699086494001696245, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -65.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3699086494001696245, guid: 680944d7a96684b478523123d1b45a81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 4665074326043422906, guid: 680944d7a96684b478523123d1b45a81, type: 3}
       propertyPath: m_PresetInfoIsWorld

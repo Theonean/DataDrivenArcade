@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SaveSystem;
@@ -87,7 +88,7 @@ public class PlayerManager : MonoBehaviour
             {
                 highScore = 0;
             }
-            
+
 
             if (playerNum == 2 && GameManager.instance.singlePlayer)
             {
@@ -285,10 +286,16 @@ public class PlayerManager : MonoBehaviour
             //Increase combo which influences score as multiplier
             combo++;
 
-            int multiplier = Mathf.RoundToInt(comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier) * maximumComboMultiplier);
+            int multiplier = Mathf.RoundToInt(
+                    Mathf.Lerp(
+                        1,
+                        maximumComboMultiplier,
+                        comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier)
+                        )
+                    );
 
             //Add score to player
-            score += cf.shapeNumSides * multiplier; //-1 adjusts to account for shapenumsides going up before this function is called
+            score += playerShape.numSides * multiplier;
             playerInfoManager.SetScore(score);
 
             shapesCorrect++;
