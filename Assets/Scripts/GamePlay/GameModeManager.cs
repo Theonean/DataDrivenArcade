@@ -50,6 +50,16 @@ public class GameModeManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        CustomUIEvents.OnResumeGame += TogglePauseMenu;
+    }
+
+    private void OnDisable()
+    {
+        CustomUIEvents.OnResumeGame -= TogglePauseMenu;
+    }
+
     private void Start()
     {
         gm = GameManager.instance;

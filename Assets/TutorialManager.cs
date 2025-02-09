@@ -72,6 +72,8 @@ public class TutorialManager : MonoBehaviour
     private void OnQuitTutorial(InputAction.CallbackContext context)
     {
         pauseGroupFader.ToggleFadeElement();
+
+        FindObjectOfType<PlayerInput>().enabled = pauseGroupFader.isFadingOut; //WORKAROUND: Fixes Bug where PlayerInput Component makes UI not react to mouse-over
     }
 
     #region Text Management
