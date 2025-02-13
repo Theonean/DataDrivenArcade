@@ -3,7 +3,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class PlayerInfoManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;

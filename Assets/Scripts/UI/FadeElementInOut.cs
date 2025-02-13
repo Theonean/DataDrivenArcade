@@ -67,6 +67,7 @@ public class FadeElementInOut : MonoBehaviour
         canvasGroup.alpha = endAlpha;
         canvasGroup.blocksRaycasts = isFadeIn;
 
+        //Workaround to make buttons have navigation mode "automatic" and it works
         foreach (Button button in childButtons)
         {
             button.gameObject.SetActive(isFadeIn);

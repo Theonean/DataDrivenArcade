@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using SaveSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -68,10 +65,13 @@ public class PlayerManager : MonoBehaviour
     public SpriteRenderer SpriteHenryAI;
     public UnityEvent<bool> OnChangeReadyState;
     public UnityEvent<string> OnFinishedShape;
-    private int shapesCompleted = 0;
+    public int shapesCompleted = 0;
     private int shapesCorrect = 0;
-    public float LineAccuracy { get => (float)shapesCorrect / shapesCompleted; }
-    private int linesPlaced = 0;
+    public float shapesAccuracy { get => (float)shapesCorrect / shapesCompleted; }
+    public float LineAccuracy { get => (float)linesCorrect / linesPlaced; }
+    public int linesPlaced = 0;
+    public int linesCorrect = 0;
+    public int largestShapeCorrect = 0;
     private float timeSpent = 0.1f; //Not zero to avoid division by zero
     public float InputSpeed { get => linesPlaced / timeSpent; }
 
@@ -237,6 +237,11 @@ public class PlayerManager : MonoBehaviour
             bool IsCorrectLine = selectedFactoryLineCode.Equals(iData.lineCode);
             //Debug.Log($"Comparing {selectedFactoryShapeCode} |" + selectedFactoryLineCode + " with " + iData.lineCode + " = " + IsCorrectLine);
 
+            if (IsCorrectLine)
+            {
+                linesCorrect++;
+            }
+
             //Check if adding line finished shape
             if (playerShape.AddLine(iData.lineCode, IsCorrectLine ? LineState.REGULAR : LineState.SHADOW))
             {
@@ -285,6 +290,7 @@ public class PlayerManager : MonoBehaviour
         {
             //Increase combo which influences score as multiplier
             combo++;
+            shapesCorrect++;
 
             int multiplier = Mathf.RoundToInt(
                     Mathf.Lerp(
@@ -298,7 +304,10 @@ public class PlayerManager : MonoBehaviour
             score += playerShape.numSides * multiplier;
             playerInfoManager.SetScore(score);
 
-            shapesCorrect++;
+            if (playerShape.numSides > largestShapeCorrect)
+            {
+                largestShapeCorrect = Mathf.Max(playerShape.numSides, largestShapeCorrect);
+            }
         }
         //When wrong shape is completed, stop combo which resets multiplier
         else
@@ -307,12 +316,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         playerInfoManager.SetCombo(combo);
+        playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
-        //If the player still has this factory selected when it arrives
-        if (cf.Equals(selectedFactory))
-        {
-            playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
-        }
     }
 
     //Getter for combo, needed in audiomanager

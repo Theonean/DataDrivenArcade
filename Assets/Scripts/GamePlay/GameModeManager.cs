@@ -146,7 +146,8 @@ public class GameModeManager : MonoBehaviour
                 PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " Won!";
 
                 RoundOverMenu.FadeElementIn();
-                RoundOverMenu.GetComponentsInChildren<Button>().Where(b => b.gameObject.name == "ButtonRestart").First().Select();
+
+                FindObjectOfType<EndOfMatchStatisticsDisplayer>().DisplayEndOfMatchStatistics();
 
                 countdownRoundTimer.text = roundTime.ToString();
                 timeLeftRound = roundTime;
