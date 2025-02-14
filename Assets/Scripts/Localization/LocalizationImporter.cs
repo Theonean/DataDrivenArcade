@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Localization
     public class LocalizationImporter
     {
         private static string filePath;
+        private static string missingEntries = "";
 
         public static LocalizedData LoadLocalizationData()
         {
@@ -36,7 +38,7 @@ namespace Localization
                 string[] columns = lines[i].Split(',');
 
                 if (columns.Length < headers.Length)
-                    continue; // Skip if row is incomplete
+                    missingEntries += $"Missing entries for key {columns[0]}. {columns.Length}/{headers.Length} entries." + Environment.NewLine;
 
                 string id = columns[0]; // First column is the localization ID
                 LocalizedTextEntry entry = new();
@@ -45,7 +47,7 @@ namespace Localization
                 for (int j = 1; j < headers.Length; j++)
                 {
                     string language = headers[j]; // "English", "French", etc.
-                    string text = columns[j];    // The translated text
+                    string text = columns.Length > j ? columns[j] : string.Empty; // read text from column or empty string
 
                     entry.AddLocalizedText(language, text);
                 }
@@ -53,8 +55,7 @@ namespace Localization
                 localizationData.AddLocalizedTextEntry(id, entry);
             }
 
-            Debug.Log("Localization data loaded successfully.");
-            Debug.Log(localizationData.ToString());
+            Debug.Log($"Localization data loaded successfully. \n {localizationData.ToString()} \n Missing Entries: \n {missingEntries}");
 
             return localizationData;
         }

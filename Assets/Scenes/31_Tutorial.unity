@@ -454,22 +454,14 @@ MonoBehaviour:
   pauseGroupFader: {fileID: 666840566}
   tutorialCanvasGroup: {fileID: 1059892032}
   tutorialTexts:
-  - Welcome to the factory kid. Let's get you started workin' the factory, we've
-    got bulk orders of shapes coming in and we need MORE hands!
-  - Don't know which buttons do what? Press ENTER or click the ? in the top right
-    to get an overview.
-  - See that bright shape on your workbench? Recreate those to get paid, but don't
-    forget. If you make a mistake it's back to square one.
-  - 'At the bottom of the screen, you''ll see possible lines you can place. These
-    will help you build your shapes piece by piece. '
-  - Getting shapes right builds your combo! See that meter next to your shape? The
-    higher your combo, the more points you'll earn. Keep the streak going!
-  - Want to change things up? Press spacebar to control shape complexity. The arrow
-    shows if shapes will become simpler, more complex, or stay the same. You're in
-    control!
-  - PLAYER CHALLENGE MESSAGE COMES HERE
-  - You're all set! Remember, practice makes perfect. The more you play, the better
-    you'll get at creating these shapes. Have fun!"
+  - TutorialMessages_0
+  - TutorialMessages_1
+  - TutorialMessages_2
+  - TutorialMessages_3
+  - TutorialMessages_4
+  - TutorialMessages_5
+  - TutorialMessages_6
+  - TutorialMessages_7
   tutorialHighlightObjects:
   - {fileID: 0}
   - {fileID: 1754027512}
@@ -652,6 +644,10 @@ PrefabInstance:
       propertyPath: m_text
       value: resume
       objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Tutorial_GamePaused_Resume
+      objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name
       value: ButtonResume
@@ -832,6 +828,7 @@ GameObject:
   - component: {fileID: 416124779}
   - component: {fileID: 416124781}
   - component: {fileID: 416124780}
+  - component: {fileID: 416124782}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -955,6 +952,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416124778}
   m_CullTransparentMesh: 1
+--- !u!114 &416124782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416124778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: TutorialMessages_0
 --- !u!1 &429535727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,6 +1054,7 @@ GameObject:
   - component: {fileID: 550933700}
   - component: {fileID: 550933702}
   - component: {fileID: 550933701}
+  - component: {fileID: 550933703}
   m_Layer: 0
   m_Name: GamePausedText
   m_TagString: Untagged
@@ -1167,6 +1178,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550933699}
   m_CullTransparentMesh: 1
+--- !u!114 &550933703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550933699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Tutorial_GamePaused
 --- !u!1 &555054284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,6 +1603,10 @@ PrefabInstance:
     - target: {fileID: 2194445209022039012, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_text
       value: quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Tutorial_GamePaused_Quit
       objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name

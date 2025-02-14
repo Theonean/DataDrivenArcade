@@ -2162,6 +2162,10 @@ PrefabInstance:
       propertyPath: m_text
       value: quit
       objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Button_Quit
+      objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name
       value: ButtonQuit
@@ -2641,6 +2645,10 @@ PrefabInstance:
       propertyPath: m_text
       value: restart
       objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Button_Restart
+      objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name
       value: ButtonRestart
@@ -2797,6 +2805,7 @@ GameObject:
   - component: {fileID: 938290236}
   - component: {fileID: 938290238}
   - component: {fileID: 938290237}
+  - component: {fileID: 938290239}
   m_Layer: 0
   m_Name: Lines
   m_TagString: Untagged
@@ -2920,6 +2929,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938290235}
   m_CullTransparentMesh: 1
+--- !u!114 &938290239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938290235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Game_StatisticsLines
 --- !u!1 &1113632399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3578,6 +3600,7 @@ GameObject:
   - component: {fileID: 1254329272}
   - component: {fileID: 1254329274}
   - component: {fileID: 1254329273}
+  - component: {fileID: 1254329275}
   m_Layer: 0
   m_Name: LargestShape
   m_TagString: Untagged
@@ -3701,6 +3724,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254329271}
   m_CullTransparentMesh: 1
+--- !u!114 &1254329275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254329271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Game_StatisticsLargestShape
 --- !u!1 &1263436818
 GameObject:
   m_ObjectHideFlags: 0
@@ -3903,6 +3939,7 @@ GameObject:
   - component: {fileID: 1310212451}
   - component: {fileID: 1310212453}
   - component: {fileID: 1310212452}
+  - component: {fileID: 1310212454}
   m_Layer: 0
   m_Name: Shapes
   m_TagString: Untagged
@@ -4026,6 +4063,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310212450}
   m_CullTransparentMesh: 1
+--- !u!114 &1310212454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310212450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Game_StatisticsShapes
 --- !u!1 &1316421443
 GameObject:
   m_ObjectHideFlags: 0
@@ -5116,7 +5166,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526307211}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -5771,6 +5821,7 @@ GameObject:
   - component: {fileID: 1688502295}
   - component: {fileID: 1688502297}
   - component: {fileID: 1688502296}
+  - component: {fileID: 1688502298}
   m_Layer: 0
   m_Name: SuccesRate
   m_TagString: Untagged
@@ -5894,6 +5945,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688502294}
   m_CullTransparentMesh: 1
+--- !u!114 &1688502298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688502294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Game_StatisticsSuccessRate
 --- !u!1001 &1762102768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5905,6 +5969,10 @@ PrefabInstance:
     - target: {fileID: 2194445209022039012, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_text
       value: quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Button_Quit
       objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name
@@ -6295,7 +6363,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827260989}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -7287,6 +7355,10 @@ PrefabInstance:
       propertyPath: m_text
       value: resume
       objectReference: {fileID: 0}
+    - target: {fileID: 6288001197189490695, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
+      propertyPath: key
+      value: Button_Resume
+      objectReference: {fileID: 0}
     - target: {fileID: 7131210556047688735, guid: 2d9186c9357e5614f8453e7b81305e19, type: 3}
       propertyPath: m_Name
       value: ButtonResume
@@ -7447,6 +7519,7 @@ GameObject:
   - component: {fileID: 2095049067}
   - component: {fileID: 2095049069}
   - component: {fileID: 2095049068}
+  - component: {fileID: 2095049070}
   m_Layer: 0
   m_Name: PlayerWonText
   m_TagString: Untagged
@@ -7570,6 +7643,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095049066}
   m_CullTransparentMesh: 1
+--- !u!114 &2095049070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095049066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc55189d93f1264f9ef900bc6ee08f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Game_StatisticsTitle
 --- !u!1001 &2629274124335921840
 PrefabInstance:
   m_ObjectHideFlags: 0

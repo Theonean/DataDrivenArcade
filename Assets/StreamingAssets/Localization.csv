@@ -5,3 +5,27 @@ Button_Resume,resume,fortfahren,wiitermache,Reprendre,Riprendi,Reanudar
 Button_Leaderboard,leaderboard,Rangliste,Ranglischte,Classement,Classifica,Clasificación
 Button_Tutorial,tutorial,Anleitung,aaleitig,Tutoriel,Tutorial,Tutorial
 Button_Back,back,Zurück,zrugg,Retour,Indietro,Atrás
+Button_Global,global,global,global,global,global,global
+Button_Local,local,lokal,lokal,local,locale,local
+Button_Restart, restart,neustart,neustart,redémarrer,riavvia,reiniciar
+TutorialMessages_0,Welcome to the factory kid. Let's get you started workin' the factory, 
+TutorialMessages_1,Don't know which buttons do what? Press ENTER or click the ? in the top right to get an overview.
+TutorialMessages_2,See that bright shape on your workbench? Recreate those to get paid but don't forget. If you make a mistake it's back to square one.
+TutorialMessages_3,At the bottom of the screen you'll see possible lines you can place. These will help you build your shapes piece by piece. 
+TutorialMessages_4,Getting shapes right builds your combo! See that meter next to your shape? The higher your combo the more points you'll earn. Keep the streak going!
+TutorialMessages_5,Want to change things up? Press spacebar to control shape complexity. The arrow shows if shapes will become simpler more complex or stay the same. You're in control!
+TutorialMessages_6,You've completed the tutorial! Now make [NUM] shapes so we know you're ready!
+TutorialMessages_7,You're all set! Remember practice makes perfect. The more you play the better you'll get at creating these shapes. Have fun!"
+Tutorial_GamePaused,quit tutorial?
+Tutorial_GamePaused_Resume,resume
+Tutorial_GamePaused_Quit,quit
+Game_StatisticsTitle,won,gewinnt,gwunne,gagné,vinto,ganado
+Game_StatisticsShapes,shapes
+Game_StatisticsLines,lines
+Game_StatisticsSuccessRate,success rate
+Game_StatisticsLargestShape,largest shape
+InputInformation_Navigate,navigate
+InputInformation_Pause,pause
+InputInformation_Confirm,confirm
+InputInformation_DeleteLine,delete line
+InputInformation_ChangeShapeGrowth,change shape growth

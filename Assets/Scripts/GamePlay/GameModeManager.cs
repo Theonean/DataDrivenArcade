@@ -1,4 +1,5 @@
 using System.Linq;
+using Localization;
 using SaveSystem;
 using TMPro;
 using UnityEngine;
@@ -143,7 +144,7 @@ public class GameModeManager : MonoBehaviour
                 SaveManager.singleton.SaveData();
 
                 gameModeState = GameModeState.CHOOSINGANOTHERROUND;
-                PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " Won!";
+                PlayerWonText.text = GameManager.instance.GetPlayerName(playerWon) + " " + PlayerWonText.gameObject.GetComponent<LocalizedText>().GetValue();
 
                 RoundOverMenu.FadeElementIn();
 

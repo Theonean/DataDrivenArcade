@@ -11,16 +11,18 @@ public class FadeElementInOut : MonoBehaviour
     public AnimationCurve fadeInCurve;
     public AnimationCurve fadeOutCurve;
     public float duration = 0.5f;
-    private Button[] childButtons;
+
+    private Selectable[] childInteractables;
+
 
     private void Awake()
     {
         GetComponent<CanvasGroup>().blocksRaycasts = isVisible;
 
-        childButtons = GetComponentsInChildren<Button>();
-        foreach (Button button in childButtons)
+        childInteractables = GetComponentsInChildren<Selectable>();
+        foreach (Selectable selectable in childInteractables)
         {
-            button.gameObject.SetActive(isVisible);
+            selectable.gameObject.SetActive(isVisible);
         }
     }
 
@@ -68,9 +70,9 @@ public class FadeElementInOut : MonoBehaviour
         canvasGroup.blocksRaycasts = isFadeIn;
 
         //Workaround to make buttons have navigation mode "automatic" and it works
-        foreach (Button button in childButtons)
+        foreach (Selectable selectable in childInteractables)
         {
-            button.gameObject.SetActive(isFadeIn);
+            selectable.gameObject.SetActive(isFadeIn);
         }
     }
 }

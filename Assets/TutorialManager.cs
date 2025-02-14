@@ -4,6 +4,8 @@ using UnityEngine;
 using Steamworks;
 using UnityEngine.InputSystem;
 using TMPro;
+using Localization;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -17,12 +19,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject henry;
     private int currentTextIndex = 0;
     private PlayerManager playerManager;
+    private TextMeshProUGUI text;
+    private LocalizedText localizedText;
 
     //Tutorial completion management and achievement
     private const int shapesToMakeForAchievement = 3;
     private int shapesCompleted = 0;
     private bool finishedTutorial = false;
-    private string playerChallengeMessage = "You've completed the tutorial! Now make " + shapesToMakeForAchievement + " shapes so we know you're ready!";
     private int playerChallengeIndex;
 
     //animated text and Henry
@@ -44,12 +47,10 @@ public class TutorialManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         playerManager.OnFinishedShape.AddListener(PlayerFinishedShape);
 
-        playerChallengeIndex = tutorialTexts.Count - 2;
-    }
+        localizedText = tutorialCanvasGroup.GetComponentInChildren<LocalizedText>();
+        text = tutorialCanvasGroup.GetComponentInChildren<TextMeshProUGUI>();
 
-    private void Start()
-    {
-        tutorialTexts[playerChallengeIndex] = playerChallengeMessage;
+        playerChallengeIndex = tutorialTexts.Count - 2;
     }
 
     private void OnEnable()
@@ -116,10 +117,16 @@ public class TutorialManager : MonoBehaviour
 
     private void DisplayText(bool SkipScrollingText = false)
     {
-        if (SkipScrollingText)
+        if (currentTextIndex == playerChallengeIndex && !finishedTutorial)
         {
-            TextMeshProUGUI text = tutorialCanvasGroup.GetComponentInChildren<TextMeshProUGUI>();
-            text.text = tutorialTexts[currentTextIndex];
+            localizedText.SetKey(tutorialTexts[currentTextIndex], false);
+            string playerChallengeMessage = localizedText.GetValue();
+
+            text.text = playerChallengeMessage.Replace("[NUM]", Mathf.Max(shapesToMakeForAchievement - shapesCompleted, 0).ToString());
+        }
+        else if (SkipScrollingText)
+        {
+            localizedText.SetKey(tutorialTexts[currentTextIndex], true);
             isScrolling = false;
         }
         else
@@ -141,8 +148,7 @@ public class TutorialManager : MonoBehaviour
     private void SkipScrollingText(InputAction.CallbackContext context)
     {
         StopCoroutine(scrollTextCoroutine);
-        TextMeshProUGUI text = tutorialCanvasGroup.GetComponentInChildren<TextMeshProUGUI>();
-        text.text = tutorialTexts[currentTextIndex];
+        localizedText.SetKey(tutorialTexts[currentTextIndex], true);
         isScrolling = false;
     }
     #endregion
@@ -163,29 +169,24 @@ public class TutorialManager : MonoBehaviour
 
     private void PlayerFinishedShape(string shapeCode)
     {
-        if (finishedTutorial)
+        if (finishedTutorial || currentTextIndex != playerChallengeIndex)
             return;
 
+        shapesCompleted++;
 
-        if (currentTextIndex == playerChallengeIndex)
+        if (shapesCompleted == shapesToMakeForAchievement)
         {
-            shapesCompleted++;
-            playerChallengeMessage = "You've completed the tutorial! Now make " + Mathf.Max(shapesToMakeForAchievement - shapesCompleted, 0) + " shapes so we know you're ready!";
-            tutorialTexts[currentTextIndex] = playerChallengeMessage;
-            if (shapesCompleted == shapesToMakeForAchievement)
-            {
-                finishedTutorial = true;
-                GiveTutorialAchievement();
-                currentTextIndex++;
-                tutorialHighlightObjects[currentTextIndex].SetActive(true);
-                DisplayText(false);
+            finishedTutorial = true;
+            GiveTutorialAchievement();
+            currentTextIndex++;
+            tutorialHighlightObjects[currentTextIndex].SetActive(true);
+            DisplayText(false);
 
-                StartCoroutine(HideHighlightMaskAfterDelay());
-            }
-            else
-            {
-                DisplayText(true);
-            }
+            StartCoroutine(HideHighlightMaskAfterDelay());
+        }
+        else
+        {
+            DisplayText();
         }
     }
 
@@ -213,8 +214,8 @@ public class TutorialManager : MonoBehaviour
         isScrolling = true;
         animatedHenryRoutine = StartCoroutine(ShakeAndRotateHenryWhileSpeaking());
 
-        TextMeshProUGUI text = tutorialCanvasGroup.GetComponentInChildren<TextMeshProUGUI>();
-        string fullText = tutorialTexts[currentTextIndex];
+        localizedText.SetKey(tutorialTexts[currentTextIndex], false);
+        string fullText = localizedText.GetValue();
         text.text = "";
 
         for (int i = 0; i < fullText.Length; i++)

@@ -18,6 +18,19 @@ namespace Localization
             UpdateText();
         }
 
+        public void SetKey(string newKey, bool UpdateNow = true)
+        {
+            key = newKey;
+            if (UpdateNow)
+                UpdateText();
+
+        }
+
+        public string GetValue()
+        {
+            return LocalizationManager.Instance.GetLocalizedText(key);
+        }
+
         private void UpdateText()
         {
             textComponent.text = LocalizationManager.Instance.GetLocalizedText(key);
