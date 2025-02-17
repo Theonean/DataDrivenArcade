@@ -201,7 +201,6 @@ public class GameModeManager : MonoBehaviour
 
             PauseMenu.FadeElementIn();
             SetUIInteractionMode(true);
-            PauseMenu.GetComponentsInChildren<Button>().Where(b => b.gameObject.name == "ButtonResume").First().Select();
         }
     }
 

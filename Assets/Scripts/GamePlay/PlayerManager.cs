@@ -56,8 +56,9 @@ public class PlayerManager : MonoBehaviour
     public int score = 0;
     private int combo = 0;
     [SerializeField] private AnimationCurve comboToMultiplierScoreCurve;
-    [SerializeField] private float maximumComboMultiplier = 5;
-    public static int comboNeededForMaxMultiplier = 15;
+    public static float maximumComboMultiplier = 10;
+    public static int comboNeededForMaxMultiplier = 20;
+    public int comboMultiplier = 1;
     private int growDirection = 1; //1 is up, 0 neutral, -1 down
 
     public SpriteRenderer SpriteInputeyboard;
@@ -145,7 +146,7 @@ public class PlayerManager : MonoBehaviour
         //CreateSelectedShapeShadow();
 
         playerInfoManager.SetScore(score);
-        playerInfoManager.SetCombo(combo);
+        playerInfoManager.SetCombo(combo, comboMultiplier);
 
         playerReady = true;
         OnChangeReadyState.Invoke(playerReady);
@@ -292,7 +293,7 @@ public class PlayerManager : MonoBehaviour
             combo++;
             shapesCorrect++;
 
-            int multiplier = Mathf.RoundToInt(
+            comboMultiplier = Mathf.RoundToInt(
                     Mathf.Lerp(
                         1,
                         maximumComboMultiplier,
@@ -301,7 +302,7 @@ public class PlayerManager : MonoBehaviour
                     );
 
             //Add score to player
-            score += playerShape.numSides * multiplier;
+            score += playerShape.numSides * comboMultiplier;
             playerInfoManager.SetScore(score);
 
             if (playerShape.numSides > largestShapeCorrect)
@@ -313,9 +314,10 @@ public class PlayerManager : MonoBehaviour
         else
         {
             combo = 0;
+            comboMultiplier = 1;
         }
 
-        playerInfoManager.SetCombo(combo);
+        playerInfoManager.SetCombo(combo, comboMultiplier);
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
     }

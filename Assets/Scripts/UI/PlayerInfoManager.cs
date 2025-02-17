@@ -10,6 +10,7 @@ public class PlayerInfoManager : MonoBehaviour
     private Vector3 scoreRightTextOriginalPos;
     private Coroutine scoreRightTextCoroutine;
     public Slider comboSlider;
+    public TextMeshProUGUI comboMultiplierValue;
     public AnimationCurve comboSliderCurve;
     private Coroutine comboSliderCoroutine;
     public TextMeshProUGUI nameText;
@@ -55,18 +56,34 @@ public class PlayerInfoManager : MonoBehaviour
         scoreRightText.enabled = false;
     }
 
-    public void SetCombo(float combo)
+    public void SetCombo(float combo, int multiplier)
     {
         if (comboSliderCoroutine != null)
         {
             StopCoroutine(comboSliderCoroutine);
         }
 
+        //If combomultiplier has changed up or down, scale the combo slider up and down, dont scale if it is the same value
+        int previousComboMultiplier = int.Parse(comboMultiplierValue.text.Substring(1));
+        Debug.Log("Previous: " + previousComboMultiplier + " Current: " + multiplier);
+
+        comboMultiplierValue.color = Color.Lerp(Color.white, Color.red, multiplier / PlayerManager.maximumComboMultiplier);
+        comboMultiplierValue.text = "x" + multiplier;
+
 
         if (combo == 0)
+        {
             comboSliderCoroutine = StartCoroutine(DeflateComboSlider());
+            StartCoroutine(ScaleComboUpDown(true));
+        }
         else
+        {
             comboSlider.value = combo / PlayerManager.comboNeededForMaxMultiplier;
+
+            if (previousComboMultiplier != multiplier)
+                StartCoroutine(ScaleComboUpDown(false));
+
+        }
     }
 
     public void SetName(string name)
@@ -84,5 +101,23 @@ public class PlayerInfoManager : MonoBehaviour
             comboSlider.value = Mathf.Lerp(comboSlider.value, 0, comboSliderCurve.Evaluate(elapsedTime / time));
             yield return null;
         }
+    }
+
+    //Scale combo up and down when value changes with mathf.pingpong
+    private IEnumerator ScaleComboUpDown(bool reverse = false)
+    {
+        float time = 0.5f;
+        float elapsedTime = 0;
+        float startScale = comboSlider.transform.localScale.x;
+        float endScale = reverse ? 0.6f : 1.4f;
+
+        while (elapsedTime < time)
+        {
+            elapsedTime += Time.deltaTime;
+            comboMultiplierValue.transform.localScale = Vector3.one * Mathf.Lerp(startScale, endScale, comboSliderCurve.Evaluate(Mathf.PingPong(elapsedTime, time)));
+            yield return null;
+        }
+
+        comboMultiplierValue.transform.localScale = Vector3.one;
     }
 }
