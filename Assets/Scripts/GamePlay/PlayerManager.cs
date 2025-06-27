@@ -201,18 +201,15 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void OnChangeShapeGrowDirection()
+    private void SetShapeGrowDirection(bool growUp = true)
     {
-        switch (growDirection)
+        switch (growUp)
         {
-            case 1:
-                growDirection = -1;
-                break;
-            case -1:
-                growDirection = 0;
-                break;
-            case 0:
+            case true:
                 growDirection = 1;
+                break;
+            case false:
+                growDirection = -1;
                 break;
         }
 
@@ -264,7 +261,7 @@ public class PlayerManager : MonoBehaviour
         selectedFactory.shapeBuilder.selectState = SelectState.LOCKEDSELECTED; //lock factory so that player can't add lines while selecting this factory
 
         //TODO: Remove and simply this looping call to CF, Shapes used to be able to fly to the CF, thats no more however
-        StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode(), growDirection));
+        StartCoroutine(selectedFactory.MoveShapeToChallenge(this, playerShape.GetShapecode()));
 
         OnFinishedShape.Invoke(playerShape.GetShapecode());
 
@@ -309,15 +306,14 @@ public class PlayerManager : MonoBehaviour
             {
                 largestShapeCorrect = Mathf.Max(playerShape.numSides, largestShapeCorrect);
             }
+
+            SetShapeGrowDirection();
         }
-        //When wrong shape is completed, stop combo which resets multiplier
         else
         {
-            combo = 0;
-            comboMultiplier = 1;
+            SetShapeGrowDirection(false);
         }
 
-        playerInfoManager.SetCombo(combo, comboMultiplier);
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
     }

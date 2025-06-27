@@ -22,7 +22,6 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
     public int maxFacesFloorMIN;
 
     public int shapeNumSides;
-    public int shapeNumSidesScaling = 1;
 
     public GameObject movingShape;
     public bool shapeTeleports = false;
@@ -89,7 +88,7 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
     }
 
     //Clones a shape and moves that to the challenge shape
-    public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode, int shapeNumSidesGrowDirection)
+    public IEnumerator MoveShapeToChallenge(PlayerManager player, string playerShapeCode)
     {
         //print("Moving shape to challenge");
         //Clone player shape
@@ -165,8 +164,8 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             //Create new challenge if code was correct
             if (isCorrectShape)
             {
-                localCombo = Mathf.Max(0, localCombo + shapeNumSidesGrowDirection);
-                shapeNumSides = maxFacesFloorMIN + Mathf.FloorToInt(localCombo / shapeNumSidesScaling);
+                localCombo = Mathf.Max(0, localCombo + 1);
+                shapeNumSides = maxFacesFloorMIN + localCombo;
 
                 shapeBuilder.InitializeShape(true, shapeNumSides);
                 shapeBuilder.StartLineHighlight(player.playerNum, 0); //Start Highlighting again
@@ -176,11 +175,11 @@ public class ChallengeFactory : ShapeFactory //Remove the dependency on shapefac
             }
             else
             {
-                //If shapecode is longer than the number of sides, reset shapecode to maxFacesFloorMIN
-                shapeBuilder.InitializeShape(true, maxFacesFloorMIN);
+                localCombo = Mathf.Max(0, localCombo - 1);
+                shapeNumSides = maxFacesFloorMIN + localCombo;
 
-                localCombo = 0;
-                shapeNumSides = maxFacesFloorMIN;
+                shapeBuilder.InitializeShape(true, shapeNumSides);
+                shapeBuilder.StartLineHighlight(player.playerNum, 0); //Start Highlighting again
             }
 
             //Create some camera screenshake in a coroutine
