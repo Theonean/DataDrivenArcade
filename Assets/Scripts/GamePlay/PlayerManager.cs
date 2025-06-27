@@ -290,13 +290,7 @@ public class PlayerManager : MonoBehaviour
             combo++;
             shapesCorrect++;
 
-            comboMultiplier = Mathf.RoundToInt(
-                    Mathf.Lerp(
-                        1,
-                        maximumComboMultiplier,
-                        comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier)
-                        )
-                    );
+            comboMultiplier = CalculateComboMultiplier();
 
             //Add score to player
             score += playerShape.numSides * comboMultiplier;
@@ -311,6 +305,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            comboMultiplier = CalculateComboMultiplier();
+
             SetShapeGrowDirection(false);
         }
 
@@ -322,4 +318,15 @@ public class PlayerManager : MonoBehaviour
     //Getter for combo, needed in audiomanager
     public int GetCombo() { return combo; }
     public int GetScore() { return score; }
+
+    private int CalculateComboMultiplier()
+    {
+        return Mathf.RoundToInt(
+                    Mathf.Lerp(
+                        1,
+                        maximumComboMultiplier,
+                        comboToMultiplierScoreCurve.Evaluate(combo / (float)comboNeededForMaxMultiplier)
+                        )
+                    );
+    }
 }
