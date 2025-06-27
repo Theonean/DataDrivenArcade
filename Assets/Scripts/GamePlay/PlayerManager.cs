@@ -314,6 +314,7 @@ public class PlayerManager : MonoBehaviour
             SetShapeGrowDirection(false);
         }
 
+        playerInfoManager.SetCombo(combo, comboMultiplier);
         playerShape.InitializeShape(false, selectedFactory.shapeNumSides);
 
     }
