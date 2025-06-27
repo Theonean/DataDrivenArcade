@@ -163,6 +163,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 180260563}
+  - component: {fileID: 180260564}
+  - component: {fileID: 180260566}
   m_Layer: 0
   m_Name: CameraMover
   m_TagString: Untagged
@@ -185,6 +187,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &180260564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180260562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e8392d9dbbc5c46bf22110da80e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camToMove: {fileID: 2105448339}
+  moveSpeed: 0
+  moveDirection: {x: 1, y: 0}
+--- !u!225 &180260566
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180260562}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &252713870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,13 +1182,15 @@ GameObject:
   - component: {fileID: 700866800}
   - component: {fileID: 700866799}
   - component: {fileID: 700866798}
+  - component: {fileID: 700866802}
+  - component: {fileID: 700866804}
   m_Layer: 0
   m_Name: LogoCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &700866798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,7 +1230,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &700866800
 Canvas:
   m_ObjectHideFlags: 0
@@ -1207,9 +1238,9 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700866797}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 2105448341}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -1231,8 +1262,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700866797}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.07407408, y: 0.07407408, z: 0.07407408}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1014661354}
@@ -1241,8 +1272,60 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 960, y: 320}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!225 &700866802
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700866797}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &700866804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700866797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7522a0c296f53544e8959066e9429e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInButton: 9
+  fadeTime: 0.8
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  cameraTargetDistance: 10.32
+  cam: {fileID: 2105448341}
 --- !u!1 &739910089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,6 +1725,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -1673,7 +1758,7 @@ RectTransform:
   m_GameObject: {fileID: 1014661353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 700866801}
@@ -1703,7 +1788,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e95dc7ab15c2a5145b79eb0948d59b14, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 080b49fffb02c8943b72f940223a5df6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1848,6 +1933,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -1905,6 +1992,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -1962,6 +2051,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -2174,6 +2265,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -2639,6 +2732,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -3169,6 +3264,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   FastForward: 1
   fastForwardFactor: 20
+  stopFastForwardAfterDelay: 1
+  stopFastForwardAfterDelayTime: 6
   shapeNumSides: 1
   randomShapeNumSides: 1
   randomShapeNumSidesRange: {x: 1, y: 5}
@@ -3265,7 +3362,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.239234
+  orthographic size: 6.02
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3275,7 +3372,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -3290,7 +3387,7 @@ Transform:
   m_GameObject: {fileID: 2105448339}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.56, z: -21.27}
+  m_LocalPosition: {x: -22.25, y: 2.93, z: -49.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

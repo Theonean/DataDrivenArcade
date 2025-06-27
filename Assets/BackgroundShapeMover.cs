@@ -12,6 +12,8 @@ public class BackgroundShapeMover : MonoBehaviour
     private float trueMoveSpeed;
     public bool FastForward = false;
     public float fastForwardFactor = 2.0f;
+    public bool stopFastForwardAfterDelay = false;
+    public float stopFastForwardAfterDelayTime = 0.0f;
     public int shapeNumSides;
     public bool randomShapeNumSides;
     public Vector2Int randomShapeNumSidesRange;
@@ -43,6 +45,9 @@ public class BackgroundShapeMover : MonoBehaviour
         }
 
         MoveShapes();
+
+        if (stopFastForwardAfterDelay) 
+            StartCoroutine(StopFastForwardAfterDelay(stopFastForwardAfterDelayTime));
     }
 
     private void SpawnShape()
@@ -93,5 +98,11 @@ public class BackgroundShapeMover : MonoBehaviour
             shapes.Remove(shapeData);
             Destroy(shapeData.Item1);
         }
+    }
+
+    private IEnumerator StopFastForwardAfterDelay(float wait)
+    {
+        yield return new WaitForSeconds(wait);
+        FastForward = false;
     }
 }
