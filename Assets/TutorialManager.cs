@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference navigateTextAction;
+    [SerializeField] private InputActionReference playerClickedAction;
     [SerializeField] private InputActionReference quitTutorialAction;
     [SerializeField] private FadeElementInOut pauseGroupFader;
     [SerializeField] private CanvasGroup tutorialCanvasGroup;
@@ -57,16 +58,21 @@ public class TutorialManager : MonoBehaviour
     {
         navigateTextAction.action.Enable();
         quitTutorialAction.action.Enable();
+        playerClickedAction.action.Enable();
 
         navigateTextAction.action.performed += NavigateText;
+        playerClickedAction.action.started += NavigateText;
         quitTutorialAction.action.performed += OnQuitTutorial;
     }
 
     private void OnDisable()
     {
         navigateTextAction.action.Disable();
+        quitTutorialAction.action.Disable();
+        playerClickedAction.action.Disable();
 
         navigateTextAction.action.performed -= NavigateText;
+        playerClickedAction.action.started -= NavigateText;
         quitTutorialAction.action.performed -= OnQuitTutorial;
     }
 
@@ -82,34 +88,55 @@ public class TutorialManager : MonoBehaviour
     private void NavigateText(InputAction.CallbackContext context)
     {
         //Protect from animation jumping around when irrelevant input is happening
-        if (context.ReadValue<Vector2>().y != 0 && context.ReadValue<Vector2>().x == 0)
-            return;
+        int direction;
+        if(context.valueType == typeof(Vector2))
+        {
+            if (context.ReadValue<Vector2>().y != 0 && context.ReadValue<Vector2>().x == 0)
+                return;
+
+            direction = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
+        }
+        else
+        {
+            direction = 1;
+        }
 
 
         if (finishedTutorial)
             return;
 
-        if (context.ReadValue<Vector2>().x != 0 && isScrolling)
+        if (direction != 0 && isScrolling)
         {
             SkipScrollingText(context);
             return;
         }
-        else if (context.ReadValue<Vector2>().x > 0)
+        else if (direction > 0)
         {
-            //Navigate right
-            if (currentTextIndex < playerChallengeIndex || finishedTutorial) //prevent skipping to the last text / the challenge part of the tutorial before completion
-            {
-                currentTextIndex = Mathf.Min(currentTextIndex + 1, tutorialTexts.Count - 1);
-
-            }
+            NextMessage(context);
         }
-        else if (context.ReadValue<Vector2>().x < 0)
+        else if (direction < 0)
         {
-            //Navigate left
-            if (currentTextIndex > 0)
-            {
-                currentTextIndex--;
-            }
+            PreviousMessage(context);
+        }
+    }
+
+    private void PreviousMessage(InputAction.CallbackContext context)
+    {
+        //Navigate left
+        if (currentTextIndex > 0)
+        {
+            currentTextIndex--;
+        }
+
+        DisplayText();
+    }
+
+    private void NextMessage(InputAction.CallbackContext context)
+    {
+        //Navigate right
+        if (currentTextIndex < playerChallengeIndex || finishedTutorial) //prevent skipping to the last text / the challenge part of the tutorial before completion
+        {
+            currentTextIndex = Mathf.Min(currentTextIndex + 1, tutorialTexts.Count - 1);
         }
 
         DisplayText();

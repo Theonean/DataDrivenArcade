@@ -536,7 +536,7 @@
                     "name": "CreateLine1",
                     "type": "Button",
                     "id": "aa780b5d-518a-48a4-8c36-9e503db0e019",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -845,6 +845,11 @@
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }

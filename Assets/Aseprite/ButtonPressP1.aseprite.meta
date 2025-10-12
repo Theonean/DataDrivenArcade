@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -77,6 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -89,6 +91,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -121,7 +124,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ButtonPressP1_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -141,7 +144,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 78}
   - name: ButtonPressP1_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -161,7 +164,7 @@ ScriptedImporter:
     uvTransform: {x: 41, y: 4}
   - name: ButtonPressP1_Frame_2
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -181,7 +184,7 @@ ScriptedImporter:
     uvTransform: {x: 41, y: 39}
   - name: ButtonPressP1_Frame_3
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -201,7 +204,7 @@ ScriptedImporter:
     uvTransform: {x: 41, y: 74}
   - name: ButtonPressP1_Frame_4
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -221,7 +224,7 @@ ScriptedImporter:
     uvTransform: {x: 76, y: 4}
   - name: ButtonPressP1_Frame_5
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -241,7 +244,7 @@ ScriptedImporter:
     uvTransform: {x: 76, y: 39}
   - name: ButtonPressP1_Frame_6
     originalName: 
-    pivot: {x: 0.5, y: -0.074074075}
+    pivot: {x: 0.5185185, y: -0.074074075}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -261,7 +264,7 @@ ScriptedImporter:
     uvTransform: {x: 76, y: 74}
   - name: ButtonPressP1_Frame_7
     originalName: 
-    pivot: {x: 0.5, y: -0.03448276}
+    pivot: {x: 0.51724136, y: -0.03448276}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -281,7 +284,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: ButtonPressP1_Frame_8
     originalName: 
-    pivot: {x: 0.5, y: -0.03448276}
+    pivot: {x: 0.51724136, y: -0.03448276}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -302,78 +305,92 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 868832138
+    uuid:
+      value0: 2804194866
+      value1: 0
+      value2: 0
+      value3: 0
+    guid: -1490772430
     name: ButtonPressP1
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: ButtonPressP1_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 191769e968425c7409a84e67c439df55
-    - name: ButtonPressP1_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 6743e206e3efbaa44a1cbda3bed04510
-    - name: ButtonPressP1_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 3a7a947add920fe4b89a6fd6c8d674c1
-    - name: ButtonPressP1_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: ae37bd17c0e6e404eb4b1499d39a457c
-    - name: ButtonPressP1_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: b320a8098902dae4ba613d99252e17ad
-    - name: ButtonPressP1_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 4c88ba7486613d240985b2a637c04ae9
-    - name: ButtonPressP1_Frame_6
+    - name: Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: fa306faf8fdacb6429461cc1a38a7ebc
-    - name: ButtonPressP1_Frame_7
+    - name: Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 1
         y: 1
         width: 29
         height: 29
       spriteId: d914df79e255e7f42bb834736655d982
-    - name: ButtonPressP1_Frame_8
+    - name: Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 1
         y: 1
@@ -383,6 +400,8 @@ ScriptedImporter:
     linkedCells: []
     parentIndex: -1
   platformSettings: []
+  generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 32, y: 32}
+  previousTextureSize: {x: 128, y: 128}

@@ -1,31 +1,30 @@
-id,English,Deutsch,Schwiizerdütsch,Français,Italiano,Español
-Button_Start,start,Beginn,Fang ah,Démarrer,Inizio,Inicio
-Button_Quit,quit,Beenden,uufhöre,Quitter,Uscita,Salir
-Button_Resume,resume,fortfahren,wiitermache,Reprendre,Riprendi,Reanudar
-Button_Leaderboard,leaderboard,Rangliste,Ranglischte,Classement,Classifica,Clasificación
-Button_Tutorial,tutorial,Anleitung,aaleitig,Tutoriel,Tutorial,Tutorial
-Button_Back,back,Zurück,zrugg,Retour,Indietro,Atrás
-Button_Global,global,global,global,global,global,global
-Button_Local,local,lokal,lokal,local,locale,local
-Button_Restart, restart,neustart,neustart,redémarrer,riavvia,reiniciar
-TutorialMessages_0,Welcome to the factory kid. Let's get you started workin' the factory, ,,,,
-TutorialMessages_1,Don't know which buttons do what? Press ENTER or click the ? in the top right to get an overview.,,,,,
-TutorialMessages_2,See that bright shape on your workbench? Recreate those to get paid but don't forget. If you make a mistake it's back to square one.,,,,,
-TutorialMessages_3,At the bottom of the screen you'll see possible lines you can place. These will help you build your shapes piece by piece. ,,,,,
-TutorialMessages_4,Getting shapes right builds your combo! See that meter next to your shape? The higher your combo the more points you'll earn. Keep the streak going!,,,,,
-TutorialMessages_5,Want to change things up? Press spacebar to control shape complexity. The arrow shows if shapes will become simpler more complex or stay the same. You're in control!,,,,,
-TutorialMessages_6,You've completed the tutorial! Now make [NUM] shapes so we know you're ready!,,,,,
-TutorialMessages_7,"You're all set! Remember practice makes perfect. The more you play the better you'll get at creating these shapes. Have fun!""",,,,,
-Tutorial_GamePaused,quit tutorial?,,,,,
-Tutorial_GamePaused_Resume,resume,,,,,
-Tutorial_GamePaused_Quit,quit,,,,,
-Game_StatisticsTitle,won,gewinnt,gwunne,gagné,vinto,ganado
-Game_StatisticsShapes,shapes,,,,,
-Game_StatisticsLines,lines,,,,,
-Game_StatisticsSuccessRate,success rate,,,,,
-Game_StatisticsLargestShape,largest shape,,,,,
-InputInformation_Navigate,navigate,,,,,
-InputInformation_Pause,pause,,,,,
-InputInformation_Confirm,confirm,,,,,
-InputInformation_DeleteLine,delete line,,,,,
-InputInformation_ChangeShapeGrowth,change shape growth,,,,,
+id,English,Deutsch
+Button_Start,Start,Start
+Button_Quit,Quit,Beenden
+Button_Resume,Resume,Wiederaufnehmen
+Button_Leaderboard,Leaderboard,Rangliste
+Button_Tutorial,Tutorial,Anleitung
+Button_Back,Back,Zurück
+Button_Global,Global,Global
+Button_Local,Local,Lokal
+Button_Restart,Restart,Neustart
+TutorialMessages_0,Welcome to the factory kid. Let's get you started. Press the arrow keys or use your joystick to progress the Tutorial.,Willkommen in der Fabrik. Lass uns loslegen, drücke die Pfeiltasten oder dein Joystick um weiterzukommen in der Spieleanleitung.
+TutorialMessages_1,Don't know which buttons do what? Press ENTER or click the ? in the top right to get an overview.,Du weißt nicht welche Tasten was machen? Drücke die Eingabetaste oder klicke das ? oben rechts für eine Übersicht.
+TutorialMessages_2,See that bright shape on your workbench? Recreate those shapes to score points.,Siehst du die leuchtende Form auf deiner Werkbank? Baue sie nach um Punkte zu sammeln.
+TutorialMessages_3,At the bottom of the screen you'll see possible lines you can place. These will help you build your shapes piece by piece.,Unten am Bildschirm siehst du mögliche Linien, die du setzen kannst. Sie helfen dir, deine Formen Stück für Stück zu bauen.
+TutorialMessages_4,Getting shapes right builds your combo! See that meter next to your shape? The higher your combo the more points you'll earn.,Richtige Formen erhöhen deine Kombo! Siehst du das Messgerät neben deiner Form? Je höher die Kombo, desto mehr Punkte bekommst du.
+TutorialMessages_6,You've completed the tutorial! Now make [NUM] shapes so we know you're ready!,Du hast das Tutorial abgeschlossen! Erstelle jetzt [NUM] Formen damit wir wissen dass du bereit bist.
+TutorialMessages_7,You're all set! Remember practice makes perfect. The more you play the better you'll get at creating these shapes. Have fun!,Alles klar! Übung macht den Meister. Je mehr du spielst desto besser wirst du im Erstellen dieser Formen. Viel Spaß!
+Tutorial_GamePaused,Quit tutorial?,Tutorial beenden?
+Tutorial_GamePaused_Resume,Resume,Wiederaufnehmen
+Tutorial_GamePaused_Quit,Quit,Beenden
+Game_StatisticsTitle,Won,Gewonnen
+Game_StatisticsShapes,Shapes,Formen
+Game_StatisticsLines,Lines,Linien
+Game_StatisticsSuccessRate,Success rate,Erfolgsrate
+Game_StatisticsLargestShape,Largest shape,Größte Form
+InputInformation_Navigate,Navigate,Bewegen
+InputInformation_Pause,Pause,Pausieren
+InputInformation_Confirm,Confirm,Bestätigen
+InputInformation_DeleteLine,Delete line,Linie löschen
+InputInformation_ChangeShapeGrowth,Change shape growth,Formwachstum ändern

@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -77,6 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -89,6 +91,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -302,78 +305,92 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -819281973
+    uuid:
+      value0: 2172466359
+      value1: 0
+      value2: 0
+      value3: 0
+    guid: -2122500937
     name: ButtonPressP2 - Copy
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: ButtonPressP2 - Copy_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 04f3ba21c9b89cb48af19e977b587c15
-    - name: ButtonPressP2 - Copy_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 87e1eb42145d5b74a86c75088e180ab6
-    - name: ButtonPressP2 - Copy_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 9a1c39b14c8c20546a5f14f40e50bbd4
-    - name: ButtonPressP2 - Copy_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 4a5f2236eacb94b41bb6f3bfd0f91ca3
-    - name: ButtonPressP2 - Copy_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 78386484b432ad54492d6b08363bee43
-    - name: ButtonPressP2 - Copy_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: 199a303026d92024d808ba64e32613f2
-    - name: ButtonPressP2 - Copy_Frame_6
+    - name: Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 2
         y: 2
         width: 27
         height: 27
       spriteId: e1ccb20262a698a48ba5cf1df4ca8bb2
-    - name: ButtonPressP2 - Copy_Frame_7
+    - name: Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 1
         y: 1
         width: 29
         height: 29
       spriteId: 1f3efc769ba619645b90267fb3acf8ad
-    - name: ButtonPressP2 - Copy_Frame_8
+    - name: Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 1
         y: 1
@@ -383,6 +400,8 @@ ScriptedImporter:
     linkedCells: []
     parentIndex: -1
   platformSettings: []
+  generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 32, y: 32}
+  previousTextureSize: {x: 128, y: 128}
