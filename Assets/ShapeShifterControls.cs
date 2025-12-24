@@ -640,7 +640,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""name"": ""CreateLine3"",
                     ""type"": ""Button"",
                     ""id"": ""e11a8317-afa0-41f5-9324-7d0e3039472b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -658,7 +658,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""name"": ""CreateLine5"",
                     ""type"": ""Button"",
                     ""id"": ""398a920d-ac83-4359-8fe0-7c7259054c7f"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -685,7 +685,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""name"": ""ResetShape"",
                     ""type"": ""Button"",
                     ""id"": ""fe8c5df5-1352-4eaa-8155-e23201bd6eba"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -694,7 +694,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                     ""name"": ""ChangeShapeGrowDirection"",
                     ""type"": ""Button"",
                     ""id"": ""ad42660f-c7a2-45e0-b687-ddf772be3d27"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -803,7 +803,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d92a7a3c-7c47-4793-a304-c2694997fc28"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -869,7 +869,7 @@ public partial class @ShapeShifterControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f6be35da-7f7a-4e1e-a910-5197ab8217fd"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

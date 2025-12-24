@@ -41,7 +41,15 @@ public class DIRTYInputManager : MonoBehaviour
     {
         playerUIGroups[0].SetActive(false);
         playerUIGroups[1].SetActive(false);
+
+        // Auto-register Player 1 device if previously stored
+        if (InputDeviceRegistry.Player1Device != null)
+        {
+            Debug.Log("Auto-assigning Player 1 from InputDeviceRegistry: " + InputDeviceRegistry.Player1Device.name);
+            RegisterPlayerDevice(InputDeviceRegistry.Player1Device);
+        }
     }
+
 
     private void OnEnable()
     {
@@ -94,28 +102,11 @@ public class DIRTYInputManager : MonoBehaviour
             }
             return;
         }
-        else if (playerDevices.Count < 2) //don't allow more than 2 players
+        else if (playerDevices.Count < 2)
         {
-            playerDevices.Add(device);
-            int playerNum = playerDevices.Count;
-
-            GameObject playerGroup = playerUIGroups[playerNum - 1];
-
-            Debug.Log("Player" + playerNum + " joined with device: " + device.name);
-
-            playerGroup.SetActive(true);
-
-            //Force Steam Name if available onto player 1
-            if (playerNum == 1 && SteamManager.Initialized)
-            {
-                NameCreator nc = playerUIGroups[0].GetComponentInChildren<NameCreator>();
-                nc.SetName(playersNames[0]);
-            }
-            else
-            {
-                playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
-            }
+            RegisterPlayerDevice(device);
         }
+
     }
 
     private void UnregisterDeviceFromPlayer(InputAction.CallbackContext context)
@@ -158,15 +149,20 @@ public class DIRTYInputManager : MonoBehaviour
             }
             else
             {
+                // Prevent Player 1 from leaving
+                if (playerNum == 1)
+                {
+                    Debug.Log("Player 1 cannot unregister.");
+                    return;
+                }
+
                 Debug.Log("Player" + playerNum + " left with device: " + device.name);
 
-                //Don't toggle selected if player 1 has their name set by steamName
-                if (playerNum != 1 && !SteamManager.Initialized)
-                    playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
-
+                playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
                 playerDevices.Remove(device);
                 playerGroup.SetActive(false);
             }
+
         }
 
     }
@@ -200,4 +196,40 @@ public class DIRTYInputManager : MonoBehaviour
             Debug.Log("Player 1 pressed confirm with unknown device: " + device.GetType().Name);
         }
     }
+    private void RegisterPlayerDevice(InputDevice device)
+    {
+        if (playerDevices.Contains(device)) return;
+
+        if (playerDevices.Count >= 2)
+        {
+            Debug.Log("Max players reached.");
+            return;
+        }
+
+        playerDevices.Add(device);
+        int playerNum = playerDevices.Count;
+
+        GameObject playerGroup = playerUIGroups[playerNum - 1];
+        playerGroup.SetActive(true);
+
+        Debug.Log("Player" + playerNum + " joined with device: " + device.name);
+
+        if (playerNum == 1)
+        {
+            player1DeviceType = device;
+            Player1IsKeyboard = device is Keyboard;
+            Player2IsKeyboard = !Player1IsKeyboard;
+
+            if (SteamManager.Initialized)
+            {
+                NameCreator nc = playerGroup.GetComponentInChildren<NameCreator>();
+                nc.SetName(playersNames[0]);
+            }
+        }
+        else
+        {
+            playerGroup.GetComponentInChildren<NameCreator>().ToggleSelected(device);
+        }
+    }
+
 }

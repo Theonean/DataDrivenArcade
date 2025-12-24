@@ -28,3 +28,5 @@ InputInformation_Pause,Pause,Pausieren
 InputInformation_Confirm,Confirm,Bestätigen
 InputInformation_DeleteLine,Delete line,Linie löschen
 InputInformation_ChangeShapeGrowth,Change shape growth,Formwachstum ändern
+Information_PressConfirm,press ENTER / X to join and ready,drücke die Eingabetaste oder x um fortzufahren
+Information_SignUp,Sign up Today!,Meld dich Jetzt an!
